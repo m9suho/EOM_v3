@@ -1,0 +1,192 @@
+/*
+            if (radioButton1.Checked)
+            {
+                if (textBox1.TextLength == 0)
+                {
+                    MainForm.dc.Msg("경고", "차종을 입력해주세요 [공란 확인]");
+                    return;
+                }
+                // 띄어쓰기 검사
+                //else if(String.IsNullOrWhiteSpace())
+                {
+
+                }
+
+                // ***** 고객사 EO 체크
+                // 1자리, - 아니거나
+                // 2~7자리라면
+                if ((textBox2.TextLength == 1 && !textBox2.Text.Equals("-")) || (textBox2.TextLength > 1 && textBox2.TextLength < 8))
+                {
+                    MainForm.dc.Msg("경고", "고객사 EO 번호는 8자리 입니다");
+                    return;
+                }
+                else if (MainForm.IsSpaceCheck(textBox2.Text))
+                {
+                    MainForm.dc.Msg("경고", "고객사 EO 번호에 띄어쓰기가 있습니다");
+                    return;
+                }
+                // ***** 8자리라면
+                else if (textBox2.TextLength == 8)
+                {
+                    int asciiCode = Convert.ToChar(textBox2.Text.Substring(0, 1));
+
+                    // A - Z : 65 - 90
+                    // 1 - 9 : 49 - 57
+                    if (!((asciiCode >= 65 && asciiCode <= 90) || (asciiCode >= 49 && asciiCode <= 57)))
+                    {
+                        MainForm.dc.Msg("경고", "고객사 EO 번호는 첫 글자가 숫자 또는 영어로 시작해야 합니다");
+                        return;
+                    }
+                    // 중복 확인
+                    else if (EODuplicationCheck(textBox2.Text, "customer_eo_number"))
+                    {
+                        MainForm.dc.Msg("경고", "고객사 EO 번호가 중복입니다");
+                        return;
+                    }
+
+                    tmpData = textBox2.Text;
+                }
+                else
+                {
+                    tmpData = "-";
+                }
+
+                if (!checkBox1.Checked)
+                {
+                    tmpData2 = textBox3.Text;
+
+                    // 모비스 EO 체크
+                    if (textBox3.Text.Equals(string.Empty))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호를 입력해주세요 [1번 입력칸]");
+                        return;
+                    }
+                    // 8자리 입력 확인
+                    else if (textBox3.TextLength != 8 && !textBox3.Text.Equals("4M"))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호는 8자리 입니다 [1번 입력칸]");
+                        return;
+                    }
+                    else if (MainForm.IsSpaceCheck(textBox3.Text))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호에 띄어쓰기가 있습니다");
+                        return;
+                    }
+                    else if (EODuplicationCheck(tmpData2, "mobis_eo_number") && !textBox3.Text.Equals("4M"))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호가 중복입니다 [1번 입력칸]");
+                        return;
+                    }
+                    else if (EODuplicationCheck(textBox4.Text, "eo_contents") && textBox3.Text.Equals("4M"))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 내용이 중복입니다");
+                        return;
+                    }
+                }
+                // 모비스 EO - 2 체크
+                else
+                {
+                    tmpData2 = textBox3.Text + "/" + textBox5.Text;
+
+                    // 모비스 EO (1) 체크섬
+                    if (textBox3.Text.Equals(string.Empty))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호를 입력해주세요 [1번 입력칸]");
+                        return;
+                    }
+                    // 8자리 입력 확인
+                    else if (textBox3.TextLength != 8)
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호는 8자리 입니다 [1번 입력칸]");
+                        return;
+                    }
+                    else if (MainForm.IsSpaceCheck(textBox3.Text))
+                    {
+                        MainForm.dc.Msg("경고", "고객사 EO 번호에 띄어쓰기가 있습니다 [1번 입력칸]");
+                        return;
+                    }
+                    /* 중복 검사하면 안됨.
+                    else if (EODuplicationCheck(tmpData2, "mobis_eo_number"))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호가 중복입니다 [1번 입력칸]");
+                        return;
+                    }
+                    */
+                    /*
+                    // 모비스 EO (2) 체크섬
+                    if (textBox5.Text.Equals(string.Empty))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호를 입력해주세요 [2번 입력칸]");
+                        return;
+                    }
+                    // 8자리 입력 확인
+                    else if (textBox5.TextLength != 8)
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호는 8자리 입니다 [2번 입력칸]");
+                        return;
+                    }
+                    else if (MainForm.IsSpaceCheck(textBox5.Text))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호에 띄어쓰기가 있습니다 [2번 입력칸]");
+                        return;
+                    }
+                    // 2개가 같은지 검사
+                    else if (textBox3.Text == textBox5.Text)
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호가 똑같습니다. [1번, 2번 입력칸]");
+                        return;
+                    }
+                    // 두번째 EO 중복 검사
+                    else if (EODuplicationCheck(tmpData2, "mobis_eo_number"))
+                    {
+                        MainForm.dc.Msg("경고", "모비스 EO 번호가 중복입니다");
+                        return;
+                    }
+                }
+            }
+            // 샘플 조건
+            else
+            {
+                if (textBox1.TextLength == 0)
+                {
+                    MainForm.dc.Msg("경고", "차종을 입력해주세요 [공란 확인]");
+                    return;
+                }
+
+                // 샘플일 때 모비스 EO 내용은 정해진 내용만 적을 수 있음
+                // 4M, -, 공란 
+                if (!SampleEOContentsCheck(textBox3.Text))
+                {
+                    MainForm.dc.Msg("경고", "EO 번호는 오른쪽 글자만 입력 가능합니다 [4M, 공란, 하이픈]");
+                    return;
+                }
+
+                tmpData = "-";
+
+                if (textBox3.Text.Equals("-") || textBox3.Text.Equals(string.Empty))
+                {
+                    tmpData2 = "-";
+                }
+                else
+                {
+                    tmpData2 = textBox3.Text;
+                }
+            }
+
+            // EO 내용 체크섬
+            if (textBox4.Text.Equals(string.Empty))
+            {
+                MainForm.dc.Msg("경고", "EO 내용을 입력해주세요");
+                return;
+            }
+            else if (textBox4.Lines.Length > 3)
+            {
+                MainForm.dc.Msg("경고", "EO 내용은 3줄 이하로 입력해주세요");
+                return;
+            }
+            else if (EODuplicationCheck(textBox4.Text, "eo_contents"))
+            {
+                MainForm.dc.Msg("경고", "모비스 EO 내용이 중복입니다");
+                return;
+            }
+            */
