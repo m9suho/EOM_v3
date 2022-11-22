@@ -17,15 +17,16 @@ namespace EOM_v3_P
     public partial class MainForm : Form
     {
         int count = 0;
-        string strConn = string.Empty;
+        string strConn, strSetQuery = string.Empty;
         string programName = "EOM v3 자동 인쇄 (멀티 통합)";
         string excelFilePathName = Application.StartupPath + @"\PrintForm.xlsx";
-        string[] settingData;
+        string[] settingData, addressData;
 
         const string PROCESS_NAME = "EXCEL.EXE";
 
         DefaultClass dc = new DefaultClass();
         MariaDBClass mariaDB = new MariaDBClass();
+        
 
         public string SplitConvert(string[] _data)
         {
@@ -87,79 +88,6 @@ namespace EOM_v3_P
             // 품번 제외 (변경내역, 기존 형식, 차종만)
             printFormData[4] = dc.ProductNameExclusion(printFormData[6], printFormData[4], inputData[5]);
 
-            /*
-            DateTime dateTime = new DateTime();
-
-            // 인쇄 내용 삽입
-            // 초도품 or 샘플
-            if (_data[9].Equals("초도품"))
-            {
-                ws.Cells[2, 2] = "초 도 품";
-            }
-            else if (_data[9].Equals("샘플"))
-            {
-                ws.Cells[2, 2] = "샘 플";
-            }
-            else if (_data[9].Equals("사내용"))
-            {
-                ws.Cells[2, 2] = "사 내 용";
-            }
-            else
-            {
-                ws.Cells[2, 2] = string.Empty;
-            }
-            // 작성일
-            dateTime = Convert.ToDateTime(_data[6]);
-            ws.Cells[3, 6] = dateTime.ToString("yyyy") + "'" + dateTime.ToString("MM") + "/" + dateTime.ToString("dd");
-            // 차종
-            if (_data[0].Equals("D-오디오 SUB"))
-            {
-                ws.Cells[6, 3] = _data[1];
-            }
-            else
-            {
-                ws.Cells[6, 3] = _data[2] + " ( " + _data[1] + " )";
-            }
-            // E/O NO.
-            // 1 : 초도품
-            // 2 : 샘플
-            if (_data[0].Equals("D-오디오 SUB") || _data[4].Equals("4M") || _data[9].Equals("샘플"))
-            {
-                ws.Cells[7, 3] = _data[4];
-            }
-            // 클러스터
-            // 고객사 EO 전 관리 X
-            // 모비스 EO
-            // 샘플
-            else if (_data[0].Equals("클러스터") || _data[9].Equals("샘플"))
-            {
-                if (_data[3].Equals("-"))
-                {
-                    ws.Cells[7, 3] = _data[4];
-                }
-                else
-                {
-                    ws.Cells[7, 3] = _data[3] + Environment.NewLine + "(" + _data[4] + ")";
-                }
-            }
-            // D-오디오 조립
-            // 고객사 EO 전 관리 O || 고객사 EO
-            // 모비스 EO
-            else
-            {
-                if (_data[3].Equals("-"))
-                {
-                    ws.Cells[7, 3] = "고객사 EO 전 관리" + Environment.NewLine + _data[4];
-                }
-                else
-                {
-                    ws.Cells[7, 3] = _data[3] + Environment.NewLine + "(" + _data[4] + ")";
-                }
-            }
-            // 변경 내역
-            ws.Cells[8, 3] = _data[5];
-            */
-
             // 인쇄 내용 삽입
             // 초도품 or 샘플
             ws.Cells[2, 2] = printFormData[0];
@@ -214,7 +142,16 @@ namespace EOM_v3_P
             }
 
             // 인쇄
-            ws.PrintOut(1, 1, _data[10]);
+            if (addressData != null)
+            {
+                ws.PrintOut(1, 1, _data[10], null, addressData[3]);
+                dc.LogFileSave("PRINT NAME DATA [" + addressData[3] + "]");
+            }
+            else
+            {
+                ws.PrintOut(1, 1, _data[10]);
+                dc.LogFileSave("PRINT NAME DATA [NULL]");
+            }
 
             // 내용 초기화
             ws.Cells[4, 6] = "";
@@ -249,28 +186,39 @@ namespace EOM_v3_P
 
         private void PrintTableUpdate()
         {
-            string[] selectData = new string[] { "print_address", settingData[4] };
-            string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
-
-            if(settingData[4] == "2F")
+            try
             {
-                query += " OR print_address = '2F_A53'";
-            }
+                string[] selectData = new string[] { "print_address", settingData[4] };
+                string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
 
-            string[,] modelData = mariaDB.SelectQuery2(query);
-            string[] printData = new string[modelData.GetLength(1)];
-            
-            if(modelData.GetLength(0) > 0)
-            {
-                // 첫번째만 임시 저장
-                for (int i = 0; i < modelData.GetLength(1); i++)
+                strSetQuery = query;
+
+                if (settingData[4] == "2F")
                 {
-                    printData[i] = modelData[0, i];
+                    query += " OR print_address = '2F_A53'";
                 }
 
-                timer1.Stop();
-                PrintStart(printData);
-                timer1.Start();
+                string[,] modelData = mariaDB.SelectQuery2(query);
+                string[] printData = new string[modelData.GetLength(1)];
+
+                if (modelData.GetLength(0) > 0)
+                {
+                    // 첫번째만 임시 저장
+                    for (int i = 0; i < modelData.GetLength(1); i++)
+                    {
+                        printData[i] = modelData[0, i];
+                    }
+
+                    timer1.Stop();
+                    PrintStart(printData);
+                    timer1.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                dc.LogFileSave(ex.Message);
+
+                if (!timer1.Enabled) timer1.Start();
             }
         }
 
@@ -303,14 +251,14 @@ namespace EOM_v3_P
             // 셋팅 값 로드
             settingData = dc.DatFileLoad(@"C:\" + Process.GetCurrentProcess().ProcessName, @"settingData.dat");
 
+#if DEBUG
+            settingData[0] = "eom_1floor_trunk";
+#endif
+
             // 현재 셋팅 데이터 체크
             if (!dc.DatFileCheck(settingData, 7))
             {
                 settingData = new string[7] { "eom_1floor", "print_data", "registrant_data", "log_data", "1F", "10.239.19.91", "3306" };
-
-#if DEBUG
-                settingData[0] = "eom_1floor_trunk";
-#endif
 
                 dc.DatFileSave(@"C:\" + Process.GetCurrentProcess().ProcessName, "settingData.dat", settingData);
             }
@@ -337,6 +285,16 @@ namespace EOM_v3_P
 #else
             mariaDB.InsertLogDB("eom_1floor", "프로그램 시작 [" + dc.Version() + "]", false);
 #endif
+            addressData = dc.LineMatchingData();
+
+            if (addressData != null)
+            {
+                dc.LogFileSave("ADDRESS DATA [" + addressData[0] + "/" + addressData[1] + "/" + addressData[2] + "/" + addressData[3] + "]");
+            }
+            else
+            {
+                dc.LogFileSave("라인 정보 없음");
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -431,7 +389,31 @@ namespace EOM_v3_P
 
         private void 정보IToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dc.StartUpRegistry(false);
+            PasswordFormClass passwordForm = new PasswordFormClass();
+            passwordForm.FormTitleName = Text;
+            passwordForm.StartForm();
+            
+            if (!passwordForm.ReturnValue)
+            {
+                passwordForm.CloseForm();
+                return;
+            }
+
+            string s = string.Empty;
+
+            for(int i = 0; i < settingData.Length; i++)
+            {
+                s += settingData[i] + "\n";
+            }
+
+            s += strConn + "\n";
+            s += strSetQuery;
+
+#if DEBUG
+            Clipboard.SetText(strSetQuery);
+#endif
+
+            dc.Msg("경고", s);
         }
 
         private void timer2_Tick(object sender, EventArgs e)

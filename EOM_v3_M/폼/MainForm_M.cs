@@ -16,6 +16,7 @@ namespace EOM_v3_M
         const int FORM_WIDTH_SIZE = 1280;
         const int FORM_HEIGHT_SIZE = 667;
         const string PACKING_REGISTER_CONTENTS = "---------- 첫 투입 품번 등록 ----------";
+        const string GUEST_LOGIN_MSG = "GUEST님 로그인";
 
         string strConn = string.Empty;
         string[] arr1ColumnData = { "False", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17" };
@@ -127,6 +128,9 @@ namespace EOM_v3_M
         private void InitialControlSize()
         {
             lblUserName.Left = Width - 391;
+            // 2022.11.22
+            // 출하지 폼 크기 위치 이동 수정
+            lblShipmentView.Left = Width - 487;
             btnMetroShipment.Left = Width - 391;
             btnMetroSearch.Left = Width - 295;
             btnMetroAdd.Left = Width - 199;
@@ -254,7 +258,7 @@ namespace EOM_v3_M
                     lblUserName.Text = userNameData + "님(" + floorData[0] + ") 로그인";
 
                     btnMetroAdd.Enabled = true;
-                    btnMetroDelete.Enabled = true;
+                    //btnMetroDelete.Enabled = true;
                     cbbMetroFloor.Visible = false;
                 }
 
@@ -263,7 +267,10 @@ namespace EOM_v3_M
                 cbbMetroLine01.SelectedIndex = Convert.ToInt32(lineSelectData[0]);
 
                 // 게스트 모드라면
-                if (!btnMetroDelete.Enabled)
+                //if (!btnMetroDelete.Enabled)
+                // 2022.11.22
+                // 게스트 모드 조건 변경
+                if (lblUserName.Text == GUEST_LOGIN_MSG)
                 {
                     // 층 설정
                     floorData = dc.DatFileLoad(@"floorData.dat");
@@ -372,7 +379,10 @@ namespace EOM_v3_M
             mariaDB.InsertLogDB("프로그램 종료", false);
 
             // 게스트 모드라면
-            if (!btnMetroDelete.Enabled)
+            //if (!btnMetroDelete.Enabled)
+            // 2022.11.22
+            // 게스트 모드 조건 변경
+            if (lblUserName.Text == GUEST_LOGIN_MSG)
             {
                 // 2020.09.03
                 // 비활성화 경우가 발생하면 값을 불러오지 못함
@@ -483,7 +493,10 @@ namespace EOM_v3_M
             ModelListUpdate();
 
             // 게스트 모드일 때만
-            if (!btnMetroDelete.Enabled)
+            //if (!btnMetroDelete.Enabled)
+            // 2022.11.22
+            // 게스트 모드 조건 변경
+            if (lblUserName.Text == GUEST_LOGIN_MSG)
             {
                 // 2020.09.03
                 // 층에 따른 결과 값
@@ -1103,7 +1116,10 @@ namespace EOM_v3_M
                 updateForm.StartForm();
 
                 // 게스트 모드만 타이머 동작
-                if (!btnMetroDelete.Enabled)
+                //if (!btnMetroDelete.Enabled)
+                // 2022.11.22
+                // 게스트모드 조건변경
+                if (lblUserName.Text == GUEST_LOGIN_MSG)
                 {
                     timer1.Start();
                 }
@@ -1117,7 +1133,10 @@ namespace EOM_v3_M
         private void 도움말HToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // 추가, 삭제 버튼 비활성화이면
-            if (!(btnMetroAdd.Enabled && btnMetroDelete.Enabled))
+            //if (!(btnMetroAdd.Enabled && btnMetroDelete.Enabled))
+            // 2022.11.22
+            // 게스트모드 조건 변경
+            if (!(btnMetroAdd.Enabled && lblUserName.Text == GUEST_LOGIN_MSG))
             {
                 if (!adminMode)
                 {
@@ -1155,7 +1174,7 @@ namespace EOM_v3_M
 
                     UpdateMetroBtn.PerformClick();
 
-                    lblUserName.Text = "GUEST님 로그인";
+                    lblUserName.Text = GUEST_LOGIN_MSG;
                 }
             }
         }
@@ -1795,7 +1814,10 @@ namespace EOM_v3_M
 
             // 2020.09.04
             // 게스트 모드
-            if (!btnMetroDelete.Enabled)
+            //if (!btnMetroDelete.Enabled)
+            // 2022.11.22
+            // 삭제 버튼 비활성화 필요로 조건 변경
+            if (lblUserName.Text == GUEST_LOGIN_MSG)
             {
                 if (cbbMetroLine01.Text == "D-오디오 조립")
                 {
@@ -1857,6 +1879,12 @@ namespace EOM_v3_M
             if (dgvGuest.Visible)
             {
                 dgvSelect.Visible = false;
+
+                btnMetroDelete.Enabled = false;
+            }
+            else
+            {
+                btnMetroDelete.Enabled = true;
             }
         }
 

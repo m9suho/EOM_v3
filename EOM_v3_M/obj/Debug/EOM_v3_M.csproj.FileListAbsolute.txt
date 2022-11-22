@@ -26,4 +26,3 @@ D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csproj.CoreCompileInputs.cache
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csproj.CopyComplete
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.exe
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.pdb
-D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csprojAssemblyReference.cache

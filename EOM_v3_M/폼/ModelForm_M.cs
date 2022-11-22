@@ -820,7 +820,7 @@ namespace EOM_v3_M
             string[] mhtSearchData = MainForm.dc.MhtFileSearch(tmpPath);
 
             // 제목
-            MainForm.subjectData = mhtSearchData[0];
+            //MainForm.subjectData = mhtSearchData[0];
 
             // mht 경로
             MainForm.eoViewData = tmpPath;

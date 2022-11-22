@@ -20,7 +20,7 @@ namespace EOM_v3_M
 
         private void ViewForm_Load(object sender, EventArgs e)
         {
-            Text = MainForm.subjectData;
+            Text = string.Empty; //MainForm.subjectData;
 
             webBrowser1.Navigate(MainForm.eoViewData);
             MainForm.dc.Delay(10);

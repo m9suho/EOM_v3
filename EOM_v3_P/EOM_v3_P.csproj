@@ -114,6 +114,9 @@
     <Compile Include="..\..\Public\MariaDBClass.cs">
       <Link>클래스\MariaDBClass.cs</Link>
     </Compile>
+    <Compile Include="..\..\Public\PasswordFormClass.cs">
+      <Link>클래스\PasswordFormClass.cs</Link>
+    </Compile>
     <Compile Include="..\..\Public\UpdateFormClass.cs">
       <Link>클래스\UpdateFormClass.cs</Link>
     </Compile>

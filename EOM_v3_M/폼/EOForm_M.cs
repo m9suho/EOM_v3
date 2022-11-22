@@ -760,10 +760,27 @@ namespace EOM_v3_M
 
             // 2020.05.06
             // 차종 연계 인터락
+            // 2022.11.15
+            // 차종 프로젝트명 조건 수정
+            int v = 0;
+            string carProjectName = (txtCarName.Text.Length > 2 && int.TryParse(txtCarName.Text.Substring(2, 1), out v)) ? txtCarName.Text.Substring(0, 3).Replace(" ", "") : txtCarName.Text.Substring(0, 2).Replace(" ", "");
+
+            WebBrowser webBrowser = new WebBrowser();
+            webBrowser.Navigate(txtMhtFile.Text);
+
+            //MainForm.dc.LogFileSave(webBrowser.DocumentText);
+
+            //MessageBox.Show("차종 [" + carProjectName + "]");
+            //MessageBox.Show(!webBrowser.DocumentText.Contains(carProjectName) + "");
+            //MessageBox.Show(!MainForm.mhtData.Contains(" " + carProjectName) + "");
+            //MessageBox.Show(!MainForm.mhtData.Contains("/" + carProjectName) + "");
+            //MessageBox.Show(!MainForm.mhtData.Contains("]" + carProjectName) + "");
+
             if (!checkBox2.Checked && 
-                !MainForm.mhtData.Contains(" " + txtCarName.Text.Substring(0, 2)) &&    // ' US4'
-                !MainForm.mhtData.Contains("/" + txtCarName.Text.Substring(0, 2)) &&    // '/US4'
-                !MainForm.mhtData.Contains("]" + txtCarName.Text.Substring(0, 2))       // '[US4' <- 2021.05.11 추가
+                !webBrowser.DocumentText.Contains(carProjectName)           // 'US4'  <- 2022.11.15 추가
+                //!MainForm.mhtData.Contains(" " + carProjectName) &&       // ' US4'
+                //!MainForm.mhtData.Contains("/" + carProjectName) &&       // '/US4'
+                //!MainForm.mhtData.Contains("]" + carProjectName)          // '[US4' <- 2021.05.11 추가
                )
             {
                 //Clipboard.SetText(MainForm.mhtData);
@@ -986,13 +1003,14 @@ namespace EOM_v3_M
             }
             */
 
-                string[] insertData = DatabaseColumnData(2, mobisNumber);
+            string[] insertData = DatabaseColumnData(2, mobisNumber);
             query = MainForm.dc.InsertQueryArrayConvert(MainForm.settingData[0], MainForm.settingData[2], insertData);
             MainForm.mariaDB.EtcQuery(query);
             
             // 로그
             MainForm.dc.LogFileSave("' " + txtCarName.Text.Substring(0, 2) + "' 차종 *.mht 내용 검색 결과 -> TRUE");
 
+            txtMhtFile.Text = string.Empty;
             txtCarName.Text = string.Empty;
             txtCustomerEO.Text = string.Empty;
             txtMobisEO1.Text = string.Empty;
@@ -1119,25 +1137,29 @@ namespace EOM_v3_M
                     txtMhtFile.Text = openFileDialog.FileName;
                     MainForm.eoViewData = openFileDialog.FileName;
 
-                    string[] mhtSearchData = MainForm.dc.MhtFileSearch(openFileDialog.FileName);
+                    string[] mhtSearchData = MainForm.dc.MhtFileSearch(txtMhtFile.Text);
 
-                    // mht 데이터 저장
-                    // 데이터가 있는지 검사함
-                    MainForm.mhtData = File.ReadAllText(txtMhtFile.Text, Encoding.Default);
+                    //2022.11.15
+                    if (mhtSearchData[0] != null)
+                    {
+                        // mht 데이터 저장
+                        // 데이터가 있는지 검사함
+                        MainForm.mhtData = File.ReadAllText(txtMhtFile.Text, Encoding.Default);
 
-                    // 제목 저장
-                    MainForm.subjectData = mhtSearchData[0];
+                        // 제목 저장
+                        //MainForm.subjectData = mhtSearchData[0];
 
-                    // EO 번호 복사
-                    txtMobisEO1.Text = mhtSearchData[1];
+                        // EO 번호 복사
+                        txtMobisEO1.Text = mhtSearchData[1];
 
-                    // 커서 이동
-                    txtCarName.Focus();
+                        // 커서 이동
+                        txtCarName.Focus();
 
-                    ViewForm viewForm = new ViewForm();
-                    viewForm.Show();
+                        ViewForm viewForm = new ViewForm();
+                        viewForm.Show();
 
-                    //txtMobisEO1.ReadOnly = true;
+                        //txtMobisEO1.ReadOnly = true;
+                    }
                 }
                 else
                 {
@@ -1302,7 +1324,7 @@ namespace EOM_v3_M
                     string[] mhtSearchData = MainForm.dc.MhtFileSearch(tmpPath);
 
                     // 제목
-                    MainForm.subjectData = mhtSearchData[0];
+                    //MainForm.subjectData = mhtSearchData[0];
 
                     // mht 경로
                     MainForm.eoViewData = tmpPath;
@@ -1526,6 +1548,11 @@ namespace EOM_v3_M
         }
 
         private void rdoException_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
