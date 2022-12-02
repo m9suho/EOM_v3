@@ -180,10 +180,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="폼\ModelForm_E.cs">
+    <Compile Include="폼\MESSAGE\MessageForm_List.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\ModelForm_E.designer.cs">
+    <Compile Include="폼\MESSAGE\MessageForm_List.Designer.cs">
+      <DependentUpon>MessageForm_List.cs</DependentUpon>
+    </Compile>
+    <Compile Include="폼\MESSAGE\MessageForm_Receive.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="폼\MESSAGE\MessageForm_Receive.Designer.cs">
+      <DependentUpon>MessageForm_Receive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="폼\MESSAGE\MessageForm_Send.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="폼\MESSAGE\MessageForm_Send.Designer.cs">
+      <DependentUpon>MessageForm_Send.cs</DependentUpon>
+    </Compile>
+    <Compile Include="폼\MODELREGISTER\ModelForm_E.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="폼\MODELREGISTER\ModelForm_E.designer.cs">
       <DependentUpon>ModelForm_E.cs</DependentUpon>
     </Compile>
     <Compile Include="폼\MainForm_M.cs">
@@ -192,52 +210,52 @@
     <Compile Include="폼\MainForm_M.Designer.cs">
       <DependentUpon>MainForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\ModelForm_M.cs">
+    <Compile Include="폼\MODELREGISTER\ModelForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\ModelForm_M.Designer.cs">
+    <Compile Include="폼\MODELREGISTER\ModelForm_M.Designer.cs">
       <DependentUpon>ModelForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\EOForm_M.cs">
+    <Compile Include="폼\EO\EOForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\EOForm_M.Designer.cs">
+    <Compile Include="폼\EO\EOForm_M.Designer.cs">
       <DependentUpon>EOForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\LoginForm_M.cs">
+    <Compile Include="폼\ETC\LoginForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\LoginForm_M.Designer.cs">
+    <Compile Include="폼\ETC\LoginForm_M.Designer.cs">
       <DependentUpon>LoginForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\OrderMasterForm_E.cs">
+    <Compile Include="폼\MASTER\OrderMasterForm_E.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\OrderMasterForm_E.Designer.cs">
+    <Compile Include="폼\MASTER\OrderMasterForm_E.Designer.cs">
       <DependentUpon>OrderMasterForm_E.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\EOCheckForm_M.cs">
+    <Compile Include="폼\EO\EOCheckForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\EOCheckForm_M.Designer.cs">
+    <Compile Include="폼\EO\EOCheckForm_M.Designer.cs">
       <DependentUpon>EOCheckForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\OrderMasterForm_H.cs">
+    <Compile Include="폼\MASTER\OrderMasterForm_H.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\OrderMasterForm_H.Designer.cs">
+    <Compile Include="폼\MASTER\OrderMasterForm_H.Designer.cs">
       <DependentUpon>OrderMasterForm_H.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\OrderMasterForm_M.cs">
+    <Compile Include="폼\MASTER\OrderMasterForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\OrderMasterForm_M.Designer.cs">
+    <Compile Include="폼\MASTER\OrderMasterForm_M.Designer.cs">
       <DependentUpon>OrderMasterForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\SearchForm_M.cs">
+    <Compile Include="폼\ETC\SearchForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\SearchForm_M.Designer.cs">
+    <Compile Include="폼\ETC\SearchForm_M.Designer.cs">
       <DependentUpon>SearchForm_M.cs</DependentUpon>
     </Compile>
     <Compile Include="폼\PrintForm_M.cs">
@@ -248,10 +266,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="폼\SignForm.cs">
+    <Compile Include="폼\ETC\SignForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\SignForm.Designer.cs">
+    <Compile Include="폼\ETC\SignForm.Designer.cs">
       <DependentUpon>SignForm.cs</DependentUpon>
     </Compile>
     <Compile Include="폼\ViewForm.cs">
@@ -260,35 +278,44 @@
     <Compile Include="폼\ViewForm.Designer.cs">
       <DependentUpon>ViewForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="폼\ModelForm_E.resx">
+    <EmbeddedResource Include="폼\MESSAGE\MessageForm_List.resx">
+      <DependentUpon>MessageForm_List.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="폼\MESSAGE\MessageForm_Receive.resx">
+      <DependentUpon>MessageForm_Receive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="폼\MESSAGE\MessageForm_Send.resx">
+      <DependentUpon>MessageForm_Send.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="폼\MODELREGISTER\ModelForm_E.resx">
       <DependentUpon>ModelForm_E.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="폼\MainForm_M.resx">
       <DependentUpon>MainForm_M.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\ModelForm_M.resx">
+    <EmbeddedResource Include="폼\MODELREGISTER\ModelForm_M.resx">
       <DependentUpon>ModelForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\EOForm_M.resx">
+    <EmbeddedResource Include="폼\EO\EOForm_M.resx">
       <DependentUpon>EOForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\LoginForm_M.resx">
+    <EmbeddedResource Include="폼\ETC\LoginForm_M.resx">
       <DependentUpon>LoginForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\OrderMasterForm_E.resx">
+    <EmbeddedResource Include="폼\MASTER\OrderMasterForm_E.resx">
       <DependentUpon>OrderMasterForm_E.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\EOCheckForm_M.resx">
+    <EmbeddedResource Include="폼\EO\EOCheckForm_M.resx">
       <DependentUpon>EOCheckForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\OrderMasterForm_H.resx">
+    <EmbeddedResource Include="폼\MASTER\OrderMasterForm_H.resx">
       <DependentUpon>OrderMasterForm_H.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\OrderMasterForm_M.resx">
+    <EmbeddedResource Include="폼\MASTER\OrderMasterForm_M.resx">
       <DependentUpon>OrderMasterForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\SearchForm_M.resx">
+    <EmbeddedResource Include="폼\ETC\SearchForm_M.resx">
       <DependentUpon>SearchForm_M.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="폼\PrintForm_M.resx">
@@ -299,7 +326,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\SignForm.resx">
+    <EmbeddedResource Include="폼\ETC\SignForm.resx">
       <DependentUpon>SignForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="폼\ViewForm.resx">
@@ -369,12 +396,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="blackvariant-button-ui-ms-office-2016-excel-2.ico" />
+    <None Include="Microsoft-Excel-2013-icon_50px.png" />
+    <None Include="Messages-icon_50px.png" />
     <Content Include="Cjdowner-Cryptocurrency-Flat-Enjin-Coin-ENJ.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

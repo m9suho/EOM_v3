@@ -350,6 +350,9 @@ namespace EOM_v3_M
                 }
                 */
 
+                timer3.Interval = 3000;
+                timer3.Start();
+
                 // 접속 로그
                 mariaDB.InsertLogDB("프로그램 시작 [" + dc.Version() + "], " + sw.ElapsedMilliseconds + "ms", false);
 
@@ -1078,6 +1081,31 @@ namespace EOM_v3_M
             업데이트ToolStripMenuItem.PerformClick();
         }
 
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                string[,] s = mariaDB.SelectQuery2("SELECT * FROM `eom_1floor`.`message_data` WHERE receive_name = '" + userNameData + "' AND receive_check = 'C' ORDER BY write_time");
+
+                // 메세지가 있다면
+                if (s.GetLength(0) > 0)
+                {
+                    string[] sendData = { s[0, 0], s[0, 1], s[0, 2], s[0, 3], s[0, 4] };
+
+                    MessageForm_Receive messageForm_Receive = new MessageForm_Receive(sendData);
+
+                    timer3.Stop();
+                    messageForm_Receive.Owner = this;
+                    messageForm_Receive.ShowDialog();
+                    timer3.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                dc.LogFileSave(ex.Message);
+            }
+        }
+
         private void 로그인ToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -1136,7 +1164,7 @@ namespace EOM_v3_M
             //if (!(btnMetroAdd.Enabled && btnMetroDelete.Enabled))
             // 2022.11.22
             // 게스트모드 조건 변경
-            if (!(btnMetroAdd.Enabled && lblUserName.Text == GUEST_LOGIN_MSG))
+            if (!(btnMetroAdd.Enabled && lblUserName.Text != GUEST_LOGIN_MSG))
             {
                 if (!adminMode)
                 {
@@ -1843,6 +1871,22 @@ namespace EOM_v3_M
             {
                 btnMetroShipment.Visible = false;
             }
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            MessageForm_List messageForm_List = new MessageForm_List();
+
+            messageForm_List.Owner = this;
+            messageForm_List.ShowDialog();
+
+            /*
+            MessageFormClass messageFormClass = new MessageFormClass();
+            messageFormClass.FormMsg = "메세지 전송이 완료되었습니다";
+            messageFormClass.ShowDelay = 1000;
+            messageFormClass.InstanceForm = this;
+            messageFormClass.StartForm();
+            */
         }
 
         private void metroComboBox3_SelectedIndexChanged(object sender, EventArgs e)
