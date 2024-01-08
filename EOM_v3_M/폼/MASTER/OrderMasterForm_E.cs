@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace EOM_v3_M
 { 
-    public partial class OrderMasterForm_E : MetroFramework.Forms.MetroForm
+    public partial class OrderMasterForm_E : Form
     {
         const int OEM_DAY = 7;
         const int CKD_MONTH = 1;
@@ -21,23 +21,23 @@ namespace EOM_v3_M
 
         private void ComboBoxItemCheck()
         {
-            for (int i = 0; i < MainForm.ShipmentData.Length; i++)
+            for (int i = 0; i < MainForm.dc.Shipment.Length; i++)
             {
                 // true or false
                 //if (MainForm.ShipmentData[i] != modelData[2])
                 {
-                    if (MainForm.ShipmentData[i] == modelData[2])
+                    if (MainForm.dc.Shipment[i] == modelData[2])
                     {
-                        metroComboBox1.Items.Add(MainForm.ShipmentData[i] + " - [기존]");
+                        metroComboBox1.Items.Add(MainForm.dc.Shipment[i] + " - [기존]");
                         metroComboBox1.SelectedIndex = i;
                     }
-                    else if (MainForm.ShipmentData[i] == modelData[3])
+                    else if (MainForm.dc.Shipment[i] == modelData[3])
                     {
-                        metroComboBox1.Items.Add(MainForm.ShipmentData[i] + " - [적용]");
+                        metroComboBox1.Items.Add(MainForm.dc.Shipment[i] + " - [적용]");
                     }
                     else
                     {
-                        metroComboBox1.Items.Add(MainForm.ShipmentData[i]);
+                        metroComboBox1.Items.Add(MainForm.dc.Shipment[i]);
                         //metroComboBox1.SelectedIndex = i;
                     }
                 }
@@ -52,16 +52,16 @@ namespace EOM_v3_M
             {
                 if (_type == "D")
                 {
-                    metroDateTime2.Value = metroDateTime1.Value.AddDays(_data);
+                    dtpEndDate.Value = dtpStartDate.Value.AddDays(_data);
                 }
                 else if (_type == "M")
                 {
-                    metroDateTime2.Value = metroDateTime1.Value.AddMonths(_data);
+                    dtpEndDate.Value = dtpStartDate.Value.AddMonths(_data);
                 }
             }
             else
             {
-                metroDateTime2.Value = DateTime.Now;
+                dtpEndDate.Value = DateTime.Now;
             }
 
             //MessageBox.Show(metroDateTime2.Value.ToString());
@@ -117,8 +117,8 @@ namespace EOM_v3_M
                 string oldShilmentData = string.Empty;
                 string newShilmentData = string.Empty;
                 // 시작일 날짜
-                string startDatetimeData = metroDateTime1.Value.Date < DateTime.Now.Date ? metroDateTime1.Value.ToString("yyyy-MM-dd 00:00:00") : DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                string endDatetimeData = metroDateTime2.Value.ToString("yyyy-MM-dd " + END_TIME);
+                string startDatetimeData = dtpStartDate.Value.Date < DateTime.Now.Date ? dtpStartDate.Value.ToString("yyyy-MM-dd 00:00:00") : DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                string endDatetimeData = dtpEndDate.Value.ToString("yyyy-MM-dd " + END_TIME);
                 //string[] insertData, selectData, splitData;
                 string[] selectData, splitData;
                 string[] ComboBoxTextSplit = metroComboBox1.Text.Split('-');
@@ -141,22 +141,22 @@ namespace EOM_v3_M
                 // 등록 인터락
                 if ((resultData.GetLength(0) > 0 && resultData[resultData.GetLength(0) - 1, 1] == oldShilmentData))
                 {
-                    MainForm.dc.Msg("경고", "마스터 기준 출하지[" + oldShilmentData + "]와 마지막 등록된 출하지[" + resultData[resultData.GetLength(0) - 1, 1] + "]가 동일합니다\n\n ※ '" + txtModelName.Text + "' 품번의 출하지 변경 이력을 확인하세요");
+                    MainForm.Guna2Msg("오류", "마스터 기준 출하지[" + oldShilmentData + "]와 마지막 등록된 출하지[" + resultData[resultData.GetLength(0) - 1, 1] + "]가 동일합니다\n\n ※ '" + txtModelName.Text + "' 품번의 출하지 변경 이력을 확인하세요");
                     return;
                 }
                 else if (resultData.GetLength(0) == 0 && splitData.Length > 1 && splitData[1].Trim() == "[기존]")
                 {
-                    MainForm.dc.Msg("경고", "첫 등록은 마스터 기준 출하지[" + oldShilmentData + "]와 동일하게 등록할 수 없습니다");
+                    MainForm.Guna2Msg("오류", "첫 등록은 마스터 기준 출하지[" + oldShilmentData + "]와 동일하게 등록할 수 없습니다");
                     return;
                 }
 #if !DEBUG
                 else if (txtContents.Text.Length < 10)
                 {
-                    MainForm.dc.Msg("경고", "등록 내용을 10자 이상 입력해주세요");
+                    MainForm.Guna2Msg("오류", "등록 내용을 10자 이상 입력해주세요");
                     return;
                 }
 #endif
-                if (metroDateTime1.Value.ToString("yyyy-MM-dd") == metroDateTime2.Value.ToString("yyyy-MM-dd"))
+                if (dtpStartDate.Value.ToString("yyyy-MM-dd") == dtpEndDate.Value.ToString("yyyy-MM-dd"))
                 {
                     startDatetimeData = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     endDatetimeData = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -199,14 +199,14 @@ namespace EOM_v3_M
 
         private void metroComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MainForm.dc.ShipmentDays(metroDateTime1, metroDateTime2, metroComboBox1.Text);
+            MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, metroComboBox1.Text);
             MainForm.dc.Delay(10);
             txtContents.Focus();
         }
 
         private void metroDateTime1_ValueChanged(object sender, EventArgs e)
         {
-            MainForm.dc.ShipmentDays(metroDateTime1, metroDateTime2, metroComboBox1.Text);
+            MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, metroComboBox1.Text);
             MainForm.dc.Delay(10);
             txtContents.Focus();
         }

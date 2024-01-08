@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Guna.UI2.WinForms;
 
 namespace EOM_v3_M
 {
-    public partial class SearchForm : MetroFramework.Forms.MetroForm
+    public partial class SearchForm : Form
     {
         private void MessageForm(string _msg)
         {
@@ -33,7 +34,7 @@ namespace EOM_v3_M
         {
             Text = MainForm.programName + " - " + MainForm.dc.Version();
 
-            textBox1.Select(textBox1.Text.Length, 0);
+            txtSearch.Select(txtSearch.Text.Length, 0);
 
             // 메인 폼
             if (MainForm.searchType == "MAIN")
@@ -90,8 +91,7 @@ namespace EOM_v3_M
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            SearchMetroBtn.Enabled = true;
-            progressBar1.Value = 0;
+            btnProductSearch.Enabled = true;
             timer1.Stop();
         }
 
@@ -103,7 +103,7 @@ namespace EOM_v3_M
                 {
                     if (radioButton1.Checked)
                     {
-                        MainForm.cbbMetroProduct01.SelectedItem = listBox1.SelectedItem;
+                        MainForm.cbbProductName01.SelectedItem = listBox1.SelectedItem;
                     }
                     // 2020.09.07
                     // 차종 검색 기능 추가
@@ -139,7 +139,7 @@ namespace EOM_v3_M
                     }
                     else
                     {
-                        MainForm.dc.Msg("경고", "치명적인 오류");
+                        MainForm.Guna2Msg("오류", "치명적인 오류");
                         return;
                     }
                 }
@@ -172,7 +172,7 @@ namespace EOM_v3_M
                     }
                     else
                     {
-                        MainForm.dc.Msg("경고", "치명적인 오류");
+                        MainForm.Guna2Msg("오류", "치명적인 오류");
                         return;
                     }
                 }
@@ -185,7 +185,7 @@ namespace EOM_v3_M
                     }
                     else
                     {
-                        MainForm.dc.Msg("경고", "치명적인 오류");
+                        MainForm.Guna2Msg("오류", "치명적인 오류");
                         return;
                     }
                 }
@@ -200,15 +200,21 @@ namespace EOM_v3_M
             MainForm.searchType = string.Empty;
         }
 
-        private void SearchMetroBtn_Click(object sender, EventArgs e)
+        private void btnProductSearch_Click(object sender, EventArgs e)
         {
             try
             {
+                guna2ProgressIndicator1.Visible = true;
+                guna2ProgressIndicator1.AutoStart = true;
+                btnProductSearch.Enabled = false;
+
+                
+
                 // 공백 검사
-                if (textBox1.Text.Equals(string.Empty))
+                if (txtSearch.Text.Equals(string.Empty))
                 {
-                    MainForm.dc.Msg("경고", "검색어를 입력해주세요");
-                    textBox1.Select();
+                    MainForm.Guna2Msg("오류", "검색어를 입력해주세요");
+                    txtSearch.Select();
                     return;
                 }
 
@@ -216,6 +222,8 @@ namespace EOM_v3_M
                 string SearchTableName = string.Empty;
                 string query = string.Empty;
                 string[] searchData;
+
+                MainForm.dc.Delay(100);
 
                 // 메인 폼
                 if (MainForm.searchType == "MAIN")
@@ -258,11 +266,11 @@ namespace EOM_v3_M
                     // 예외 경우
                     else
                     {
-                        MainForm.dc.Msg("경고", "잘못 된 오류 발생");
+                        MainForm.Guna2Msg("오류", "잘못 된 오류 발생");
                         return;
                     }
 
-                    query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`" + MainForm.settingData[1] + "` WHERE line = '" + MainForm.cbbMetroLine01.Text + "' AND " + SearchTableName + " LIKE '%" + textBox1.Text + "%'";
+                    query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`" + MainForm.settingData[1] + "` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + SearchTableName + " LIKE '%" + txtSearch.Text + "%'";
                     searchData = MainForm.mariaDB.SelectQueryCount(query, SearchTableName);
                 }
                 // EO 폼
@@ -308,11 +316,11 @@ namespace EOM_v3_M
                     // 예외 경우
                     else
                     {
-                        MainForm.dc.Msg("경고", "잘못 된 오류 발생");
+                        MainForm.Guna2Msg("오류", "잘못 된 오류 발생");
                         return;
                     }
 
-                    query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`" + MainForm.settingData[2] + "` WHERE line = '" + MainForm.cbbMetroLine01.Text + "' AND " + SearchTableName + " LIKE '%" + textBox1.Text + "%'";
+                    query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`" + MainForm.settingData[2] + "` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + SearchTableName + " LIKE '%" + txtSearch.Text + "%'";
                     searchData = MainForm.mariaDB.SelectQueryCount(query, SearchTableName);
                 }
                 else
@@ -320,11 +328,13 @@ namespace EOM_v3_M
                     // 모델
                     SearchTableName = "model_name";
 
-                    query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`model_data` WHERE " + SearchTableName + " LIKE '%" + textBox1.Text + "%' AND NOT shipment = '-' GROUP BY " + SearchTableName;
+                    query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`model_data` WHERE " + SearchTableName + " LIKE '%" + txtSearch.Text + "%' AND NOT shipment = '-' GROUP BY " + SearchTableName;
                     searchData = MainForm.mariaDB.SelectQueryCount(query, SearchTableName);
                 }
 
                 listBox1.Items.Clear();
+
+                //MainForm.dc.Delay(500);
 
                 // 검색 수량 카운트
                 int count = 0;
@@ -339,37 +349,49 @@ namespace EOM_v3_M
                     }
                 }
 
-                textBox1.BackColor = Color.White;
+                //txtSearch.BackColor = Color.White;
+                //btnProductSearch.Enabled = true;
 
-                SearchMetroBtn.Enabled = false;
-                textBox1.Text = string.Empty;
+                // 2023.04.01
+                // 커서 유지
+                //if (listBox1.Items.Count == 0)
+                {
+                    txtSearch.Text = string.Empty;
+                    txtSearch.Select();
+                }
+
+                txtSearch.Text = string.Empty;
                 MessageForm(count + "건 검색 완료");
-                progressBar1.Value = 100;
                 timer1.Interval = 3000;
                 timer1.Start();
             }
             catch (Exception ex)
             {
-                MainForm.dc.Msg("에러", ex.Message);
+                MainForm.Guna2Msg("에러", ex.Message);
+            }
+            finally
+            {
+                guna2ProgressIndicator1.AutoStart = false;
+                guna2ProgressIndicator1.Visible = false;
             }
         }
 
-        private void textBox1_Enter(object sender, EventArgs e)
+        private void txtFillColor_Enter(object sender, EventArgs e)
         {
-            textBox1.BackColor = Color.LemonChiffon;
+            ((Guna2TextBox)sender).FillColor = Color.LemonChiffon;
         }
 
-        private void textBox1_Leave(object sender, EventArgs e)
+        private void txtFillColor_Leave(object sender, EventArgs e)
         {
-            textBox1.BackColor = Color.White;
+            ((Guna2TextBox)sender).FillColor = Color.White;
         }
 
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
             // 엔터 키 버튼
             if (e.KeyValue == 13)
             {
-                SearchMetroBtn.PerformClick();
+                btnProductSearch.PerformClick();
             }
 
             // ESC 키 폼 종료
@@ -379,53 +401,52 @@ namespace EOM_v3_M
             }
         }
 
+        private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // [숫자, 영어, 하이픈] 품번, MAIN PCB, SUB PCB
+            if (radioButton1.Checked || radioButton6.Checked || radioButton7.Checked)
+            {
+                MainForm.dc.NumAlphaHypenString((Guna2TextBox)sender, e);
+            }
+            // [숫자, 영어, 공백] 차종
+            else if (radioButton2.Checked)
+            {
+                MainForm.dc.NumAlphaSpaceString((Guna2TextBox)sender, e);
+            }
+            // [숫자, 영어] 고객사 EO, 모비스 EO
+            else if (radioButton3.Checked || radioButton4.Checked)
+            {
+                MainForm.dc.NumAlphaBetString((Guna2TextBox)sender, e);
+            }
+            // [숫자, 한글, 영어, 공백] EO 내용
+            else if (radioButton5.Checked)
+            {
+                MainForm.dc.NumKoreanAlphaSpaceString((Guna2TextBox)sender, e);
+            }
+            else
+            {
+                
+            }
+        }
+
         private void SetRadioButtonCheck()
         {
-            textBox1.Text = string.Empty;
-            textBox1.Select();
-        }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            SetRadioButtonCheck();
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            SetRadioButtonCheck();
-        }
-
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
-        {
-            SetRadioButtonCheck();
-        }
-
-        private void radioButton4_CheckedChanged(object sender, EventArgs e)
-        {
-            SetRadioButtonCheck();
-        }
-
-        private void radioButton5_CheckedChanged(object sender, EventArgs e)
-        {
-            SetRadioButtonCheck();
-        }
-
-        private void radioButton6_CheckedChanged(object sender, EventArgs e)
-        {
-            SetRadioButtonCheck();
-        }
-
-        private void radioButton7_CheckedChanged(object sender, EventArgs e)
-        {
-            SetRadioButtonCheck();
-        }
-
-        private void textBox1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            if (!radioButton5.Checked)
+            if (radioButton5.Checked)
             {
-                textBox1.ImeMode = ImeMode.Alpha;
+                MainForm.dc.ImeModeAllSet(this, "Hangul");
             }
+            else
+            {
+                MainForm.dc.ImeModeAllSet(this, "");
+            }
+
+            txtSearch.Text = string.Empty;
+            txtSearch.Select();
+        }
+
+        private void SetRadioButtonCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            SetRadioButtonCheck();
         }
     }
 }

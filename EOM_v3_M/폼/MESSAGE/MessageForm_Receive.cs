@@ -31,6 +31,8 @@ namespace EOM_v3_M
 
         private void btnSend_Click(object sender, EventArgs e)
         {
+            MainForm.dc.LogFileSave(lblName.Text + "/" + txtMessage.Text);
+
             //if (!chkBoxMessageRetry.Checked)
             {
                 MainForm.mariaDB.EtcQuery("UPDATE `eom_1floor`.`message_data` SET receive_check = '' WHERE write_time = '" + Convert.ToDateTime(strData[0]).ToString("yyyy-MM-dd HH:mm:ss") + "' AND send_name = '" + strData[2] + "' AND receive_name = '" + strData[3] + "'");
@@ -39,7 +41,7 @@ namespace EOM_v3_M
             /*
             if (txtMessage.Text == string.Empty)
             {
-                MainForm.dc.Msg("경고", "내용을 입력해주세요");
+                MainForm.Guna2Msg("오류", "내용을 입력해주세요");
                 return;
             }
 

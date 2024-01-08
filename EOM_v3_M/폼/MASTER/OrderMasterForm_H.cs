@@ -43,7 +43,7 @@ namespace EOM_v3_M
 
             if (shipmentHistoryData.GetLength(0) <= 0)
             {
-                MainForm.dc.Msg("에러", "등록된 데이터가 없습니다");
+                MainForm.Guna2Msg("에러", "등록된 데이터가 없습니다");
                 Close();
             }
 

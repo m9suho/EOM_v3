@@ -42,7 +42,7 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.ImeMode = System.Windows.Forms.ImeMode.HangulFull;
+            this.txtMessage.ImeMode = System.Windows.Forms.ImeMode.Hangul;
             this.txtMessage.Location = new System.Drawing.Point(8, 67);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";

@@ -9,10 +9,11 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.NetworkInformation;
+using Guna.UI2.WinForms;
 
 namespace EOM_v3_M
 {
-    public partial class EOForm : MetroFramework.Forms.MetroForm
+    public partial class EOForm : Form
     {
         public static DataGridView datagridview01;
 
@@ -28,7 +29,7 @@ namespace EOM_v3_M
                     // _data2 : string.Empty
                     returnData = new string[]
                     {
-                        "line", MainForm.cbbMetroLine01.Text,
+                        "line", MainForm.cbbLineName01.Text,
                         "car_name", dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[1].Value.ToString(),
                         "customer_eo_number", dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[2].Value.ToString(),
                         "mobis_eo_number", dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[3].Value.ToString(),
@@ -72,7 +73,7 @@ namespace EOM_v3_M
                         else if (rdoYellow.Checked)
                         {
                             stickerColorData = "Yellow";
-                            stickerTextData = comboBox1.SelectedIndex != -1 ? stickerTextData = comboBox1.SelectedItem.ToString() : string.Empty;
+                            stickerTextData = cbbRegular.SelectedIndex != -1 ? stickerTextData = cbbRegular.SelectedItem.ToString() : string.Empty;
                         }
                     }
                     else
@@ -83,7 +84,7 @@ namespace EOM_v3_M
                     /*
                     // 2020.06.22
                     // D-오디오 수삽
-                    if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[1]))
+                    if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]))
                     {
                         printType = "초도품";
                     }
@@ -91,7 +92,7 @@ namespace EOM_v3_M
 
                     // 2021.01.21
                     // EO 구분
-                    if (groupBox3.Enabled)
+                    if (grpEOType.Enabled)
                     {
                         if (rdoMain.Checked)
                         {
@@ -107,7 +108,7 @@ namespace EOM_v3_M
                         }
                         else
                         {
-                            MainForm.dc.Msg("경고", "'EO 구분' 체크 오류 발생", true);
+                            MainForm.Guna2Msg("오류", "'EO 구분' 체크 오류 발생", true);
                             Close();
                         }
                     }
@@ -118,7 +119,7 @@ namespace EOM_v3_M
 
                     returnData = new string[]
                     {
-                        MainForm.cbbMetroLine01.Text,
+                        MainForm.cbbLineName01.Text,
                         txtCarName.Text,
                         customerNumber,
                         _data2,
@@ -139,7 +140,7 @@ namespace EOM_v3_M
                     returnData = new string[]
                     {
                         "line",
-                        MainForm.cbbMetroLine01.Text,
+                        MainForm.cbbLineName01.Text,
                         "car_name",
                         dataGridView1.Rows[Convert.ToInt32(_data2)].Cells[1].Value.ToString(),
                         "customer_eo_number",
@@ -163,7 +164,7 @@ namespace EOM_v3_M
                     // _data2 : stickerColor
                     returnData = new string[]
                     {
-                        "line", MainForm.cbbMetroLine01.Text,
+                        "line", MainForm.cbbLineName01.Text,
                         "car_name", dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[1].Value.ToString(),
                         "customer_eo_number", dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[2].Value.ToString(),
                         "mobis_eo_number", dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[3].Value.ToString(),
@@ -187,7 +188,7 @@ namespace EOM_v3_M
 
         private string ShipmentData()
         {
-            if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[1]) || MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[3]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
             {
                 return "-";
             }
@@ -208,44 +209,44 @@ namespace EOM_v3_M
                 // 차종 조회
                 if (_type == 1)
                 {
-                    string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "car_name", _data };
+                    string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "car_name", _data };
                     query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[2], selectData, "SELECT");
                 }
                 // 고객사 EO 조회
                 else if (_type == 2)
                 {
-                    string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "customer_eo_number", _data };
+                    string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "customer_eo_number", _data };
                     query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[2], selectData, "SELECT");
                 }
                 // 모비스 EO 조회
                 else if (_type == 3)
                 {
-                    string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "mobis_eo_number", _data };
+                    string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "mobis_eo_number", _data };
                     query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[2], selectData, "SELECT");
                 }
                 // EO 내용 조회
                 else if (_type == 4)
                 {
-                    string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "eo_contents", _data };
+                    string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "eo_contents", _data };
                     query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[2], selectData, "SELECT");
                 }
                 // 2020.12.18
                 // MAIN PCB 조회
                 else if (_type == 5)
                 {
-                    string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "main_pcb_name", _data };
+                    string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "main_pcb_name", _data };
                     query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[2], selectData, "SELECT");
                 }
                 // 2020.12.18
                 // SUB PCB 조회
                 else if (_type == 6)
                 {
-                    string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "sub_pcb_name", _data };
+                    string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "sub_pcb_name", _data };
                     query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[2], selectData, "SELECT");
                 }
                 else
                 {
-                    MainForm.dc.Msg("경고", "치명적인 오류");
+                    MainForm.Guna2Msg("오류", "치명적인 오류");
                     return;
                 }
 
@@ -279,7 +280,7 @@ namespace EOM_v3_M
 
                 // 등록자 불러오기
                 registrantData = MainForm.SearchRegistrant(_data[i, 8]);
-                
+
                 datagridview01.Rows.Add(
                     false,                                                                 // 체크
                     _data[i, 1],                                                           // 차종
@@ -337,21 +338,21 @@ namespace EOM_v3_M
             {
                 string[] y = { string.Empty };
 
-                query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`" + MainForm.settingData[2] + "` WHERE line = '" + MainForm.cbbMetroLine01.Text + "' AND car_name LIKE '" + _data + "%'";
+                query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`" + MainForm.settingData[2] + "` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND car_name LIKE '" + _data + "%'";
 
                 // 2021.04.12
                 // 조회 기간 추가
-                if (radioButton4.Checked)
+                if (rdoFristYear.Checked)
                 {
-                    y = radioButton4.Text.Split('년');
+                    y = rdoFristYear.Text.Split('년');
                 }
-                else if (radioButton5.Checked)
+                else if (rdoSecondYear.Checked)
                 {
-                    y = radioButton5.Text.Split('년');
+                    y = rdoSecondYear.Text.Split('년');
                 }
-                else if (radioButton6.Checked)
+                else if (rdoThirdYear.Checked)
                 {
-                    y = radioButton6.Text.Split('년');
+                    y = rdoThirdYear.Text.Split('년');
                 }
 
                 if (y[0] != string.Empty)
@@ -361,7 +362,7 @@ namespace EOM_v3_M
             }
             else
             {
-                selectData = new string[] { "line", MainForm.cbbMetroLine01.Text };
+                selectData = new string[] { "line", MainForm.cbbLineName01.Text };
 
                 query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[2], selectData, "SELECT");
             }
@@ -371,7 +372,7 @@ namespace EOM_v3_M
             eoData = MainForm.mariaDB.SelectQuery2(query);
 
             // SUB 고객사 EO FALSE
-            if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[3]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
             {
                 txtCustomerEO.Enabled = false;
                 txtCustomerEO.Text = "-";
@@ -424,7 +425,7 @@ namespace EOM_v3_M
                         dataGridView1.Rows[i].Cells[5].Style.BackColor = Color.LimeGreen;
                         break;
                     case "White":
-                        dataGridView1.Rows[i].Cells[5].Style.BackColor = Color.White;
+                        dataGridView1.Rows[i].Cells[5].Style.FillColor = Color.White;
                         break;
                     case "Yellow":
                         dataGridView1.Rows[i].Cells[5].Style.BackColor = Color.Yellow;
@@ -446,7 +447,7 @@ namespace EOM_v3_M
 
         private bool EODuplicationCheck(string _data, string _column)
         {
-            string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "car_name", txtCarName.Text };
+            string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "car_name", txtCarName.Text };
             string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[2], selectData, "SELECT");
             string[] columnData = MainForm.mariaDB.SelectQueryCount(query, _column);
 
@@ -480,11 +481,11 @@ namespace EOM_v3_M
 
             if (_data.Equals("-") || _data.Equals("4M"))
             {
-                selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "car_name", txtCarName.Text, "mobis_eo_number", _data, "shipment", shipmentData, "eo_contents", txtEOContents.Text };
+                selectData = new string[] { "line", MainForm.cbbLineName01.Text, "car_name", txtCarName.Text, "mobis_eo_number", _data, "shipment", shipmentData, "eo_contents", txtEOContents.Text };
             }
             else
             {
-                selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "car_name", txtCarName.Text, "mobis_eo_number", _data, "shipment", shipmentData };
+                selectData = new string[] { "line", MainForm.cbbLineName01.Text, "car_name", txtCarName.Text, "mobis_eo_number", _data, "shipment", shipmentData };
             }
 
             string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[2], selectData, "SELECT");
@@ -495,14 +496,14 @@ namespace EOM_v3_M
             else
                 return false;
         }
-    
+
         private bool EONumberContentsCheck(string _data)
         {
             string[] tmpData = new string[] { "4M", "-", "" };
 
-            for(int i = 0; i < tmpData.Length; i++)
+            for (int i = 0; i < tmpData.Length; i++)
             {
-                if(_data.Equals(tmpData[i]))
+                if (_data.Equals(tmpData[i]))
                 {
                     return true;
                 }
@@ -513,11 +514,11 @@ namespace EOM_v3_M
 
         private bool FirstCharCheck(char _data)
         {
-            char[] value = { 'H', 'K', 'R', 'F' }; 
+            char[] value = { 'H', 'K', 'R', 'F' };
 
             // 2020.09.21
             // 고객사 EO 앞 글자 인터락 추가
-            foreach(char c in value)
+            foreach (char c in value)
             {
                 if (c == _data)
                 {
@@ -542,19 +543,19 @@ namespace EOM_v3_M
             datagridview01.Columns[4].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             MainForm.dc.DataGridViewDoubleBuffered(dataGridView1, true);
 
-            comboBox1.Enabled = false;
+            cbbRegular.Enabled = false;
 
             toolTip.SetToolTip(txtCarName, "차종은 예로 AE, AEa, AE HEV, AE HEV 명확히 구분해야 합니다");
 
             // 2021.04.12
             // 조회 기간 추가
-            radioButton4.Text = DateTime.Now.Year + "년";
-            radioButton5.Text = (DateTime.Now.Year - 1) + "년";
-            radioButton6.Text = (DateTime.Now.Year - 2) + "년";
+            rdoFristYear.Text = DateTime.Now.Year + "년";
+            rdoSecondYear.Text = (DateTime.Now.Year - 1) + "년";
+            rdoThirdYear.Text = (DateTime.Now.Year - 2) + "년";
 
             /*
             // D-오디오 수삽
-            if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[1]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]))
             {
                 rdoFirst.Enabled = false;
                 rdoSample.Enabled = false;
@@ -565,7 +566,7 @@ namespace EOM_v3_M
             */
 
             // D-오디오 수삽, D-오디오 SUB
-            if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[1]) || MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[3]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
             {
                 // 출하지
                 rdoOEM.Enabled = false;
@@ -576,10 +577,10 @@ namespace EOM_v3_M
                 rdoKD.Checked = false;
 
                 // EO 구분
-                groupBox3.Enabled = false;
+                grpEOType.Enabled = false;
             }
             // 클러스터, 허드
-            else if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[4]) || MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[5]))
+            else if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[4]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[5]))
             {
                 // 2021.03.08
                 // 판넬 활성화하고 이름은 변경
@@ -589,11 +590,11 @@ namespace EOM_v3_M
 
             // 2022.01.11
             // 출하지 비활성화
-            groupBox2.Enabled = false;
+            grpShipment.Enabled = false;
 
             // 식별 스티커
             // D-오디오 조립
-            if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[2]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[2]))
             {
                 //groupBox4.Enabled = true;
             }
@@ -606,6 +607,33 @@ namespace EOM_v3_M
 
             TopMost = true;
             TopMost = false;
+
+            // 2023.04.05
+            cbbRegular.Items.Clear();
+
+            /*
+            for (int i = 1; i <= 12; i++)
+            {
+                cbbRegular.Items.Add(i + "월");
+            }
+            */
+
+            // 2023.11.23
+            // 월 → 차수 변경 요청 (김동범)
+            for (int i = 1; i <= 10; i++)
+            {
+                cbbRegular.Items.Add(i + "차");
+            }
+
+            // 2023.03.24
+            // Guna UI 강제 위치 적용
+            Location = MainForm.dc.CenterLocation(Width, Height);
+
+            // 2023.04.04
+            // EO 내용 자동완성 
+            string[] eoContentsoData = MainForm.mariaDB.SelectQueryCount("SELECT * FROM `eom_1floor`.`eo_data` GROUP BY eo_contents", "eo_contents");
+
+            MainForm.dc.TextBoxAutoComplete(txtEOContents, eoContentsoData);
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -622,7 +650,7 @@ namespace EOM_v3_M
                 // 2020.04.09 차종 앞자리만 체크해서 인터락 해제했다가 EO 번호 불량 유출
                 //else if (!MainForm.carSelectData.Substring(0, 2).Equals(dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[1].Value.ToString().Substring(0, 2)))
                 {
-                    MainForm.dc.Msg("경고", "다른 차종은 선택할 수 없습니다");
+                    MainForm.Guna2Msg("오류", "다른 차종은 선택할 수 없습니다");
                     return;
                 }
 
@@ -675,9 +703,9 @@ namespace EOM_v3_M
             }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void chkDualEO_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBox1.Checked)
+            if (chkDualEO.Checked)
             {
                 txtMobisEO2.Enabled = true;
             }
@@ -696,7 +724,7 @@ namespace EOM_v3_M
         private void txtCarName_TextChanged(object sender, EventArgs e)
         {
             // 2021.09.04
-            MainForm.dc.NumAlphaSpaceString(txtCarName);
+            MainForm.dc.NumAlphaSpaceString((Guna2TextBox)sender);
         }
 
         private void rdoFirst_CheckedChanged(object sender, EventArgs e)
@@ -705,7 +733,7 @@ namespace EOM_v3_M
             {
                 txtCustomerEO.Text = string.Empty;
                 txtCustomerEO.ReadOnly = false;
-                checkBox1.Enabled = true;
+                chkDualEO.Enabled = true;
                 rdoMain.Checked = true;
                 rdoMain.Enabled = true;
                 rdoSub.Enabled = true;
@@ -722,12 +750,12 @@ namespace EOM_v3_M
 
         private void rdoSample_CheckedChanged(object sender, EventArgs e)
         {
-            if(rdoSample.Checked)
+            if (rdoSample.Checked)
             {
                 txtCustomerEO.Text = "-";
                 txtMobisEO1.Text = string.Empty;
                 txtCustomerEO.ReadOnly = true;
-                checkBox1.Enabled = false;
+                chkDualEO.Enabled = false;
                 rdoMain.Enabled = false;
                 rdoSub.Enabled = false;
                 rdoException.Enabled = false;
@@ -738,23 +766,23 @@ namespace EOM_v3_M
         }
 
         // 추가
-        private void AddMetroBtn_Click(object sender, EventArgs e)
+        private void btnProductAdd_Click(object sender, EventArgs e)
         {
             string query, mobisNumber = string.Empty;
             //string shipmentType = "-";
 
             // 2020.04.28
             // *.mht 인터락
-            if (!checkBox2.Checked && MainForm.mhtData.Equals(string.Empty))
+            if (!chkTryInput.Checked && MainForm.mhtData.Equals(string.Empty))
             {
-                MainForm.dc.Msg("경고", "'작업변경지시서' 첨부해야 합니다");
+                MainForm.Guna2Msg("오류", "'작업변경지시서' 첨부해야 합니다");
                 return;
             }
 
             // 차종 인터락
             if (txtCarName.Text.Length < 2)
             {
-                MainForm.dc.Msg("경고", "차종을 입력해주세요 [2글자 이상]");
+                MainForm.Guna2Msg("오류", "차종을 입력해주세요 [2글자 이상]");
                 return;
             }
 
@@ -776,16 +804,16 @@ namespace EOM_v3_M
             //MessageBox.Show(!MainForm.mhtData.Contains("/" + carProjectName) + "");
             //MessageBox.Show(!MainForm.mhtData.Contains("]" + carProjectName) + "");
 
-            if (!checkBox2.Checked && 
+            if (!chkTryInput.Checked &&
                 !webBrowser.DocumentText.Contains(carProjectName)           // 'US4'  <- 2022.11.15 추가
-                //!MainForm.mhtData.Contains(" " + carProjectName) &&       // ' US4'
-                //!MainForm.mhtData.Contains("/" + carProjectName) &&       // '/US4'
-                //!MainForm.mhtData.Contains("]" + carProjectName)          // '[US4' <- 2021.05.11 추가
+                                                                            //!MainForm.mhtData.Contains(" " + carProjectName) &&       // ' US4'
+                                                                            //!MainForm.mhtData.Contains("/" + carProjectName) &&       // '/US4'
+                                                                            //!MainForm.mhtData.Contains("]" + carProjectName)          // '[US4' <- 2021.05.11 추가
                )
             {
                 //Clipboard.SetText(MainForm.mhtData);
 
-                MainForm.dc.Msg("경고", "작업변경지시서 차종과 입력한 차종이 일치 하지 않습니다");
+                MainForm.Guna2Msg("오류", "작업변경지시서 차종과 입력한 차종이 일치 하지 않습니다");
                 txtCarName.SelectAll();
                 return;
             }
@@ -793,7 +821,7 @@ namespace EOM_v3_M
             // 2022.03.16
             if (!rdoFirst.Checked && !rdoSample.Checked)
             {
-                MainForm.dc.Msg("경고", "'초도품' 또는 '샘플'을 선택해야 합니다");
+                MainForm.Guna2Msg("오류", "'초도품' 또는 '샘플'을 선택해야 합니다");
                 return;
             }
 
@@ -808,52 +836,55 @@ namespace EOM_v3_M
             // 2~7자리라면
             if (!EONumberContentsCheck(txtCustomerEO.Text) && txtCustomerEO.Text.Length != 8)
             {
-                MainForm.dc.Msg("경고", "고객사 EO 번호는 8자리 입니다");
+                MainForm.Guna2Msg("오류", "고객사 EO 번호는 8자리 입니다");
                 return;
             }
             else if (MainForm.IsSpaceCheck(txtCustomerEO.Text))
             {
-                MainForm.dc.Msg("경고", "고객사 EO 번호에 띄어쓰기가 있습니다");
+                MainForm.Guna2Msg("오류", "고객사 EO 번호에 띄어쓰기가 있습니다");
                 return;
             }
             //else if (txtCustomerEO.Text.Length == 8 && !(txtCustomerEO.Text.Substring(0, 1).Equals("K") || txtCustomerEO.Text.Substring(0, 1).Equals("H")))
             else if (txtCustomerEO.Text.Length == 8 && !FirstCharCheck(Convert.ToChar(txtCustomerEO.Text.Substring(0, 1))))
             {
-                MainForm.dc.Msg("경고", "고객사 EO 번호의 첫 글자는 H, K, R로 시작해야합니다");
+                MainForm.Guna2Msg("오류", "고객사 EO 번호의 첫 글자는 H, K, R로 시작해야합니다");
                 return;
             }
 
             // 모비스 EO 인터락
-            if (!checkBox1.Checked)
+            if (!chkDualEO.Checked)
             {
                 mobisNumber = txtMobisEO1.Text;
 
                 // 모비스 EO 확인
                 if (txtMobisEO1.Text.Equals(string.Empty))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호를 입력해주세요 [1번 입력칸]");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호를 입력해주세요 [1번 입력칸]");
                     return;
                 }
                 // 8자리 입력 확인
                 else if (!EONumberContentsCheck(txtMobisEO1.Text) && txtMobisEO1.Text.Length != 8)
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호는 8자리 입니다 [1번 입력칸]");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호는 8자리 입니다 [1번 입력칸]");
                     return;
                 }
                 // 공백 확인
                 else if (MainForm.IsSpaceCheck(txtMobisEO1.Text))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호에 띄어쓰기가 있습니다");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호에 띄어쓰기가 있습니다");
                     return;
                 }
                 else if (EODuplicationCheck(txtCustomerEO.Text, "customer_eo_number"))
                 {
-                    MainForm.dc.Msg("경고", "고객사 EO 번호 : " + txtCustomerEO.Text + "\n\n이미 등록되어 있습니다");
-                    return;
+                    if (MessageBox.Show("고객사 EO 번호 : " + txtCustomerEO.Text + "\n\n이미 등록되어 있습니다.\n\n강제 진행을 하게 되면 추후에 문제가 될 수도 있고 책임은 본인에게 있습니다. 그래도 진행하시겠습니까?", "경고", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.No)
+                    {
+                        //MainForm.Guna2Msg("오류", "고객사 EO 번호 : " + txtCustomerEO.Text + "\n\n이미 등록되어 있습니다");
+                        return;
+                    }
                 }
-                else if (EODuplicationCheck(txtMobisEO1.Text, "mobis_eo_number"))
+                if (EODuplicationCheck(txtMobisEO1.Text, "mobis_eo_number"))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호 : " + mobisNumber + "\n\n이미 등록되어 있습니다");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호 : " + mobisNumber + "\n\n이미 등록되어 있습니다");
                     return;
                 }
                 /*
@@ -866,24 +897,24 @@ namespace EOM_v3_M
                         // "-" EO 내용 출력
                         if (mobisNumber == "-")
                         {
-                            MainForm.dc.Msg("경고", "모비스 EO 번호 [" + mobisNumber + "](이)가 EO 내용 [" + txtEOContents.Text + "] (으)로 등록되어 있습니다");
+                            MainForm.Guna2Msg("오류", "모비스 EO 번호 [" + mobisNumber + "](이)가 EO 내용 [" + txtEOContents.Text + "] (으)로 등록되어 있습니다");
                         }
                         else
                         {
-                            MainForm.dc.Msg("경고", "모비스 EO 번호 [" + mobisNumber + "](이)가 출하지 [" + shipmentType + "](으)로 등록되어 있습니다");
+                            MainForm.Guna2Msg("오류", "모비스 EO 번호 [" + mobisNumber + "](이)가 출하지 [" + shipmentType + "](으)로 등록되어 있습니다");
                         }
                     }
                     // D-오디오 SUB
                     else
                     {
-                        MainForm.dc.Msg("경고", "모비스 EO가 등록되어 있습니다");
+                        MainForm.Guna2Msg("오류", "모비스 EO가 등록되어 있습니다");
                     }
                     return;
                 }
                 */
                 else if (EODuplicationCheck(txtEOContents.Text, "eo_contents") && (txtMobisEO1.Text.Equals("-") || txtMobisEO1.Text.Equals("4M")))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 내용이 중복입니다");
+                    MainForm.Guna2Msg("오류", "모비스 EO 내용이 중복입니다");
                     return;
                 }
             }
@@ -895,52 +926,52 @@ namespace EOM_v3_M
                 // 모비스 EO (1) 체크섬
                 if (txtMobisEO1.Text.Equals(string.Empty))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호를 입력해주세요 [1번 입력칸]");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호를 입력해주세요 [1번 입력칸]");
                     return;
                 }
                 // 8자리 입력 확인
                 else if (!EONumberContentsCheck(txtMobisEO1.Text) && txtMobisEO1.Text.Length != 8)
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호는 8자리 입니다 [1번 입력칸]");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호는 8자리 입니다 [1번 입력칸]");
                     return;
                 }
                 else if (MainForm.IsSpaceCheck(txtMobisEO1.Text))
                 {
-                    MainForm.dc.Msg("경고", "고객사 EO 번호에 띄어쓰기가 있습니다 [1번 입력칸]");
+                    MainForm.Guna2Msg("오류", "고객사 EO 번호에 띄어쓰기가 있습니다 [1번 입력칸]");
                     return;
                 }
 
                 // 모비스 EO (2) 체크섬
                 if (txtMobisEO2.Text.Equals(string.Empty))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호를 입력해주세요 [2번 입력칸]");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호를 입력해주세요 [2번 입력칸]");
                     return;
                 }
                 // 8자리 입력 확인
                 else if (txtMobisEO2.TextLength != 8)
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호는 8자리 입니다 [2번 입력칸]");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호는 8자리 입니다 [2번 입력칸]");
                     return;
                 }
                 else if (MainForm.IsSpaceCheck(txtMobisEO2.Text))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호에 띄어쓰기가 있습니다 [2번 입력칸]");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호에 띄어쓰기가 있습니다 [2번 입력칸]");
                     return;
                 }
                 // 2개가 같은지 검사
                 else if (txtMobisEO1.Text == txtMobisEO2.Text)
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호가 똑같습니다. [1번, 2번 입력칸]");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호가 똑같습니다. [1번, 2번 입력칸]");
                     return;
                 }
                 else if (EODuplicationCheck(txtCustomerEO.Text, "customer_eo_number"))
                 {
-                    MainForm.dc.Msg("경고", "고객사 EO 번호 : " + txtCustomerEO.Text + "\n\n고객사 EO 번호가 이미 등록되어 있습니다");
+                    MainForm.Guna2Msg("오류", "고객사 EO 번호 : " + txtCustomerEO.Text + "\n\n고객사 EO 번호가 이미 등록되어 있습니다");
                     return;
                 }
                 else if (EODuplicationCheck(mobisNumber, "mobis_eo_number"))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호 : " + mobisNumber + "\n\n이미 등록되어 있습니다");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호 : " + mobisNumber + "\n\n이미 등록되어 있습니다");
                     return;
                 }
                 /*
@@ -952,17 +983,17 @@ namespace EOM_v3_M
                         // "-" EO 내용 출력
                         if (mobisNumber == "-")
                         {
-                            MainForm.dc.Msg("경고", "모비스 EO 번호 [" + mobisNumber + "](이)가 EO 내용 [" + txtEOContents.Text + "] (으)로 등록되어 있습니다");
+                            MainForm.Guna2Msg("오류", "모비스 EO 번호 [" + mobisNumber + "](이)가 EO 내용 [" + txtEOContents.Text + "] (으)로 등록되어 있습니다");
                         }
                         else
                         {
-                            MainForm.dc.Msg("경고", "모비스 EO 번호 [" + mobisNumber + "](이)가 출하지 [" + shipmentType + "](으)로 등록되어 있습니다");
+                            MainForm.Guna2Msg("오류", "모비스 EO 번호 [" + mobisNumber + "](이)가 출하지 [" + shipmentType + "](으)로 등록되어 있습니다");
                         }
                     }
                     // D-오디오 SUB
                     else
                     {
-                        MainForm.dc.Msg("경고", "모비스 EO가 등록되어 있습니다");
+                        MainForm.Guna2Msg("오류", "모비스 EO가 등록되어 있습니다");
                     }
 
                     return;
@@ -970,13 +1001,13 @@ namespace EOM_v3_M
                 // 두번째 EO 중복 검사
                 else if (EODuplicationCheck(mobisNumber, "mobis_eo_number"))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 번호가 중복입니다");
+                    MainForm.Guna2Msg("오류", "모비스 EO 번호가 중복입니다");
                     return;
                 }
                 */
                 else if (EODuplicationCheck(txtEOContents.Text, "eo_contents") && (txtMobisEO1.Text.Equals("-") || txtMobisEO1.Text.Equals("4M")))
                 {
-                    MainForm.dc.Msg("경고", "모비스 EO 내용이 중복입니다");
+                    MainForm.Guna2Msg("오류", "모비스 EO 내용이 중복입니다");
                     return;
                 }
             }
@@ -984,12 +1015,12 @@ namespace EOM_v3_M
             // EO 내용 체크섬
             if (txtEOContents.Text.Equals(string.Empty))
             {
-                MainForm.dc.Msg("경고", "EO 내용을 입력해주세요");
+                MainForm.Guna2Msg("오류", "EO 내용을 입력해주세요");
                 return;
             }
             else if (txtEOContents.Lines.Length > 3)
             {
-                MainForm.dc.Msg("경고", "EO 내용은 3줄 이하로 입력해주세요");
+                MainForm.Guna2Msg("오류", "EO 내용은 3줄 이하로 입력해주세요");
                 return;
             }
 
@@ -998,7 +1029,7 @@ namespace EOM_v3_M
              * 앞에서 EO번호와 출하지로 검출하기 때문에 불필요함
             else if (EODuplicationCheck(txtEOContents.Text, "eo_contents"))
             {
-                MainForm.dc.Msg("경고", "모비스 EO 내용이 중복입니다");
+                MainForm.Guna2Msg("오류", "모비스 EO 내용이 중복입니다");
                 return;
             }
             */
@@ -1006,7 +1037,7 @@ namespace EOM_v3_M
             string[] insertData = DatabaseColumnData(2, mobisNumber);
             query = MainForm.dc.InsertQueryArrayConvert(MainForm.settingData[0], MainForm.settingData[2], insertData);
             MainForm.mariaDB.EtcQuery(query);
-            
+
             // 로그
             MainForm.dc.LogFileSave("' " + txtCarName.Text.Substring(0, 2) + "' 차종 *.mht 내용 검색 결과 -> TRUE");
 
@@ -1032,7 +1063,7 @@ namespace EOM_v3_M
         }
 
         // 삭제
-        private void DelMetroBtn_Click(object sender, EventArgs e)
+        private void btnProductDelete_Click(object sender, EventArgs e)
         {
             int count = 0;
 
@@ -1048,7 +1079,7 @@ namespace EOM_v3_M
                     string[] logData = new string[dataGridView1.ColumnCount];
 
                     // 라인
-                    logData[0] = MainForm.cbbMetroLine01.Text;
+                    logData[0] = MainForm.cbbLineName01.Text;
 
                     for (int j = 1; j < logData.Length - 1; j++)
                     {
@@ -1063,7 +1094,7 @@ namespace EOM_v3_M
 
             if (count > 0)
             {
-                MainForm.dc.Msg("경고", count.ToString() + "건 삭제되었습니다");
+                MainForm.Guna2Msg("오류", count.ToString() + "건 삭제되었습니다");
 
                 EOReloadView(MainForm.eoCarData);
 
@@ -1082,9 +1113,9 @@ namespace EOM_v3_M
         }
 
         // 검색
-        private void SearchMetroBtn_Click(object sender, EventArgs e)
+        private void btnProductSearch_Click(object sender, EventArgs e)
         {
-            if (MainForm.cbbMetroLine01.SelectedIndex != -1)
+            if (MainForm.cbbLineName01.SelectedIndex != -1)
             {
                 SearchForm showForm = new SearchForm();
 
@@ -1093,18 +1124,18 @@ namespace EOM_v3_M
             }
             else
             {
-                MainForm.dc.Msg("경고", "라인을 선택해주세요");
+                MainForm.Guna2Msg("오류", "라인을 선택해주세요");
             }
         }
 
         // 초기화
-        private void ResetMetroBtn_Click(object sender, EventArgs e)
+        private void btnReset_Click(object sender, EventArgs e)
         {
             txtCarName.Text = string.Empty;
             txtCustomerEO.Text = string.Empty;
             txtEOContents.Text = string.Empty;
             rdoFirst.Checked = true;
-            checkBox1.Checked = false;
+            chkDualEO.Checked = false;
 
             if (!txtCustomerEO.Enabled)
             {
@@ -1118,7 +1149,7 @@ namespace EOM_v3_M
             EOReloadView(null);
         }
 
-        private void OpenMetroBtn_Click(object sender, EventArgs e)
+        private void btnMhtFile_Click(object sender, EventArgs e)
         {
             txtMobisEO1.ReadOnly = false;
 
@@ -1135,7 +1166,7 @@ namespace EOM_v3_M
                 {
                     // 파일 경로 복사
                     txtMhtFile.Text = openFileDialog.FileName;
-                    MainForm.eoViewData = openFileDialog.FileName;
+                    //MainForm.eoViewData = openFileDialog.FileName;
 
                     string[] mhtSearchData = MainForm.dc.MhtFileSearch(txtMhtFile.Text);
 
@@ -1155,7 +1186,7 @@ namespace EOM_v3_M
                         // 커서 이동
                         txtCarName.Focus();
 
-                        ViewForm viewForm = new ViewForm();
+                        ViewForm viewForm = new ViewForm(txtMhtFile.Text);
                         viewForm.Show();
 
                         //txtMobisEO1.ReadOnly = true;
@@ -1168,22 +1199,22 @@ namespace EOM_v3_M
             }
         }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void chkTryInput_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox2.Checked)
+            if (chkTryInput.Checked)
             {
                 if (MessageBox.Show("'작업변경지시서' 없이 강제 입력을 하게 되면 추후에 문제가 될 수도 있고 책임은 본인에게 있습니다. 그래도 진행하시겠습니까?\n\n[이 기능은 작변이 누락된 경우 긴급으로 사용하는 기능입니다]", "경고", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
                 {
                     //checkBox2.Checked = true;
                     txtMhtFile.Text = "--------------------------------";
                     txtMhtFile.Enabled = false;
-                    OpenMetroBtn.Enabled = false;
+                    btnMhtFile.Enabled = false;
 
                     txtCarName.Focus();
                 }
                 else
                 {
-                    checkBox2.Checked = false;
+                    chkTryInput.Checked = false;
                     return;
                 }
             }
@@ -1191,102 +1222,44 @@ namespace EOM_v3_M
             {
                 txtMhtFile.Text = string.Empty;
                 txtMhtFile.Enabled = true;
-                OpenMetroBtn.Enabled = true;
+                btnMhtFile.Enabled = true;
             }
         }
 
-        private void txtCarName_Enter(object sender, EventArgs e)
+        private void txtFillColor_Enter(object sender, EventArgs e)
         {
-            txtCarName.BackColor = Color.LemonChiffon;
-            txtCarName.ImeMode = ImeMode.Alpha;
+            ((Guna2TextBox)sender).FillColor = Color.LemonChiffon;
+
+            if (((Guna2TextBox)sender).Name == "txtEOContents")
+            {
+                MainForm.dc.ImeModeAllSet(this, "Hangul");
+            }
+            else
+            {
+                MainForm.dc.ImeModeAllSet(this, "");
+            }
         }
 
-        private void txtCustomerEO_Enter(object sender, EventArgs e)
+        private void FillColor_Leave(object sender, EventArgs e)
         {
-            txtCustomerEO.BackColor = Color.LemonChiffon;
-            txtCustomerEO.ImeMode = ImeMode.Alpha;
-        }
-
-        private void txtMobisEO1_Enter(object sender, EventArgs e)
-        {
-            txtMobisEO1.BackColor = Color.LemonChiffon;
-            txtMobisEO1.ImeMode = ImeMode.Alpha;
-        }
-
-        private void txtMobisEO2_Enter(object sender, EventArgs e)
-        {
-            txtMobisEO2.BackColor = Color.LemonChiffon;
-            txtMobisEO2.ImeMode = ImeMode.Alpha;
-        }
-
-        private void txtEOContents_Enter(object sender, EventArgs e)
-        {
-            txtEOContents.BackColor = Color.LemonChiffon;
-            txtEOContents.ImeMode = ImeMode.Alpha;
-        }
-
-        private void txtCarName_Leave(object sender, EventArgs e)
-        {
-            txtCarName.BackColor = Color.White;
-        }
-
-        private void txtCustomerEO_Leave(object sender, EventArgs e)
-        {
-            txtCustomerEO.BackColor = Color.White;
-        }
-
-        private void txtMobisEO1_Leave(object sender, EventArgs e)
-        {
-            txtMobisEO1.BackColor = Color.White;
-        }
-
-        private void txtMobisEO2_Leave(object sender, EventArgs e)
-        {
-            txtMobisEO2.BackColor = Color.White;
+            ((Guna2TextBox)sender).FillColor = Color.White;
         }
 
         private void txtEOContents_Leave(object sender, EventArgs e)
         {
-            txtEOContents.BackColor = Color.White;
+            txtEOContents.FillColor = Color.White;
 
             // 2022.08.30
             // ' 오류 제거
             txtEOContents.Text = txtEOContents.Text.Replace("'", "");
         }
 
-        private void txtCarName_KeyDown(object sender, KeyEventArgs e)
+        private void ImeMode_KeyDown(object sender, KeyEventArgs e)
         {
             // 한영 키 버튼
             if (e.KeyValue == 229)
             {
-                txtCarName.ImeMode = ImeMode.Alpha;
-            }
-        }
-
-        private void txtCustomerEO_KeyDown(object sender, KeyEventArgs e)
-        {
-            // 한영 키 버튼
-            if (e.KeyValue == 229)
-            {
-                txtCustomerEO.ImeMode = ImeMode.Alpha;
-            }
-        }
-
-        private void txtMobisEO1_KeyDown(object sender, KeyEventArgs e)
-        {
-            // 한영 키 버튼
-            if (e.KeyValue == 229)
-            {
-                txtMobisEO1.ImeMode = ImeMode.Alpha;
-            }
-        }
-
-        private void txtMobisEO2_KeyDown(object sender, KeyEventArgs e)
-        {
-            // 한영 키 버튼
-            if (e.KeyValue == 229)
-            {
-                txtMobisEO2.ImeMode = ImeMode.Alpha;
+                ((Guna2TextBox)sender).ImeMode = ImeMode.Alpha;
             }
         }
 
@@ -1327,9 +1300,9 @@ namespace EOM_v3_M
                     //MainForm.subjectData = mhtSearchData[0];
 
                     // mht 경로
-                    MainForm.eoViewData = tmpPath;
+                    //MainForm.eoViewData = tmpPath;
 
-                    ViewForm viewForm = new ViewForm();
+                    ViewForm viewForm = new ViewForm(tmpPath);
                     viewForm.ShowDialog();
                 }
             }
@@ -1345,6 +1318,10 @@ namespace EOM_v3_M
             // 예외 설정
             if (dataGridView1.Rows.Count > 0)
             {
+                // 2023.04.04
+                // 작업지시서 오류 수정
+                chkTryInput.Checked = false;
+
                 // 초도품 or 샘플
                 if (dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[8].Value.ToString().Equals("초도품"))
                 {
@@ -1390,13 +1367,13 @@ namespace EOM_v3_M
                 {
                     txtMobisEO1.Text = tmpData[0];
                     txtMobisEO2.Text = tmpData[1];
-                    checkBox1.Checked = true;
+                    chkDualEO.Checked = true;
                 }
                 else
                 {
                     txtMobisEO1.Text = tmpData[0];
                     txtMobisEO2.Text = string.Empty;
-                    checkBox1.Checked = false;
+                    chkDualEO.Checked = false;
                 }
 
                 txtEOContents.Text = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[4].Value.ToString();
@@ -1425,7 +1402,7 @@ namespace EOM_v3_M
 
                     if (dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[5].Value.ToString() != string.Empty)
                     {
-                        comboBox1.SelectedItem = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[5].Value.ToString();
+                        cbbRegular.SelectedItem = dataGridView1.Rows[dataGridView1.CurrentRow.Index].Cells[5].Value.ToString();
                     }
                 }
                 else
@@ -1450,11 +1427,11 @@ namespace EOM_v3_M
             }
         }
 
-        private void comboBox1_EnabledChanged(object sender, EventArgs e)
+        private void cbbRegular_EnabledChanged(object sender, EventArgs e)
         {
-            if (!comboBox1.Enabled)
+            if (!cbbRegular.Enabled)
             {
-                comboBox1.SelectedIndex = -1;
+                cbbRegular.SelectedIndex = -1;
             }
         }
 
@@ -1463,29 +1440,10 @@ namespace EOM_v3_M
             _radioButton.BackColor = _radioButton.Checked ? SystemColors.ControlLight : Color.White;
         }
 
-        private void rdoNone_CheckedChanged(object sender, EventArgs e)
+        private void RadioButtonCheckedBackColor_CheckedChanged(object sender, EventArgs e)
         {
-            RadioButtonCheckedBackColor(rdoNone);
-        }
-
-        private void rdoOrange_CheckedChanged(object sender, EventArgs e)
-        {
-            RadioButtonCheckedBackColor(rdoOrange);
-        }
-
-        private void rdoBlue_CheckedChanged(object sender, EventArgs e)
-        {
-            RadioButtonCheckedBackColor(rdoBlue);
-        }
-
-        private void rdoLimeGreen_CheckedChanged(object sender, EventArgs e)
-        {
-            RadioButtonCheckedBackColor(rdoLimeGreen);
-        }
-
-        private void rdoWhite_CheckedChanged(object sender, EventArgs e)
-        {
-            RadioButtonCheckedBackColor(rdoWhite);
+            RadioButtonCheckedBackColor((Guna2RadioButton)sender);
+            
         }
 
         private void rdoYellow_CheckedChanged(object sender, EventArgs e)
@@ -1494,11 +1452,11 @@ namespace EOM_v3_M
 
             if (rdoYellow.Checked)
             {
-                comboBox1.Enabled = true;
+                cbbRegular.Enabled = true;
             }
             else
             {
-                comboBox1.Enabled = false;
+                cbbRegular.Enabled = false;
             }
         }
 
@@ -1527,24 +1485,9 @@ namespace EOM_v3_M
             rdoYellow.Checked = true;
         }
 
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        private void EOReloadView_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButton3.Checked) EOReloadView(MainForm.eoCarData);
-        }
-
-        private void radioButton4_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButton4.Checked) EOReloadView(MainForm.eoCarData);
-        }
-
-        private void radioButton5_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButton5.Checked) EOReloadView(MainForm.eoCarData);
-        }
-
-        private void radioButton6_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButton6.Checked) EOReloadView(MainForm.eoCarData);
+            if (((Guna2RadioButton)sender).Checked) EOReloadView(MainForm.eoCarData);
         }
 
         private void rdoException_CheckedChanged(object sender, EventArgs e)
@@ -1552,9 +1495,9 @@ namespace EOM_v3_M
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void NumAlphaBetString_KeyPress(object sender, KeyPressEventArgs e)
         {
-
+            MainForm.dc.NumAlphaHypenString((Guna2TextBox)sender, e);
         }
     }
 }

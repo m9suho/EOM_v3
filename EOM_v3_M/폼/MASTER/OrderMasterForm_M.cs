@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace EOM_v3_M
 {
-    public partial class OrderMasterForm : MetroFramework.Forms.MetroForm
+    public partial class OrderMasterForm_M : Form
     {
         private void UpdateDataGridView()
         {
@@ -55,7 +55,7 @@ namespace EOM_v3_M
             {
                 // 1. 시작일 기준 가장 낮은 값
                 // 2. 중복 제거
-                query = MainForm.pe.OriginalShipment(MainForm.settingData[0], MainForm.cbbMetroLine01.Text);
+                query = MainForm.pe.OriginalShipment(MainForm.settingData[0], MainForm.cbbLineName01.Text);
 
                 orderData = MainForm.mariaDB.SelectQuery4(query, 3);
             }
@@ -201,7 +201,7 @@ namespace EOM_v3_M
             }
             catch (Exception ex)
             {
-                MainForm.dc.Msg("경고", ex.Message, true);
+                MainForm.Guna2Msg("오류", ex.Message, true);
             }
         }
 
@@ -254,7 +254,7 @@ namespace EOM_v3_M
             }
         }
 
-        public OrderMasterForm()
+        public OrderMasterForm_M()
         {
             InitializeComponent();
         }
@@ -325,87 +325,7 @@ namespace EOM_v3_M
 
         }
 
-        private void rdoShipmentAll_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoShipmentOEM_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoShipmentCKD_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoShipmentKD_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoContentsAll_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoProcessIng_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoProcessEnd_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoYearAll_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoYear1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoYear2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((RadioButton)sender).Checked)
-            {
-                UpdateDataGridView();
-            }
-        }
-
-        private void rdoYear3_CheckedChanged(object sender, EventArgs e)
+        private void UpdateDataGridView_CheckedChanged(object sender, EventArgs e)
         {
             if (((RadioButton)sender).Checked)
             {

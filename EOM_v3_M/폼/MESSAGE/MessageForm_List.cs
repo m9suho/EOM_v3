@@ -26,7 +26,7 @@ namespace EOM_v3_M
 
             if (userData.GetLength(0) <= 0)
             {
-                MainForm.dc.Msg("경고", "사용자 목록 조회 오류입니다 [윤민규 사원 문의]");
+                MainForm.Guna2Msg("오류", "사용자 목록 조회 오류입니다 [윤민규 사원 문의]");
                 Close();
             }
 
@@ -46,7 +46,7 @@ namespace EOM_v3_M
         {
             if (userData[e.Node.Index, 1] == MainForm.userNameData)
             {
-                MainForm.dc.Msg("경고", "자신한테는 보낼 수 없습니다");
+                MainForm.Guna2Msg("오류", "자신한테는 보낼 수 없습니다");
                 return;
             }
 

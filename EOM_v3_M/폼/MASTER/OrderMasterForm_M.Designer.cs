@@ -1,6 +1,6 @@
 ﻿namespace EOM_v3_M
 {
-    partial class OrderMasterForm
+    partial class OrderMasterForm_M
     {
         /// <summary>
         /// Required designer variable.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -36,7 +37,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.label1 = new System.Windows.Forms.Label();
             this.SearchMetroBtn = new MetroFramework.Controls.MetroButton();
             this.dgvOrderMaster = new System.Windows.Forms.DataGridView();
             this.Column0 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -47,7 +47,6 @@
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.rdoYear3 = new System.Windows.Forms.RadioButton();
             this.rdoYear2 = new System.Windows.Forms.RadioButton();
@@ -62,24 +61,27 @@
             this.rdoProcessEnd = new System.Windows.Forms.RadioButton();
             this.rdoProcessIng = new System.Windows.Forms.RadioButton();
             this.rdoContentsAll = new System.Windows.Forms.RadioButton();
-            this.label3 = new System.Windows.Forms.Label();
+            this.pnTitle = new System.Windows.Forms.Panel();
+            this.guna2ControlBox3 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.lblFormTitle = new System.Windows.Forms.Label();
+            this.lblTopDeco = new System.Windows.Forms.Label();
+            this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblChangeHistory = new System.Windows.Forms.Label();
+            this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderMaster)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.pnTitle.SuspendLayout();
+            this.guna2Panel1.SuspendLayout();
+            this.guna2Panel2.SuspendLayout();
+            this.guna2Panel3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label1.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(9, 107);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 29);
-            this.label1.TabIndex = 27;
-            this.label1.Text = "변경 출하지";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SearchMetroBtn
             // 
@@ -210,25 +212,13 @@
             this.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Column6.Width = 109;
             // 
-            // label2
-            // 
-            this.label2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label2.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label2.Location = new System.Drawing.Point(9, 70);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(88, 29);
-            this.label2.TabIndex = 66;
-            this.label2.Text = "변경 사항";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.rdoYear3);
             this.groupBox5.Controls.Add(this.rdoYear2);
             this.groupBox5.Controls.Add(this.rdoYear1);
             this.groupBox5.Controls.Add(this.rdoYearAll);
-            this.groupBox5.Location = new System.Drawing.Point(106, 137);
+            this.groupBox5.Location = new System.Drawing.Point(113, 138);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(300, 37);
             this.groupBox5.TabIndex = 70;
@@ -243,7 +233,7 @@
             this.rdoYear3.TabIndex = 4;
             this.rdoYear3.Text = "2019년";
             this.rdoYear3.UseVisualStyleBackColor = true;
-            this.rdoYear3.CheckedChanged += new System.EventHandler(this.rdoYear3_CheckedChanged);
+            this.rdoYear3.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // rdoYear2
             // 
@@ -254,7 +244,7 @@
             this.rdoYear2.TabIndex = 3;
             this.rdoYear2.Text = "2019년";
             this.rdoYear2.UseVisualStyleBackColor = true;
-            this.rdoYear2.CheckedChanged += new System.EventHandler(this.rdoYear2_CheckedChanged);
+            this.rdoYear2.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // rdoYear1
             // 
@@ -265,7 +255,7 @@
             this.rdoYear1.TabIndex = 2;
             this.rdoYear1.Text = "2021년";
             this.rdoYear1.UseVisualStyleBackColor = true;
-            this.rdoYear1.CheckedChanged += new System.EventHandler(this.rdoYear1_CheckedChanged);
+            this.rdoYear1.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // rdoYearAll
             // 
@@ -278,7 +268,7 @@
             this.rdoYearAll.TabStop = true;
             this.rdoYearAll.Text = "전체";
             this.rdoYearAll.UseVisualStyleBackColor = true;
-            this.rdoYearAll.CheckedChanged += new System.EventHandler(this.rdoYearAll_CheckedChanged);
+            this.rdoYearAll.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -286,7 +276,7 @@
             this.groupBox1.Controls.Add(this.rdoShipmentCKD);
             this.groupBox1.Controls.Add(this.rdoShipmentOEM);
             this.groupBox1.Controls.Add(this.rdoShipmentAll);
-            this.groupBox1.Location = new System.Drawing.Point(106, 100);
+            this.groupBox1.Location = new System.Drawing.Point(113, 101);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(300, 37);
             this.groupBox1.TabIndex = 71;
@@ -301,7 +291,7 @@
             this.rdoShipmentKD.TabIndex = 4;
             this.rdoShipmentKD.Text = "KD";
             this.rdoShipmentKD.UseVisualStyleBackColor = true;
-            this.rdoShipmentKD.CheckedChanged += new System.EventHandler(this.rdoShipmentKD_CheckedChanged);
+            this.rdoShipmentKD.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // rdoShipmentCKD
             // 
@@ -312,7 +302,7 @@
             this.rdoShipmentCKD.TabIndex = 3;
             this.rdoShipmentCKD.Text = "CKD";
             this.rdoShipmentCKD.UseVisualStyleBackColor = true;
-            this.rdoShipmentCKD.CheckedChanged += new System.EventHandler(this.rdoShipmentCKD_CheckedChanged);
+            this.rdoShipmentCKD.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // rdoShipmentOEM
             // 
@@ -323,7 +313,7 @@
             this.rdoShipmentOEM.TabIndex = 2;
             this.rdoShipmentOEM.Text = "OEM";
             this.rdoShipmentOEM.UseVisualStyleBackColor = true;
-            this.rdoShipmentOEM.CheckedChanged += new System.EventHandler(this.rdoShipmentOEM_CheckedChanged);
+            this.rdoShipmentOEM.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // rdoShipmentAll
             // 
@@ -336,14 +326,14 @@
             this.rdoShipmentAll.TabStop = true;
             this.rdoShipmentAll.Text = "전체";
             this.rdoShipmentAll.UseVisualStyleBackColor = true;
-            this.rdoShipmentAll.CheckedChanged += new System.EventHandler(this.rdoShipmentAll_CheckedChanged);
+            this.rdoShipmentAll.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.rdoProcessEnd);
             this.groupBox2.Controls.Add(this.rdoProcessIng);
             this.groupBox2.Controls.Add(this.rdoContentsAll);
-            this.groupBox2.Location = new System.Drawing.Point(106, 63);
+            this.groupBox2.Location = new System.Drawing.Point(113, 64);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(300, 37);
             this.groupBox2.TabIndex = 71;
@@ -358,7 +348,7 @@
             this.rdoProcessEnd.TabIndex = 3;
             this.rdoProcessEnd.Text = "진행 종료";
             this.rdoProcessEnd.UseVisualStyleBackColor = true;
-            this.rdoProcessEnd.CheckedChanged += new System.EventHandler(this.rdoProcessEnd_CheckedChanged);
+            this.rdoProcessEnd.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // rdoProcessIng
             // 
@@ -369,7 +359,7 @@
             this.rdoProcessIng.TabIndex = 2;
             this.rdoProcessIng.Text = "진행 중";
             this.rdoProcessIng.UseVisualStyleBackColor = true;
-            this.rdoProcessIng.CheckedChanged += new System.EventHandler(this.rdoProcessIng_CheckedChanged);
+            this.rdoProcessIng.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
             // rdoContentsAll
             // 
@@ -382,39 +372,170 @@
             this.rdoContentsAll.TabStop = true;
             this.rdoContentsAll.Text = "전체";
             this.rdoContentsAll.UseVisualStyleBackColor = true;
-            this.rdoContentsAll.CheckedChanged += new System.EventHandler(this.rdoContentsAll_CheckedChanged);
+            this.rdoContentsAll.CheckedChanged += new System.EventHandler(this.UpdateDataGridView_CheckedChanged);
             // 
-            // label3
+            // pnTitle
             // 
-            this.label3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label3.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label3.Location = new System.Drawing.Point(9, 144);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(88, 29);
-            this.label3.TabIndex = 72;
-            this.label3.Text = "변경 기간";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.pnTitle.Controls.Add(this.guna2ControlBox3);
+            this.pnTitle.Controls.Add(this.lblFormTitle);
+            this.pnTitle.Controls.Add(this.lblTopDeco);
+            this.pnTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.pnTitle.Location = new System.Drawing.Point(0, 0);
+            this.pnTitle.Name = "pnTitle";
+            this.pnTitle.Size = new System.Drawing.Size(1200, 50);
+            this.pnTitle.TabIndex = 84;
             // 
-            // OrderMasterForm
+            // guna2ControlBox3
+            // 
+            this.guna2ControlBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox3.ControlBoxStyle = Guna.UI2.WinForms.Enums.ControlBoxStyle.Custom;
+            this.guna2ControlBox3.FillColor = System.Drawing.Color.White;
+            this.guna2ControlBox3.IconColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.guna2ControlBox3.Location = new System.Drawing.Point(1170, 6);
+            this.guna2ControlBox3.Name = "guna2ControlBox3";
+            this.guna2ControlBox3.Size = new System.Drawing.Size(30, 25);
+            this.guna2ControlBox3.TabIndex = 85;
+            // 
+            // lblFormTitle
+            // 
+            this.lblFormTitle.BackColor = System.Drawing.Color.White;
+            this.lblFormTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblFormTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFormTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblFormTitle.Location = new System.Drawing.Point(0, 5);
+            this.lblFormTitle.Name = "lblFormTitle";
+            this.lblFormTitle.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblFormTitle.Size = new System.Drawing.Size(1200, 45);
+            this.lblFormTitle.TabIndex = 79;
+            this.lblFormTitle.Text = "출하지 변경";
+            this.lblFormTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblTopDeco
+            // 
+            this.lblTopDeco.BackColor = System.Drawing.Color.DodgerBlue;
+            this.lblTopDeco.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTopDeco.Location = new System.Drawing.Point(0, 0);
+            this.lblTopDeco.Name = "lblTopDeco";
+            this.lblTopDeco.Size = new System.Drawing.Size(1200, 5);
+            this.lblTopDeco.TabIndex = 1;
+            this.lblTopDeco.Text = " ";
+            // 
+            // guna2DragControl1
+            // 
+            this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2DragControl1.TargetControl = this.lblFormTitle;
+            this.guna2DragControl1.UseTransparentDrag = true;
+            // 
+            // guna2BorderlessForm1
+            // 
+            this.guna2BorderlessForm1.ContainerControl = this;
+            this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2BorderlessForm1.TransparentWhileDrag = true;
+            // 
+            // guna2Panel1
+            // 
+            this.guna2Panel1.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.guna2Panel1.BorderRadius = 8;
+            this.guna2Panel1.BorderThickness = 1;
+            this.guna2Panel1.Controls.Add(this.lblChangeHistory);
+            this.guna2Panel1.CustomizableEdges.BottomLeft = false;
+            this.guna2Panel1.CustomizableEdges.TopLeft = false;
+            this.guna2Panel1.FillColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.guna2Panel1.Location = new System.Drawing.Point(9, 71);
+            this.guna2Panel1.Name = "guna2Panel1";
+            this.guna2Panel1.Size = new System.Drawing.Size(97, 29);
+            this.guna2Panel1.TabIndex = 135;
+            // 
+            // lblChangeHistory
+            // 
+            this.lblChangeHistory.BackColor = System.Drawing.Color.Transparent;
+            this.lblChangeHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblChangeHistory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblChangeHistory.ForeColor = System.Drawing.Color.White;
+            this.lblChangeHistory.Location = new System.Drawing.Point(0, 0);
+            this.lblChangeHistory.Name = "lblChangeHistory";
+            this.lblChangeHistory.Size = new System.Drawing.Size(97, 29);
+            this.lblChangeHistory.TabIndex = 0;
+            this.lblChangeHistory.Text = "변경사항";
+            this.lblChangeHistory.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // guna2Panel2
+            // 
+            this.guna2Panel2.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.guna2Panel2.BorderRadius = 8;
+            this.guna2Panel2.BorderThickness = 1;
+            this.guna2Panel2.Controls.Add(this.label1);
+            this.guna2Panel2.CustomizableEdges.BottomLeft = false;
+            this.guna2Panel2.CustomizableEdges.TopLeft = false;
+            this.guna2Panel2.FillColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.guna2Panel2.Location = new System.Drawing.Point(9, 108);
+            this.guna2Panel2.Name = "guna2Panel2";
+            this.guna2Panel2.Size = new System.Drawing.Size(97, 29);
+            this.guna2Panel2.TabIndex = 136;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(97, 29);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "출하지";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // guna2Panel3
+            // 
+            this.guna2Panel3.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.guna2Panel3.BorderRadius = 8;
+            this.guna2Panel3.BorderThickness = 1;
+            this.guna2Panel3.Controls.Add(this.label2);
+            this.guna2Panel3.CustomizableEdges.BottomLeft = false;
+            this.guna2Panel3.CustomizableEdges.TopLeft = false;
+            this.guna2Panel3.FillColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.guna2Panel3.Location = new System.Drawing.Point(9, 145);
+            this.guna2Panel3.Name = "guna2Panel3";
+            this.guna2Panel3.Size = new System.Drawing.Size(97, 29);
+            this.guna2Panel3.TabIndex = 137;
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(97, 29);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "변경 기간";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // OrderMasterForm_M
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1200, 620);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.guna2Panel3);
+            this.Controls.Add(this.guna2Panel2);
+            this.Controls.Add(this.guna2Panel1);
+            this.Controls.Add(this.pnTitle);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.dgvOrderMaster);
             this.Controls.Add(this.SearchMetroBtn);
-            this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "OrderMasterForm";
-            this.Resizable = false;
+            this.Name = "OrderMasterForm_M";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OrderMasterForm";
             this.Load += new System.EventHandler(this.OrderMasterForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderMaster)).EndInit();
@@ -424,15 +545,17 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.pnTitle.ResumeLayout(false);
+            this.guna2Panel1.ResumeLayout(false);
+            this.guna2Panel2.ResumeLayout(false);
+            this.guna2Panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Label label1;
         private MetroFramework.Controls.MetroButton SearchMetroBtn;
         private System.Windows.Forms.DataGridView dgvOrderMaster;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.RadioButton rdoYear3;
         private System.Windows.Forms.RadioButton rdoYear2;
@@ -446,7 +569,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rdoProcessIng;
         private System.Windows.Forms.RadioButton rdoContentsAll;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Column0;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
@@ -456,5 +578,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.RadioButton rdoProcessEnd;
+        private System.Windows.Forms.Panel pnTitle;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox3;
+        private System.Windows.Forms.Label lblFormTitle;
+        private System.Windows.Forms.Label lblTopDeco;
+        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
+        private System.Windows.Forms.Label label2;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
+        private System.Windows.Forms.Label label1;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
+        private System.Windows.Forms.Label lblChangeHistory;
     }
 }

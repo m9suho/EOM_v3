@@ -31,9 +31,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.label5 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.metroDateTime2 = new MetroFramework.Controls.MetroDateTime();
-            this.metroDateTime1 = new MetroFramework.Controls.MetroDateTime();
             this.label6 = new System.Windows.Forms.Label();
             this.txtContents = new MetroFramework.Controls.MetroTextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,6 +38,14 @@
             this.metroComboBox1 = new MetroFramework.Controls.MetroComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.pnTitle = new System.Windows.Forms.Panel();
+            this.txtAllSearchBox = new Guna.UI2.WinForms.Guna2TextBox();
+            this.guna2ControlBox3 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.lblFormTitle = new System.Windows.Forms.Label();
+            this.lblTopDeco = new System.Windows.Forms.Label();
+            this.dtpStartDate = new Guna.UI2.WinForms.Guna2DateTimePicker();
+            this.dtpEndDate = new Guna.UI2.WinForms.Guna2DateTimePicker();
+            this.pnTitle.SuspendLayout();
             this.SuspendLayout();
             // 
             // label4
@@ -75,32 +80,6 @@
             this.label5.Text = "0 / 500 byte";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(326, 145);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(14, 12);
-            this.label7.TabIndex = 90;
-            this.label7.Text = "~";
-            // 
-            // metroDateTime2
-            // 
-            this.metroDateTime2.Location = new System.Drawing.Point(345, 136);
-            this.metroDateTime2.MinimumSize = new System.Drawing.Size(0, 29);
-            this.metroDateTime2.Name = "metroDateTime2";
-            this.metroDateTime2.Size = new System.Drawing.Size(200, 29);
-            this.metroDateTime2.TabIndex = 89;
-            // 
-            // metroDateTime1
-            // 
-            this.metroDateTime1.Location = new System.Drawing.Point(120, 136);
-            this.metroDateTime1.MinimumSize = new System.Drawing.Size(0, 29);
-            this.metroDateTime1.Name = "metroDateTime1";
-            this.metroDateTime1.Size = new System.Drawing.Size(200, 29);
-            this.metroDateTime1.TabIndex = 88;
-            this.metroDateTime1.ValueChanged += new System.EventHandler(this.metroDateTime1_ValueChanged);
-            // 
             // label6
             // 
             this.label6.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -119,7 +98,7 @@
             // 
             // 
             this.txtContents.CustomButton.Image = null;
-            this.txtContents.CustomButton.Location = new System.Drawing.Point(296, 1);
+            this.txtContents.CustomButton.Location = new System.Drawing.Point(304, 1);
             this.txtContents.CustomButton.Name = "";
             this.txtContents.CustomButton.Size = new System.Drawing.Size(197, 197);
             this.txtContents.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
@@ -139,7 +118,7 @@
             this.txtContents.SelectionLength = 0;
             this.txtContents.SelectionStart = 0;
             this.txtContents.ShortcutsEnabled = true;
-            this.txtContents.Size = new System.Drawing.Size(494, 199);
+            this.txtContents.Size = new System.Drawing.Size(502, 199);
             this.txtContents.TabIndex = 0;
             this.txtContents.UseSelectable = true;
             this.txtContents.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
@@ -207,14 +186,119 @@
             this.label1.Text = "품번";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pnTitle
+            // 
+            this.pnTitle.Controls.Add(this.txtAllSearchBox);
+            this.pnTitle.Controls.Add(this.guna2ControlBox3);
+            this.pnTitle.Controls.Add(this.lblFormTitle);
+            this.pnTitle.Controls.Add(this.lblTopDeco);
+            this.pnTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.pnTitle.Location = new System.Drawing.Point(0, 0);
+            this.pnTitle.Name = "pnTitle";
+            this.pnTitle.Size = new System.Drawing.Size(638, 50);
+            this.pnTitle.TabIndex = 91;
+            // 
+            // txtAllSearchBox
+            // 
+            this.txtAllSearchBox.BackColor = System.Drawing.Color.White;
+            this.txtAllSearchBox.BorderRadius = 8;
+            this.txtAllSearchBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtAllSearchBox.DefaultText = "";
+            this.txtAllSearchBox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtAllSearchBox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtAllSearchBox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtAllSearchBox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtAllSearchBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtAllSearchBox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtAllSearchBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtAllSearchBox.Location = new System.Drawing.Point(971, 8);
+            this.txtAllSearchBox.Name = "txtAllSearchBox";
+            this.txtAllSearchBox.PasswordChar = '\0';
+            this.txtAllSearchBox.PlaceholderText = "";
+            this.txtAllSearchBox.SelectedText = "";
+            this.txtAllSearchBox.Size = new System.Drawing.Size(200, 23);
+            this.txtAllSearchBox.TabIndex = 82;
+            // 
+            // guna2ControlBox3
+            // 
+            this.guna2ControlBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox3.ControlBoxStyle = Guna.UI2.WinForms.Enums.ControlBoxStyle.Custom;
+            this.guna2ControlBox3.FillColor = System.Drawing.Color.White;
+            this.guna2ControlBox3.IconColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.guna2ControlBox3.Location = new System.Drawing.Point(608, 6);
+            this.guna2ControlBox3.Name = "guna2ControlBox3";
+            this.guna2ControlBox3.Size = new System.Drawing.Size(30, 25);
+            this.guna2ControlBox3.TabIndex = 85;
+            // 
+            // lblFormTitle
+            // 
+            this.lblFormTitle.BackColor = System.Drawing.Color.White;
+            this.lblFormTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblFormTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFormTitle.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblFormTitle.Location = new System.Drawing.Point(0, 5);
+            this.lblFormTitle.Name = "lblFormTitle";
+            this.lblFormTitle.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblFormTitle.Size = new System.Drawing.Size(638, 45);
+            this.lblFormTitle.TabIndex = 79;
+            this.lblFormTitle.Text = "출하지 수정";
+            this.lblFormTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblTopDeco
+            // 
+            this.lblTopDeco.BackColor = System.Drawing.Color.DodgerBlue;
+            this.lblTopDeco.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTopDeco.Location = new System.Drawing.Point(0, 0);
+            this.lblTopDeco.Name = "lblTopDeco";
+            this.lblTopDeco.Size = new System.Drawing.Size(638, 5);
+            this.lblTopDeco.TabIndex = 1;
+            this.lblTopDeco.Text = " ";
+            // 
+            // dtpStartDate
+            // 
+            this.dtpStartDate.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.dtpStartDate.BorderRadius = 8;
+            this.dtpStartDate.BorderThickness = 1;
+            this.dtpStartDate.Checked = true;
+            this.dtpStartDate.CustomFormat = "yyyy년 M월 d일 dddd";
+            this.dtpStartDate.FillColor = System.Drawing.Color.White;
+            this.dtpStartDate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpStartDate.Location = new System.Drawing.Point(120, 136);
+            this.dtpStartDate.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
+            this.dtpStartDate.MinDate = new System.DateTime(2016, 8, 22, 0, 0, 0, 0);
+            this.dtpStartDate.Name = "dtpStartDate";
+            this.dtpStartDate.Size = new System.Drawing.Size(248, 29);
+            this.dtpStartDate.TabIndex = 128;
+            this.dtpStartDate.Value = new System.DateTime(2023, 3, 25, 3, 55, 44, 811);
+            // 
+            // dtpEndDate
+            // 
+            this.dtpEndDate.BorderColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.dtpEndDate.BorderRadius = 8;
+            this.dtpEndDate.BorderThickness = 1;
+            this.dtpEndDate.Checked = true;
+            this.dtpEndDate.CustomFormat = "yyyy년 M월 d일 dddd";
+            this.dtpEndDate.FillColor = System.Drawing.Color.White;
+            this.dtpEndDate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dtpEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpEndDate.Location = new System.Drawing.Point(374, 136);
+            this.dtpEndDate.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
+            this.dtpEndDate.MinDate = new System.DateTime(2016, 8, 22, 0, 0, 0, 0);
+            this.dtpEndDate.Name = "dtpEndDate";
+            this.dtpEndDate.Size = new System.Drawing.Size(248, 29);
+            this.dtpEndDate.TabIndex = 129;
+            this.dtpEndDate.Value = new System.DateTime(2023, 3, 25, 3, 55, 44, 811);
+            // 
             // OrderMasterForm_E
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(638, 474);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.metroDateTime2);
-            this.Controls.Add(this.metroDateTime1);
+            this.Controls.Add(this.dtpEndDate);
+            this.Controls.Add(this.dtpStartDate);
+            this.Controls.Add(this.pnTitle);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtContents);
             this.Controls.Add(this.label3);
@@ -225,14 +309,15 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.label4);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "OrderMasterForm_E";
-            this.Resizable = false;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "OrderMasterForm_E";
             this.Load += new System.EventHandler(this.OrderMasterForm_E_Load);
+            this.pnTitle.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -242,9 +327,6 @@
         private System.Windows.Forms.Label label4;
         private MetroFramework.Controls.MetroButton metroButton1;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label7;
-        private MetroFramework.Controls.MetroDateTime metroDateTime2;
-        private MetroFramework.Controls.MetroDateTime metroDateTime1;
         private System.Windows.Forms.Label label6;
         private MetroFramework.Controls.MetroTextBox txtContents;
         private System.Windows.Forms.Label label3;
@@ -252,5 +334,12 @@
         private MetroFramework.Controls.MetroComboBox metroComboBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel pnTitle;
+        private Guna.UI2.WinForms.Guna2TextBox txtAllSearchBox;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox3;
+        private System.Windows.Forms.Label lblFormTitle;
+        private System.Windows.Forms.Label lblTopDeco;
+        private Guna.UI2.WinForms.Guna2DateTimePicker dtpStartDate;
+        private Guna.UI2.WinForms.Guna2DateTimePicker dtpEndDate;
     }
 }

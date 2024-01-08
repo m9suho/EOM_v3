@@ -31,7 +31,7 @@ namespace EOM_v3_M
         {
             if (txtMessage.Text == string.Empty)
             {
-                MainForm.dc.Msg("경고", "내용을 입력해주세요");
+                MainForm.Guna2Msg("오류", "내용을 입력해주세요");
                 txtMessage.Select();
                 return;
             }

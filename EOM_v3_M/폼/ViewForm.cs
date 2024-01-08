@@ -11,10 +11,13 @@ using System.Windows.Forms;
 
 namespace EOM_v3_M
 {
-    public partial class ViewForm : MetroFramework.Forms.MetroForm
+    public partial class ViewForm : Form
     {
-        public ViewForm()
+        string mhtFilePath = string.Empty;
+
+        public ViewForm(string _data)
         {
+            mhtFilePath = _data;
             InitializeComponent();
         }
 
@@ -22,8 +25,8 @@ namespace EOM_v3_M
         {
             Text = string.Empty; //MainForm.subjectData;
 
-            webBrowser1.Navigate(MainForm.eoViewData);
-            MainForm.dc.Delay(10);
+            webBrowser1.Navigate(mhtFilePath);
+            MainForm.dc.Delay(100);
             SendKeys.Send("{F5}");
 
             // 위치 조정
@@ -79,7 +82,7 @@ namespace EOM_v3_M
 
             saveFileDialog.FileName = convertFileName;
             saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            saveFileDialog.Filter = "MHT 파일|*.mht";
+            saveFileDialog.Filter = "mht files (*.mht)|*.mht";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -94,6 +97,11 @@ namespace EOM_v3_M
                 
                 //File.WriteAllText(saveFileDialog.FileName, elem.OuterHtml, Encoding.Unicode);
             }
+        }
+
+        private void metroButton1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -36,7 +36,7 @@ namespace EOM_v3_M
 #endif
                 //dc.DatFileSave(@"\\10.239.14.12\xmsirius\D-AUDIO\D오디오 생산팀\D-AUDIO_TOOLS\EOM_v3\1F\SIGN", DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".dat", tmpData);
 
-                dc.Msg("알림", "등록 요청이 완료되었습니다");
+                MainForm.Guna2Msg("알림", "등록 요청이 완료되었습니다");
                 Close();
             }
         }

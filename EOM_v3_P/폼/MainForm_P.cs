@@ -104,6 +104,26 @@ namespace EOM_v3_P
             // 변경내역
             ws.Cells[9, 3] = printFormData[6];
 
+            // 초도품
+            // 2021.04.30
+            // 글자 수에 따라 폰트 크기 지정
+            if (_data[5].Length < 50)
+            {
+                for (int i = 9; i <= 27; i += 9)
+                {
+                    ws.Cells[i, 3].Font.Size = 11;
+                    ws.Cells[i, 9].Font.Size = 11;
+                }
+            }
+            else
+            {
+                for (int i = 9; i <= 27; i += 9)
+                {
+                    ws.Cells[i, 3].Font.Size = 9;
+                    ws.Cells[i, 9].Font.Size = 9;
+                }
+            }
+
             // 샘플
             if (printFormData[0] == "샘 플")
             {
@@ -118,29 +138,7 @@ namespace EOM_v3_P
                     }
                 }
             }
-            // 초도품
-            else
-            {
-                // 2021.04.30
-                // 글자 수에 따라 폰트 크기 지정
-                if (_data[5].Length < 50)
-                {
-                    for (int i = 9; i <= 27; i += 9)
-                    {
-                        ws.Cells[i, 3].Font.Size = 11;
-                        ws.Cells[i, 9].Font.Size = 11;
-                    }
-                }
-                else
-                {
-                    for (int i = 9; i <= 27; i += 9)
-                    {
-                        ws.Cells[i, 3].Font.Size = 9;
-                        ws.Cells[i, 9].Font.Size = 9;
-                    }
-                }
-            }
-
+            
             // 인쇄
             if (addressData != null)
             {
@@ -413,7 +411,7 @@ namespace EOM_v3_P
             Clipboard.SetText(strSetQuery);
 #endif
 
-            dc.Msg("경고", s);
+            dc.Msg("오류", s);
         }
 
         private void timer2_Tick(object sender, EventArgs e)

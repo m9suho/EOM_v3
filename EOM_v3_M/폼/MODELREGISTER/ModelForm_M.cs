@@ -10,10 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.NetworkInformation;
+using Guna.UI2.WinForms;
 
 namespace EOM_v3_M
 {
-    public partial class ModelForm : MetroFramework.Forms.MetroForm
+    public partial class ModelForm_M : Form
     {
         const int OEM_DAY = 7;
         const int CKD_MONTH = 1;
@@ -21,9 +22,9 @@ namespace EOM_v3_M
 
         MessageFormClass messageFormClass = new MessageFormClass();
 
-        private void MainPCBInitialValue(TextBox _textBox)
+        private void MainPCBInitialValue(Guna2TextBox _textBox)
         {
-            if (MainForm.cbbMetroLine01.Text != "HUD")
+            if (MainForm.cbbLineName01.Text != "HUD")
             {
                 _textBox.Text = "M15";
             }
@@ -31,7 +32,7 @@ namespace EOM_v3_M
 
         private void InitialSetControl(bool[] _data)
         {
-            txtModelName.Enabled = _data[0];
+            txtProductName.Enabled = _data[0];
             txtCarName.Enabled = _data[1];
             txtMainPCB.Enabled = _data[2];
             txtSubPCB.Enabled = _data[3];
@@ -42,10 +43,10 @@ namespace EOM_v3_M
             txtEOContents.Enabled = _data[8];
             chkPrivate.Enabled = _data[9];
             cbbShipment.Enabled = _data[10];
-            SelectMetroBtn.Enabled = _data[11];
-            AddMetroBtn.Enabled = _data[12];
-            dateTimePicker1.Enabled = _data[13];
-            dateTimePicker2.Enabled = _data[14];
+            btnEOSelect.Enabled = _data[11];
+            btnProductAdd.Enabled = _data[12];
+            dtpStartDate.Enabled = _data[13];
+            dtpEndDate.Enabled = _data[14];
         }
 
         private string[] DatabaseColumnData(int _data1)
@@ -58,7 +59,7 @@ namespace EOM_v3_M
             TimeSpan realTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
 
             // 시작일 날짜
-            startDatetimeData = dateTimePicker1.Value.Date < DateTime.Now.Date ? dateTimePicker1.Value.ToString("yyyy-MM-dd 00:00:00") : DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            startDatetimeData = dtpStartDate.Value.Date < DateTime.Now.Date ? dtpStartDate.Value.ToString("yyyy-MM-dd 00:00:00") : DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             /*
             // 종료일 날짜
@@ -71,17 +72,17 @@ namespace EOM_v3_M
 
             // 2021.04.02
             // 전표 날짜 기준으로 변경한다고 가정
-            dateTimePicker2.Value = dateTimePicker2.Value.AddDays(1);
+            dtpEndDate.Value = dtpEndDate.Value.AddDays(1);
 
-            endDatetimeData = dateTimePicker2.Value.ToString("yyyy-MM-dd " + END_TIME);
+            endDatetimeData = dtpEndDate.Value.ToString("yyyy-MM-dd " + END_TIME);
 
             switch (_data1)
             {
                 case 1:
                     returnData = new string[]
                     {
-                        MainForm.cbbMetroLine01.Text,                                                                                       // [0] line
-                        txtModelName.Text,                                                                                                  // [1] model_name
+                        MainForm.cbbLineName01.Text,                                                                                       // [0] line
+                        txtProductName.Text,                                                                                                  // [1] model_name
                         txtCarName.Text,                                                                                                    // [2] car_name
                         txtCustomerEO.Text,                                                                                                 // [3] customer_eo_number
                         txtMobisEO.Text,                                                                                                    // [4] mobis_eo_number
@@ -103,8 +104,8 @@ namespace EOM_v3_M
                 case 2:
                     returnData = new string[]
                     {
-                        MainForm.cbbMetroLine01.Text,                                                                                       // [0] line
-                        txtModelName.Text,                                                                                                  // [1] model_name
+                        MainForm.cbbLineName01.Text,                                                                                       // [0] line
+                        txtProductName.Text,                                                                                                  // [1] model_name
                         txtCarName.Text,                                                                                                    // [2] car_name
                         txtCustomerEO.Text,                                                                                                 // [3] customer_eo_number
                         txtMobisEO.Text,                                                                                                    // [4] mobis_eo_number
@@ -134,7 +135,7 @@ namespace EOM_v3_M
             return returnData;
         }
 
-        private bool HyphenCheckSum(TextBox textBox)
+        private bool HyphenCheckSum(Guna2TextBox textBox)
         {
             int count = 0;
 
@@ -159,7 +160,7 @@ namespace EOM_v3_M
 
         private void DGVSearchSelect(string _data0, string _data1, int _cell1, string _data2, int _cell2)
         {
-            MainForm.cbbMetroProduct01.SelectedItem = _data0;
+            MainForm.cbbProductName01.SelectedItem = _data0;
 
             for (int i = 0; i < MainForm.datagridview01.RowCount; i++)
             {
@@ -176,7 +177,7 @@ namespace EOM_v3_M
 
         private bool ModelEODuplicationCheck(string _column, string _data01, string _data02, string _data03)
         {
-            string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, _column, _data01, "model_name", _data02, "shipment", _data03 };
+            string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, _column, _data01, "model_name", _data02, "shipment", _data03 };
             string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[1], selectData, "SELECT");
             string[,] columnData = MainForm.mariaDB.SelectQuery2(query);
 
@@ -194,7 +195,7 @@ namespace EOM_v3_M
             string shipmentConditionData = string.Empty;
             string[,] shipmentData;
 
-            query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`shipment_history_data` WHERE model_name = '" + txtModelName.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' ORDER BY start_date";
+            query = "SELECT * FROM `" + MainForm.settingData[0] + "`.`shipment_history_data` WHERE model_name = '" + txtProductName.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' ORDER BY start_date";
             shipmentData = MainForm.mariaDB.SelectQuery2(query);
 
             // 1. 출하지 마스터 검사 [등록 데이터]
@@ -216,68 +217,50 @@ namespace EOM_v3_M
             return true;
         }
 
-        /*
-        private bool ChangeHistoryFirstShipmentCheck()
-        {
-            string[] selectData = { "model_name", txtModelName.Text };
-            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[1], selectData, "SELECT");
-            string[,] shipmentData = MainForm.mariaDB.SelectQuery2(query);
-
-            if (shipmentData.GetLength(0) > 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        */
-
         private bool ModelAddCheckSum()
         {
-            if (txtModelName.Text.Equals(string.Empty))
+            if (txtProductName.Text.Equals(string.Empty))
             {
-                MainForm.dc.Msg("경고", "모델명을 정확히 입력해주세요 [공란 확인]");
-                txtModelName.Select();
+                MainForm.Guna2Msg("오류", "모델명을 정확히 입력해주세요 [공란 확인]");
+                txtProductName.Select();
                 return false;
             }
-            if (HyphenCheckSum(txtModelName))
+            if (HyphenCheckSum(txtProductName))
             {
-                MainForm.dc.Msg("경고", "모델명을 정확히 입력해주세요 [하이픈 1개만 입력 가능]");
-                txtModelName.SelectAll();
+                MainForm.Guna2Msg("오류", "모델명을 정확히 입력해주세요 [하이픈 1개만 입력 가능]");
+                txtProductName.SelectAll();
                 return false;
             }
             // 2020.05.25
             // 하이픈 위치 검사 조건 변경
             // 앞에 9가 올때만 가운데 검사
-            if (!txtModelName.Text.Substring(5, 1).Equals("-") && txtModelName.Text.Substring(0, 1).Equals("9"))
+            if (!txtProductName.Text.Substring(5, 1).Equals("-") && txtProductName.Text.Substring(0, 1).Equals("9"))
             {
-                MainForm.dc.Msg("경고", "모델명을 정확히 입력해주세요 [하이픈 위치 확인]");
-                txtModelName.SelectAll();
+                MainForm.Guna2Msg("오류", "모델명을 정확히 입력해주세요 [하이픈 위치 확인]");
+                txtProductName.SelectAll();
                 return false;
             }
 
             if (txtCarName.Text.Equals(string.Empty))
             {
-                MainForm.dc.Msg("경고", "차종을 입력해주세요 [공란 확인]");
+                MainForm.Guna2Msg("오류", "차종을 입력해주세요 [공란 확인]");
                 return false;
             }
             // 2020.04.09
             // 클러스터 제외
-            //if (txtMobisEO.Text.Equals(string.Empty) && !MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[4]))
+            //if (txtMobisEO.Text.Equals(string.Empty) && !MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[4]))
             // 2021.12.12
             // 클러스터 포함
             if (txtMobisEO.Text.Equals(string.Empty))
             {
-                MainForm.dc.Msg("경고", "EO 번호를 선택해주세요 [공란 확인]");
+                MainForm.Guna2Msg("오류", "EO 번호를 선택해주세요 [공란 확인]");
                 return false;
             }
 
             /*
             if (comboBox2.Enabled && comboBox2.SelectedIndex == -1)
             {
-                MainForm.dc.Msg("경고", "생산지를 선택해주세요");
+                MainForm.Guna2Msg("오류", "생산지를 선택해주세요");
                 comboBox2.Select();
                 return false;
             }
@@ -285,7 +268,7 @@ namespace EOM_v3_M
 
             if (cbbShipment.Text == string.Empty)
             {
-                MainForm.dc.Msg("경고", "출하지를 선택해주세요");
+                MainForm.Guna2Msg("오류", "출하지를 선택해주세요");
                 return false;
             }
 
@@ -302,10 +285,10 @@ namespace EOM_v3_M
             }
             */
 
-            if (dateTimePicker1.Enabled && dateTimePicker1.Value > DateTime.Now)
+            if (dtpStartDate.Enabled && dtpStartDate.Value > DateTime.Now)
             {
-                MainForm.dc.Msg("경고", "현재 날짜보다 크게 설정할 수 없습니다");
-                dateTimePicker1.Select();
+                MainForm.Guna2Msg("오류", "현재 날짜보다 크게 설정할 수 없습니다");
+                dtpStartDate.Select();
                 return false;
             }
             // 공백, 하이픈, 4M 예외 처리
@@ -313,17 +296,17 @@ namespace EOM_v3_M
             {
                 // EO 내용 중복 검사 && 출하지 검사
                 // 찾을 컬럼, 컬럼 값, 모델 값, 출하지
-                if (ModelEODuplicationCheck("eo_contents", txtEOContents.Text, txtModelName.Text, cbbShipment.Text))
+                if (ModelEODuplicationCheck("eo_contents", txtEOContents.Text, txtProductName.Text, cbbShipment.Text))
                 {
                     if (!cbbShipment.Text.Equals("-"))
                     {
-                        MainForm.dc.Msg("경고", "EO 내용, 출하지 '" + cbbShipment.Text + "' 등록되어 있습니다");
+                        MainForm.Guna2Msg("오류", "EO 내용, 출하지 '" + cbbShipment.Text + "' 등록되어 있습니다");
                     }
                     else
                     {
-                        MainForm.dc.Msg("경고", "EO 내용이 등록되어 있습니다");
+                        MainForm.Guna2Msg("오류", "EO 내용이 등록되어 있습니다");
                     }
-                    DGVSearchSelect(txtModelName.Text, txtEOContents.Text, 5, cbbShipment.Text, 10);
+                    DGVSearchSelect(txtProductName.Text, txtEOContents.Text, 5, cbbShipment.Text, 10);
                     return false;
                 }
             }
@@ -331,17 +314,17 @@ namespace EOM_v3_M
             {
                 // EO 번호 중복 검사 && 출하지 검사
                 // 찾을 컬럼, 컬럼 값, 모델 값, 출하지
-                if (ModelEODuplicationCheck("mobis_eo_number", txtMobisEO.Text, txtModelName.Text, cbbShipment.Text))
+                if (ModelEODuplicationCheck("mobis_eo_number", txtMobisEO.Text, txtProductName.Text, cbbShipment.Text))
                 {
                     if (!cbbShipment.Text.Equals("-"))
                     {
-                        MainForm.dc.Msg("경고", "EO 번호, 출하지 '" + cbbShipment.Text + "' 등록되어 있습니다");
+                        MainForm.Guna2Msg("오류", "EO 번호, 출하지 '" + cbbShipment.Text + "' 등록되어 있습니다");
                     }
                     else
                     {
-                        MainForm.dc.Msg("경고", "EO 번호가 등록되어 있습니다");
+                        MainForm.Guna2Msg("오류", "EO 번호가 등록되어 있습니다");
                     }
-                    DGVSearchSelect(txtModelName.Text, txtMobisEO.Text, 4, cbbShipment.Text, 10);
+                    DGVSearchSelect(txtProductName.Text, txtMobisEO.Text, 4, cbbShipment.Text, 10);
                     return false;
                 }
             }
@@ -349,19 +332,19 @@ namespace EOM_v3_M
             // 왜지?
             if (dt01 > dt02)
             {
-                MainForm.dc.Msg("경고", "마감일이 종료일보다 작을 수 없습니다");
+                MainForm.Guna2Msg("오류", "마감일이 종료일보다 작을 수 없습니다");
                 return false;
             }
             */
             return true;
         }
 
-        public ModelForm()
+        public ModelForm_M()
         {
             InitializeComponent();
         }
 
-        private void ModelForm_Load(object sender, EventArgs e)
+        private void ModelForm_M_Load(object sender, EventArgs e)
         {
             bool[] controlBox;
 
@@ -369,44 +352,59 @@ namespace EOM_v3_M
 
             Text = MainForm.programName + " - " + MainForm.dc.Version();
 
-            dateTimePicker1.Value = dt;
-            dateTimePicker2.Value = dt.AddDays(OEM_DAY);
+            dtpStartDate.Value = dt;
+            dtpEndDate.Value = dt.AddDays(OEM_DAY);
+
+            cbbShipment.Items.Clear();
+
+            // 2023.03.28
+            for (int i = 0; i < MainForm.dc.Shipment.Length; i++)
+            {
+                cbbShipment.Items.Add(MainForm.dc.Shipment[i]);
+            }
+
+            // 2023.03.28
+            MainForm.dc.InitialSetTextBox(this);
 
             // D-오디오 수삽, D-오디오 SUB
-            if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[1]) || MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[3]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
             {
-                txtModelName.Text = "M";
-                txtModelName.Select(txtModelName.MaxLength + 1, 0);
+                txtProductName.Text = "M";
+                txtProductName.Select(txtProductName.MaxLength + 1, 0);
                 //dateTimePicker2.Value = dt;
                 controlBox = new bool[] { true, true, false, false, false,
-                                          false, false, false, true, true,
+                                          false, false, false, false, true,
                                           false, true, true, true, false };
                 InitialSetControl(controlBox);
             }
             // 오디오 조립, D-오디오 조립, 클러스터, HUD
             else
             {
-                txtModelName.Text = string.Empty;
+                txtProductName.Text = string.Empty;
                 //dateTimePicker2.Value = dt.AddDays(7);
                 controlBox = new bool[] { true, true, true, true, true,
-                                          false, false, false, true, true,
+                                          false, false, false, false, true,
                                           true, true, true, true, true };
                 InitialSetControl(controlBox);
             }
 
-            dateTimePicker1.Enabled = false;
-            dateTimePicker2.Enabled = false;
+            dtpStartDate.Enabled = false;
+            dtpEndDate.Enabled = false;
 
             // 2022.07.01
             // 모델이 선택됬을 경우 빠른 입력
             if (MainForm.datagridview01.Visible)
             {
-                txtModelName.Text = MainForm.cbbMetroProduct01.Text;
+                txtProductName.Text = MainForm.cbbProductName01.Text;
             }
 
             // 2022.01.11
             // 중앙 정렬
-            MainForm.dc.ComboBoxDrawAlignCenter(cbbShipment);
+            // MainForm.dc.ComboBoxDrawAlignCenter(cbbShipment);
+
+            // 2023.03.24
+            // Guna UI 강제 위치 적용
+            //Location = MainForm.dc.CenterLocation(Width, Height);
         }
 
         private void ModelForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -437,43 +435,44 @@ namespace EOM_v3_M
             }
         }
 
+        private void txtProductName_KeyDown(object sender, KeyEventArgs e)
+        {
+            // ESC 키 폼 종료
+            if (e.KeyValue == 27)
+            {
+                Close();
+            }
+        }
 
         private void txtCarName_KeyPress(object sender, KeyPressEventArgs e)
         {
             // 2022.02.10
-            MainForm.dc.NumAlphaSpaceString((TextBox)sender);
+            MainForm.dc.NumAlphaSpaceString((Guna2TextBox)sender, e);
         }
 
         private void txtMainPCB_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (MainForm.cbbMetroLine01.Text != "HUD")
+            if (MainForm.cbbLineName01.Text != "HUD")
             {
                 // 2022.02.10
-                MainForm.dc.NumAlphaString((TextBox)sender, e);
+                MainForm.dc.NumAlphaString((Guna2TextBox)sender, e);
             }
         }
 
         private void txtSubPCB_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (MainForm.cbbMetroLine01.Text != "HUD")
+            if (MainForm.cbbLineName01.Text != "HUD")
             {
                 // 2022.02.10
-                MainForm.dc.NumAlphaString((TextBox)sender, e);
+                MainForm.dc.NumAlphaString((Guna2TextBox)sender, e);
             }
         }
 
-
-        private void txtModelName_KeyUp(object sender, KeyEventArgs e)
+        // 2023.03.28
+        // 텍스트박스 이벤트 통합
+        private void txtAddHyphenCheckFirstChar_KeyUp(object sender, KeyEventArgs e)
         {
-            /*
-            if (!(e.KeyValue == Convert.ToInt32(Keys.Back)))
-            {
-                TextHyphenConvert(txtModelName);
-            }
-            */
-
-            // 2022.02.10
-            MainForm.dc.AddHyphenCheckFirstChar((TextBox)sender, e);
+            MainForm.dc.AddHyphenCheckFirstChar((Guna2TextBox)sender, e);
         }
 
         private void txtCarName_KeyUp(object sender, KeyEventArgs e)
@@ -481,143 +480,118 @@ namespace EOM_v3_M
             MainForm.dc.CarNameUpperConvert(txtCarName);
         }
 
-        private void txtMainPCB_KeyUp(object sender, KeyEventArgs e)
-        {
-            // 2022.02.10
-            MainForm.dc.AddHyphenCheckFirstChar((TextBox)sender, e);
-        }
-
-        private void txtSubPCB_KeyUp(object sender, KeyEventArgs e)
-        {
-            /*
-            if (!(e.KeyValue == Convert.ToInt32(Keys.Back)))
-            {
-                TextHyphenConvert(txtSubPCB);
-            }
-            */
-
-            // 2022.02.10
-            MainForm.dc.AddHyphenCheckFirstChar((TextBox)sender, e);
-        }
-
-
-        private void txtModelName_TextChanged(object sender, EventArgs e)
+        private void txtProductName_TextChanged(object sender, EventArgs e)
         {
             try
             {
-                if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[1]) || MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[3]))
+                if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[1] || MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[3])
                 {
-                    if (((TextBox)sender).TextLength == 0)
+                    if (((Guna2TextBox)sender).TextLength == 0)
                     {
-                        ((TextBox)sender).Text = "M";
-                        ((TextBox)sender).Select(((TextBox)sender).MaxLength + 1, 0);
+                        ((Guna2TextBox)sender).Text = "M";
+                        ((Guna2TextBox)sender).Select(((Guna2TextBox)sender).MaxLength + 1, 0);
                     }
                 }
 
                 // 2021.09.04
-                MainForm.dc.NumAlphaSpaceString(((TextBox)sender));
+                MainForm.dc.NumAlphaSpaceString((Guna2TextBox)sender);
             }
             catch (Exception ex)
             {
-                MainForm.dc.Msg("오류", ex.Message);
+                MainForm.Guna2Msg("오류", ex.Message);
             }
-        }
-
-        private void txtCarName_TextChanged(object sender, EventArgs e)
-        {
-            // 2021.09.04
-            //MainForm.dc.NumAlphaSpaceString(((TextBox)sender));
         }
 
         private void txtMainPCB_TextChanged(object sender, EventArgs e)
         {
-            if (((TextBox)sender).Enabled)
+            if (((Guna2TextBox)sender).Enabled)
             {
-                if (MainForm.cbbMetroLine01.Text != "HUD" && (((TextBox)sender).TextLength < 3 || ((TextBox)sender).Text.Substring(0, 1) != "M"))
+                if (MainForm.cbbLineName01.Text != "HUD" && (((Guna2TextBox)sender).TextLength < 3 || ((Guna2TextBox)sender).Text.Substring(0, 1) != "M"))
                 {
-                    MainPCBInitialValue(((TextBox)sender));
+                    MainPCBInitialValue((Guna2TextBox)sender);
 
-                    ((TextBox)sender).Select(((TextBox)sender).MaxLength + 1, 0);
+                    ((Guna2TextBox)sender).Select(((Guna2TextBox)sender).MaxLength + 1, 0);
                 }
             }
         }
 
         private void txtSubPCB_TextChanged(object sender, EventArgs e)
         {
-            if (((TextBox)sender).Enabled)
+            if (((Guna2TextBox)sender).Enabled)
             {
-                if (((TextBox)sender).TextLength < 3 || ((TextBox)sender).Text.Substring(0, 1) != "M")
+                if (((Guna2TextBox)sender).TextLength < 3 || ((Guna2TextBox)sender).Text.Substring(0, 1) != "M")
                 {
                     // 2020.12.14
                     // D-오디오 조립만 M17
                     // 그 외 M15
-                    if (MainForm.cbbMetroLine01.Text == MainForm.lineData[2])
+                    if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[2])
                     {
-                        ((TextBox)sender).Text = "M17";
+                        //((Guna2TextBox)sender).Text = "M17";
                     }
                     else
                     {
                         //txtSubPCB.Text = "M15";
                     }
 
-                    ((TextBox)sender).Select(((TextBox)sender).MaxLength + 1, 0);
+                    ((Guna2TextBox)sender).Select(((Guna2TextBox)sender).MaxLength + 1, 0);
                 }
             }
         }
 
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        private void dtpStartDate_ValueChanged(object sender, EventArgs e)
         {
             if (!chkPrivate.Checked)
             {
-                MainForm.dc.ShipmentDays(dateTimePicker1, dateTimePicker2, cbbShipment.Text);
+                MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, cbbShipment.Text);
             }
             else
             {
-                dateTimePicker2.Value = dateTimePicker1.Value;
+                dtpEndDate.Value = dtpStartDate.Value;
             }
         }
 
-        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        private void dtpEndDate_ValueChanged(object sender, EventArgs e)
         {
             // 2020.12.29
             // 내부관리 항목 추가로 조건 추가
-            if (!chkPrivate.Checked)
+            // 2021.09.04
+            // 공백이 아닐 경우
+            if (!chkPrivate.Checked && txtProductName.Text != string.Empty)
             {
-                if (dateTimePicker1.Value > dateTimePicker2.Value)
+                if (dtpStartDate.Value > dtpEndDate.Value)
                 {
-                    MainForm.dc.Msg("경고", "적용일보다 작을 수 없습니다");
-                    MainForm.dc.ShipmentDays(dateTimePicker1, dateTimePicker2, cbbShipment.Text);
+                    MainForm.Guna2Msg("오류", "적용일보다 작을 수 없습니다");
+                    MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, cbbShipment.Text);
                     return;
                 }
 
                 if (cbbShipment.Text == "CKD" || cbbShipment.Text == "KD")
                 {
-                    DateTime firstDateTime = dateTimePicker1.Value.AddMonths(1);
+                    DateTime firstDateTime = dtpStartDate.Value.AddMonths(1);
 
-                    if (firstDateTime > dateTimePicker2.Value)
+                    if (firstDateTime > dtpEndDate.Value)
                     {
-                        MainForm.dc.Msg("경고", "적용일보다 작을 수 없습니다 [CKD, KD : 최소 " + CKD_MONTH + "달]");
-                        MainForm.dc.ShipmentDays(dateTimePicker1, dateTimePicker2, cbbShipment.Text);
+                        MainForm.Guna2Msg("오류", "적용일보다 작을 수 없습니다 [CKD, KD : 최소 " + CKD_MONTH + "달]");
+                        MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, cbbShipment.Text);
                         return;
                     }
                 }
 
                 if (cbbShipment.Text == "OEM")
                 {
-                    DateTime firstDateTime = dateTimePicker1.Value.AddDays(OEM_DAY);
+                    DateTime firstDateTime = dtpStartDate.Value.AddDays(OEM_DAY);
 
-                    if (firstDateTime > dateTimePicker2.Value)
+                    if (firstDateTime > dtpEndDate.Value)
                     {
-                        MainForm.dc.Msg("경고", "적용일보다 작을 수 없습니다 [OEM : 최소 " + OEM_DAY + "일]");
-                        MainForm.dc.ShipmentDays(dateTimePicker1, dateTimePicker2, cbbShipment.Text);
+                        MainForm.Guna2Msg("오류", "적용일보다 작을 수 없습니다 [OEM : 최소 " + OEM_DAY + "일]");
+                        MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, cbbShipment.Text);
                         return;
                     }
                 }
             }
         }
 
-        private void SelectMetroBtn_Click(object sender, EventArgs e)
+        private void btnEOSelect_Click(object sender, EventArgs e)
         {
             // 2022.07.01
             // 메세지 폼 잔상 강제삭제
@@ -633,28 +607,32 @@ namespace EOM_v3_M
                 { "HUD" , "10" },
             };
 
-            if (txtModelName.Text.Equals(string.Empty))
+            if (txtProductName.Text.Equals(string.Empty))
             {
-                MainForm.dc.Msg("경고", "품번을 정확히 입력해주세요 [공란 확인]");
-                txtModelName.Select();
+                Guna2MessageBox guna2MessageBox = new Guna2MessageBox("오류", "품번을 정확히 입력해주세요[공란 확인]");
+                guna2MessageBox.ShowDialog();
+
+                txtProductName.Select();
                 return;
             }
 
             for (int i = 0; i < s.GetLength(0); i++)
             {
-                if (MainForm.cbbMetroLine01.Text == s[i, 0] && txtModelName.Text.Length < Convert.ToInt32(s[i, 1]))
+                if (MainForm.cbbLineName01.Text == s[i, 0] && txtProductName.Text.Length < Convert.ToInt32(s[i, 1]))
                 {
-                    MainForm.dc.Msg("경고", "품번을 정확히 입력해주세요 [" + s[i, 1] + "자 이상]");
-                    txtModelName.Select();
+                    Guna2MessageBox guna2MessageBox = new Guna2MessageBox("오류", "품번을 정확히 입력해주세요 [" + s[i, 1] + "자 이상]");
+                    guna2MessageBox.ShowDialog();
+
+                    txtProductName.Select();
                     return;
                 }
             }
 
             // 2022.03.10
             // 수삽, SUB 제외
-            if (MainForm.cbbMetroLine01.Text != "D-오디오 수삽" && MainForm.cbbMetroLine01.Text != "D-오디오 SUB")
+            if (MainForm.cbbLineName01.Text != "D-오디오 수삽" && MainForm.cbbLineName01.Text != "D-오디오 SUB")
             {
-                if (MainForm.dc.PCBProductNameCheck(txtMainPCB, "메인 PCB") || (!chkNonInput.Checked && MainForm.dc.PCBProductNameCheck(txtSubPCB, "서브 PCB")) || MainForm.dc.CarNameCheck(txtCarName))
+                if (MainForm.dc.CarNameCheck(txtCarName) || MainForm.dc.PCBProductNameCheck(txtMainPCB, "메인 PCB") || (!chkNonInput.Checked && MainForm.dc.PCBProductNameCheck(txtSubPCB, "서브 PCB")))
                 {
                     return;
                 }
@@ -685,13 +663,13 @@ namespace EOM_v3_M
                 // 스티커 색상
                 if (MainForm.eoSelectData[4] != "ScrollBar")
                 {
-                    lblSticker.ForeColor = Color.FromName(MainForm.eoSelectData[4]);
-                    lblSticker.Text = "● " + MainForm.eoSelectData[5];
+                    txtStickerColor.ForeColor = Color.FromName(MainForm.eoSelectData[4]);
+                    txtStickerColor.Text = "● " + MainForm.eoSelectData[5];
                 }
                 else
                 {
-                    lblSticker.ForeColor = Color.Black;
-                    lblSticker.Text = string.Empty;
+                    txtStickerColor.ForeColor = Color.Black;
+                    txtStickerColor.Text = string.Empty;
                 }
 
                 // 2021.01.12
@@ -701,7 +679,7 @@ namespace EOM_v3_M
                 }
 
                 // D-오디오 SUB 필요 없음으로 공란
-                if (MainForm.cbbMetroLine01.Text != "D-오디오 수삽" && MainForm.cbbMetroLine01.Text != "D-오디오 SUB")     // 출하지
+                if (MainForm.cbbLineName01.Text != "D-오디오 수삽" && MainForm.cbbLineName01.Text != "D-오디오 SUB")     // 출하지
                 {
                     cbbShipment.Text = MainForm.eoSelectData[6];
                 }
@@ -716,20 +694,20 @@ namespace EOM_v3_M
                 // 작업지시변경서 확인
                 if (MainForm.eoSelectData[7] != null && !MainForm.eoSelectData[7].Equals(string.Empty))
                 {
-                    ViewMetroBtn.Enabled = true;
+                    btnMthView.Enabled = true;
                 }
                 else
                 {
-                    ViewMetroBtn.Enabled = false;
+                    btnMthView.Enabled = false;
                 }
 
                 if (!txtEOContents.Text.Equals(string.Empty))
                 {
-                    txtModelName.Enabled = false;
+                    txtProductName.Enabled = false;
                     txtCarName.Enabled = false;
 
-                    dateTimePicker1.Enabled = true;
-                    dateTimePicker2.Enabled = true;
+                    dtpStartDate.Enabled = true;
+                    dtpEndDate.Enabled = true;
                 }
 
                 // 2021.01.21
@@ -745,13 +723,13 @@ namespace EOM_v3_M
                 }
                 */
 
-                MainForm.dc.ShipmentDays(dateTimePicker1, dateTimePicker2, cbbShipment.Text);
+                MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, cbbShipment.Text);
             }
 
             Opacity = 1;
         }
 
-        private void AddMetroBtn_Click(object sender, EventArgs e)
+        private void btnProductAdd_Click(object sender, EventArgs e)
         {
             if (ModelAddCheckSum())
             {
@@ -760,7 +738,7 @@ namespace EOM_v3_M
 
                 // D-오디오 수삽
                 // D-오디오 SUB
-                if (MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[1]) || MainForm.cbbMetroLine01.Text.Equals(MainForm.lineData[3]))
+                if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
                 {
                     insertData = DatabaseColumnData(1);
                 }
@@ -774,7 +752,7 @@ namespace EOM_v3_M
                 MainForm.mariaDB.EtcQuery(query);
 
                 Opacity = 0;
-                MainForm.modelSelectData = txtModelName.Text;
+                MainForm.modelSelectData = txtProductName.Text;
 
                 // 2020.05.06
                 if (!MainForm.eoSelectData[7].Equals(string.Empty))
@@ -802,7 +780,7 @@ namespace EOM_v3_M
             */
         }
 
-        private void ViewMetroBtn_Click(object sender, EventArgs e)
+        private void btnMthView_Click(object sender, EventArgs e)
         {
             string tmpPath = @"C:\" + Application.ProductName + @"\mht_data.mht";
 
@@ -823,20 +801,17 @@ namespace EOM_v3_M
             //MainForm.subjectData = mhtSearchData[0];
 
             // mht 경로
-            MainForm.eoViewData = tmpPath;
+            //MainForm.eoViewData = tmpPath;
 
-            ViewForm viewForm = new ViewForm();
+            ViewForm viewForm = new ViewForm(tmpPath);
             viewForm.ShowDialog();
         }
 
-        private void txtModelName_Enter(object sender, EventArgs e)
+        private void txtFillColor_Enter(object sender, EventArgs e)
         {
-            txtModelName.BackColor = Color.LemonChiffon;
-        }
+            ((Guna2TextBox)sender).FillColor = Color.LemonChiffon;
 
-        private void txtCarName_Enter(object sender, EventArgs e)
-        {
-            txtCarName.BackColor = Color.LemonChiffon;
+            MainForm.dc.ImeModeAllSet(this, "");
         }
 
         private void txtMainPCB_Enter(object sender, EventArgs e)
@@ -844,15 +819,16 @@ namespace EOM_v3_M
             MainPCBInitialValue(txtMainPCB);
 
             txtMainPCB.Select(txtMainPCB.MaxLength + 1, 0);
-            txtMainPCB.BackColor = Color.LemonChiffon;
+            txtMainPCB.FillColor = Color.LemonChiffon;
         }
 
         private void txtSubPCB_Enter(object sender, EventArgs e)
         {
+            /*
             // 2020.12.14
             // D-오디오 조립만 M17
             // 그 외 M15
-            if (MainForm.cbbMetroLine01.Text == MainForm.lineData[2])
+            if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[2])
             {
                 txtSubPCB.Text = "M17";
             }
@@ -860,46 +836,32 @@ namespace EOM_v3_M
             {
                 txtSubPCB.Text = "M15";
             }
+            */
             txtSubPCB.Select(txtSubPCB.MaxLength + 1, 0);
-            txtSubPCB.BackColor = Color.LemonChiffon;
+            txtSubPCB.FillColor = Color.LemonChiffon;
         }
 
-        private void txtTagType_Enter(object sender, EventArgs e)
+        private void txtProductName_Leave(object sender, EventArgs e)
         {
-            txtTagType.BackColor = Color.LemonChiffon;
-        }
-
-        private void txtCustomerEO_Enter(object sender, EventArgs e)
-        {
-            txtEOContents.BackColor = Color.LemonChiffon;
-        }
-
-        private void txtMobisEO_Enter(object sender, EventArgs e)
-        {
-            txtMobisEO.BackColor = Color.LemonChiffon;
-        }
-
-        private void txtModelName_Leave(object sender, EventArgs e)
-        {
-            if (txtModelName.TextLength > 10)
+            if (txtProductName.TextLength > 10)
             {
-                messageFormClass.FormMsg = "[" + txtModelName.Text + "] 품번 등록정보 조회 시도..";
+                messageFormClass.FormMsg = "[" + txtProductName.Text + "] 품번 등록정보 조회 시도..";
                 messageFormClass.ShowDelay = 2000;
                 messageFormClass.StartForm();
 
                 // 값이 있을 경우에만 체킹
-                if (!txtModelName.Text.Equals(string.Empty))
+                if (!txtProductName.Text.Equals(string.Empty))
                 {
                     // 2020.11.09
                     // 품번 띄어쓰기 없애기
-                    txtModelName.Text = txtModelName.Text.Replace(" ", String.Empty);
+                    txtProductName.Text = txtProductName.Text.Replace(" ", String.Empty);
 
                     // 2022.01.14
                     // 라인의 전 모델을 가져와 프로그램 내에서 처리하므로 데이터베이스 조건부 처리 요청 
-                    string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "model_name", txtModelName.Text, "print_type", "초도품" };
-                    //string[] selectData = new string[] { "line", MainForm.cbbMetroLine01.Text, "model_name", txtModelName.Text };
+                    string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "model_name", txtProductName.Text, "print_type", "초도품" };
+                    //string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "model_name", txtProductName.Text };
                     string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.settingData[0], MainForm.settingData[1], selectData, "SELECT");
-                    //query += " OR (model_name = '" + txtModelName.Text + "' AND eo_contents = '---------- 첫 투입 품번 등록 ----------')";
+                    //query += " OR (model_name = '" + txtProductName.Text + "' AND eo_contents = '---------- 첫 투입 품번 등록 ----------')";
                     string[,] modelData = MainForm.mariaDB.SelectQuery2(query);
 
                     txtCarName.Text = string.Empty;
@@ -932,7 +894,7 @@ namespace EOM_v3_M
                         // 출하지
                         // 2022.05.16
                         // HUD, CLUSTER 라인은 제외
-                        if (!(MainForm.cbbMetroLine01.Text == "HUD" || MainForm.cbbMetroLine01.Text == "클러스터"))
+                        if (!(MainForm.cbbLineName01.Text == "HUD" || MainForm.cbbLineName01.Text == "클러스터"))
                         {
                             for (int i = 0; i < modelData.GetLength(0); i++)
                             {
@@ -979,7 +941,7 @@ namespace EOM_v3_M
 
                         // 2021.01.26
                         // D-오디오 수삽, D-오디오 조립 외만
-                        if (MainForm.cbbMetroLine01.Text != MainForm.lineData[1] && MainForm.cbbMetroLine01.Text != MainForm.lineData[3])
+                        if (MainForm.cbbLineName01.Text != MainForm.LINE_NAME_LIST[1] && MainForm.cbbLineName01.Text != MainForm.LINE_NAME_LIST[3])
                         {
                             chkNonInput.Enabled = true;
                         }
@@ -1001,12 +963,12 @@ namespace EOM_v3_M
                     else
                     {
                         chkNonInput.Enabled = false;
-                        SelectMetroBtn.Focus();
+                        btnEOSelect.Focus();
                     }
                 }
 
                 // 2020.12.14
-                if (txtModelName.TextLength > 0 && txtModelName.Text.Substring(0, 1) == "M")
+                if (txtProductName.TextLength > 0 && txtProductName.Text.Substring(0, 1) == "M")
                 {
                     txtMainPCB.Enabled = false;
                     txtSubPCB.Enabled = false;
@@ -1016,44 +978,29 @@ namespace EOM_v3_M
                 }
             }
 
-            txtModelName.BackColor = Color.White;
+            ((Guna2TextBox)sender).FillColor = Color.White;
         }
 
-        private void txtCarName_Leave(object sender, EventArgs e)
+        private void txtFillColor_Leave(object sender, EventArgs e)
         {
-            txtCarName.BackColor = Color.White;
-        }
-
-        private void txtTagType_Leave(object sender, EventArgs e)
-        {
-            txtTagType.BackColor = Color.White;
-        }
-
-        private void txtCustomerEO_Leave(object sender, EventArgs e)
-        {
-            txtCustomerEO.BackColor = Color.White;
-        }
-
-        private void txtMobisEO_Leave(object sender, EventArgs e)
-        {
-            txtMobisEO.BackColor = Color.White;
+            ((Guna2TextBox)sender).FillColor = Color.White;
         }
 
         private void txtMainPCB_Leave(object sender, EventArgs e)
         {
             MainForm.dc.TextBoxLeaveHyphenConvert(txtMainPCB);
 
-            txtMainPCB.BackColor = Color.White;
+            txtMainPCB.FillColor = Color.White;
         }
 
         private void txtSubPCB_Leave(object sender, EventArgs e)
         {
             MainForm.dc.TextBoxLeaveHyphenConvert(txtSubPCB);
 
-            txtSubPCB.BackColor = Color.White;
+            txtSubPCB.FillColor = Color.White;
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void chkNonInput_CheckedChanged(object sender, EventArgs e)
         {
             if (chkNonInput.Checked)
             {
@@ -1067,7 +1014,7 @@ namespace EOM_v3_M
             }
         }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void chkPrivate_CheckedChanged(object sender, EventArgs e)
         {
             if (chkPrivate.Checked)
             {
@@ -1075,8 +1022,8 @@ namespace EOM_v3_M
                 {
                     txtEOContents.Text += " (내부관리)";
                     
-                    dateTimePicker2.Value = dateTimePicker1.Value;
-                    dateTimePicker2.Enabled = false;
+                    dtpEndDate.Value = dtpStartDate.Value;
+                    dtpEndDate.Enabled = false;
                 }
             }
             else
@@ -1085,16 +1032,42 @@ namespace EOM_v3_M
                 {
                     txtEOContents.Text = MainForm.dc.PrivateTextDeleteConvert(txtEOContents.Text);
 
-                    MainForm.dc.ShipmentDays(dateTimePicker1, dateTimePicker2, cbbShipment.Text);
-                    dateTimePicker2.Enabled = true;
+                    MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, cbbShipment.Text);
+                    dtpEndDate.Enabled = true;
                 }
             }
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbbShipment_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dateTimePicker1.Value = DateTime.Now;
-            MainForm.dc.ShipmentDays(dateTimePicker1, dateTimePicker2, cbbShipment.Text);
+            // 2023.06.20
+            // 내부 관리 체크 확인
+            if (!chkPrivate.Checked)
+            {
+                MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, cbbShipment.Text);
+            }
+        }
+
+        private void lblEOType_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            txtEOType.Enabled = true;
+            txtEOType.ReadOnly = !txtEOType.ReadOnly;
+#endif
+        }
+
+        private void lblCarName_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            MessageBox.Show(txtCarName.CharacterCasing.ToString());
+#endif
+        }
+
+        private void lblEOContents_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            MessageBox.Show(txtEOContents.CharacterCasing.ToString());
+#endif
         }
     }
 }
