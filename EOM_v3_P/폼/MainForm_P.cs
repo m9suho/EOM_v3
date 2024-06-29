@@ -23,10 +23,13 @@ namespace EOM_v3_P
         string[] settingData, addressData;
 
         const string PROCESS_NAME = "EXCEL.EXE";
+        const string DB_NAME_RELEASE = "eom_1floor";
+        const string DB_NAME_DEBUG = "eom_1floor_trunk";
+
+        public static string strDbName = string.Empty;
 
         DefaultClass dc = new DefaultClass();
         MariaDBClass mariaDB = new MariaDBClass();
-        
 
         public string SplitConvert(string[] _data)
         {
@@ -46,17 +49,14 @@ namespace EOM_v3_P
 
         public void InsertLogDB(string _data)
         {
-            //string registrantData = SearchRegistrant(NetworkInterface.GetAllNetworkInterfaces()[0].GetPhysicalAddress().ToString());
-
             string[] insertData = new string[]
             {
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 _data,
                 //registrantData
-                settingData[4]
+                "registrant_data"
             };
-            string query = dc.InsertQueryArrayConvert(settingData[0], settingData[3], insertData);
-            //string query = "INSERT INTO `" + settingData[0] + "`.`" + settingData[3] + "` VALUES (" + dc.InsertQueryArrayConvert(insertData) + ")";
+            string query = dc.InsertQueryArrayConvert(strDbName, "print_data", insertData);
             mariaDB.EtcQuery(query);
         }
 
@@ -160,7 +160,7 @@ namespace EOM_v3_P
                 ws.Cells[i + 7, 3] = "";
             }
 
-            string query = "DELETE FROM `" + settingData[0] + "`.`" + settingData[1] + "` WHERE model_name = '" + _data[1] + "' AND car_name = '" + _data[2] + "' AND customer_eo_number = '" + _data[3] + "' AND mobis_eo_number = '" + _data[4] + "' AND print_count = '" + _data[10] + "'";
+            string query = "DELETE FROM `" + strDbName + "`.`model_data` WHERE model_name = '" + _data[1] + "' AND car_name = '" + _data[2] + "' AND customer_eo_number = '" + _data[3] + "' AND mobis_eo_number = '" + _data[4] + "' AND print_count = '" + _data[10] + "'";
             mariaDB.EtcQuery(query);
 
             // EXCEL 종료
@@ -186,12 +186,12 @@ namespace EOM_v3_P
         {
             try
             {
-                string[] selectData = new string[] { "print_address", settingData[4] };
-                string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+                string[] selectData = new string[] { "print_address", "registrant_data" };
+                string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
 
                 strSetQuery = query;
 
-                if (settingData[4] == "2F")
+                if ("registrant_data" == "2F")
                 {
                     query += " OR print_address = '2F_A53'";
                 }
@@ -244,25 +244,26 @@ namespace EOM_v3_P
 
             notifyIcon1.Text = Text;
 
-            //dc.FtpDownloadUsingWebClient("ftp://10.239.19.91:2121/EOM_v3/print.dat", excelFilePathName);
+#if DEBUG
+            Text += " [디버깅 모드]";
+            strDbName = DB_NAME_DEBUG;
+#else
+            strDbName = DB_NAME_RELEASE;
+#endif
 
             // 셋팅 값 로드
             settingData = dc.DatFileLoad(@"C:\" + Process.GetCurrentProcess().ProcessName, @"settingData.dat");
 
-#if DEBUG
-            settingData[0] = "eom_1floor_trunk";
-#endif
-
             // 현재 셋팅 데이터 체크
             if (!dc.DatFileCheck(settingData, 7))
             {
-                settingData = new string[7] { "eom_1floor", "print_data", "registrant_data", "log_data", "1F", "10.239.19.91", "3306" };
+                settingData = new string[7] { strDbName, "print_data", "registrant_data", "log_data", "1F", "10.239.19.91", "3308" };
 
                 dc.DatFileSave(@"C:\" + Process.GetCurrentProcess().ProcessName, "settingData.dat", settingData);
             }
 
             // mariaDB 셋팅
-            strConn = "Server=" + settingData[settingData.Length - 2] + ";Port=" + settingData[settingData.Length - 1] + ";Database=" + settingData[0] + ";Uid=user;Pwd=autonics12#;";
+            strConn = "Server=" + settingData[settingData.Length - 2] + ";Port=" + settingData[settingData.Length - 1] + ";Database=" + strDbName + ";Uid=root;Pwd=9001271;";
 
             mariaDB.DbConnInfo = strConn;
 
@@ -279,9 +280,9 @@ namespace EOM_v3_P
             dc.AutoUpdate(업데이트UToolStripMenuItem, new TimeSpan[] { new TimeSpan(0, 0, 15), new TimeSpan(7, 0, 0) });
 
 #if DEBUG
-            mariaDB.InsertLogDB("eom_1floor_trunk", "프로그램 시작 [" + dc.Version() + "]", false);
+            mariaDB.InsertLogDB(strDbName, "프로그램 시작 [" + dc.Version() + "]", false);
 #else
-            mariaDB.InsertLogDB("eom_1floor", "프로그램 시작 [" + dc.Version() + "]", false);
+            mariaDB.InsertLogDB(strDbName, "프로그램 시작 [" + dc.Version() + "]", false);
 #endif
             addressData = dc.LineMatchingData();
 
@@ -313,9 +314,9 @@ namespace EOM_v3_P
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
 #if DEBUG
-            mariaDB.InsertLogDB("eom_1floor_trunk", "프로그램 종료", false);
+            mariaDB.InsertLogDB(strDbName, "프로그램 종료", false);
 #else
-            mariaDB.InsertLogDB("eom_1floor", "프로그램 종료", false);
+            mariaDB.InsertLogDB(strDbName, "프로그램 종료", false);
 #endif
         }
 
@@ -369,7 +370,8 @@ namespace EOM_v3_P
 
         private void 파일복구RToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dc.FtpDownloadUsingWebClient("ftp://10.239.19.91:2121/EOM_v3/print_v2.dat", excelFilePathName);
+            //dc.FtpDownloadUsingWebClient("ftp://10.239.19.91:2121/EOM_v3/print_v2.dat", excelFilePathName);
+            dc.FtpWebClientDownload("ftp://10.239.19.91:2121/EOM_v3/print_v2.dat", excelFilePathName);
 
             dc.Delay(3000);
 

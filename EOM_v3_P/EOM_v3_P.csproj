@@ -123,6 +123,10 @@
     <Compile Include="..\..\Public\UpdateFormClass.cs">
       <Link>클래스\UpdateFormClass.cs</Link>
     </Compile>
+    <Compile Include="..\..\Public\WebClientPlus.cs">
+      <Link>클래스\WebClientPlus.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="폼\MainForm_P.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,0 +1,11 @@
+D:\GitHub\EOM_v3\bin\EOM_v3_P.exe.config
+D:\GitHub\EOM_v3\bin\EOM_v3_P.exe
+D:\GitHub\EOM_v3\bin\EOM_v3_P.pdb
+D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.csproj.ResolveComReference.cache
+D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.MainForm.resources
+D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.Properties.Resources.resources
+D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.csproj.GenerateResource.cache
+D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.csproj.CoreCompileInputs.cache
+D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.csproj.CopyComplete
+D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.exe
+D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.pdb

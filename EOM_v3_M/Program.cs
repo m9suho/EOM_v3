@@ -30,7 +30,7 @@ namespace EOM_v3_M
                 }
                 else
                 {
-                    MainForm.Guna2Msg("오류", "이미 실행중 입니다.");
+                    MainForm.Guna2Msg(new MainForm(), "오류", "이미 실행중 입니다.");
                     Application.Exit();
                 }
             }

@@ -17,8 +17,11 @@ namespace EOM_v3_M
         const int FORM_HEIGHT_SIZE = 700;
         const string PACKING_REGISTER_CONTENTS = "---------- 첫 투입 품번 등록 ----------";
         const string GUEST_LOGIN_MSG = "GUEST님 로그인";
+        const string DB_NAME_RELEASE = "eom_1floor";
+        const string DB_NAME_DEBUG = "eom_1floor_trunk";
 
         string strConn = string.Empty;
+        
         string[] arr1ColumnData = { "False", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17" };
 
         public static bool complete = false;
@@ -28,6 +31,7 @@ namespace EOM_v3_M
         public static int login = 0;
         public static int permission = 0;
 
+        public static string strDbName = string.Empty;
         public static string searchType = string.Empty;
         public static string eoType = string.Empty;
         public static string eoCarData = string.Empty; 
@@ -62,7 +66,7 @@ namespace EOM_v3_M
         public static DefaultClass dc = new DefaultClass();
         public static PackingAndEOM pe;
         public static MariaDBClass mariaDB = new MariaDBClass();
-        public static ComboBox cbbProductName01, cbbLineName01, cbbMetroFloor01;
+        public static ComboBox cbbProductName01, cbbLineName01, cbbFloor01;
         public static DataGridView datagridview01, datagridview02;
 
         private void initialSetDataGridView()
@@ -82,8 +86,8 @@ namespace EOM_v3_M
             ModelSort();
 
             // 처음 위치 재설정
-            dgvSelect.Location = new Point(14, 193);
-            dgvGuest.Location = new Point(14, 193);
+            dgvSelect.Location = new Point(11, 193);
+            dgvGuest.Location = new Point(11, 193);
 
             //dgvGuest.Visible = false;
 
@@ -127,33 +131,65 @@ namespace EOM_v3_M
 
         private void InitialControlSize()
         {
-            lblUserName.Left = Width - 391;
+            lblUserName.Left = Width - 245;
             // 2022.11.22
             // 출하지 폼 크기 위치 이동 수정
-            txtMenuAllSearch.Left = Width - txtMenuAllSearch.Width - 109;
-            pnShipmentView.Left = Width - pnShipmentView.Width - 593;
-            btnShipmentMaster.Left = Width - btnShipmentMaster.Width - 477;
-            btnShipmentChange.Left = Width - btnShipmentChange.Width - 361;
-            btnProductSearch.Left = Width - btnProductSearch.Width - 245;
-            btnProductAdd.Left = Width - btnProductAdd.Width - 129;
-            btnProductDelete.Left = Width - btnProductDelete.Width - 13;
+            txtMenuAllSearch.Left =     Width - txtMenuAllSearch.Width  - 107;
+            pnShipmentView.Left =       Width - pnShipmentView.Width    - 591;
+            btnShipmentMaster.Left =    Width - btnShipmentMaster.Width - 475;
+            btnShipmentChange.Left =    Width - btnShipmentChange.Width - 359;
+            btnProductSearch.Left =     Width - btnProductSearch.Width  - 243;
+            btnProductAdd.Left =        Width - btnProductAdd.Width     - 127;
+            btnProductDelete.Left =     Width - btnProductDelete.Width  - 11;
 
-            dgvGuest.Size = new Size(Width - 27, Height - 206);
-            dgvSelect.Size = new Size(Width - 27, Height - 206);
+            dgvGuest.Size =  new Size(Width - 22, Height - 204);
+            dgvSelect.Size = new Size(Width - 22, Height - 204);
         }
 
-        public static void Guna2Msg(string _type, string _text)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="_form">현재 폼 인스턴스</param>
+        /// <param name="_type">오류</param>
+        /// <param name="_msg">메시지 내용</param>
+        public static void Guna2Msg(Form _form, string _type, string _msg)
         {
-            Guna2MessageBox guna2MessageBox = new Guna2MessageBox(_type, _text);
-            guna2MessageBox.ShowDialog();
+            try
+            {
+                Guna2MessageBox guna2MessageBox = new Guna2MessageBox();
+                guna2MessageBox.InstanceForm = _form;
+                guna2MessageBox.FormType = _type;
+                guna2MessageBox.FormMsg = _msg;
+                guna2MessageBox.StartForm();
+            }
+            catch (Exception ex)
+            {
+                dc.LogFileSave(ex.Message);
+            }
         }
 
-        public static void Guna2Msg(string _type, string _text, bool _data)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="_form">현재 폼 인스턴스</param>
+        /// <param name="_type">오류</param>
+        /// <param name="_msg">메시지 내용</param>
+        public static void Guna2Msg(Form _form, string _type, string _msg, bool _data)
         {
-            if (_data) dc.LogFileSave(_text);
+            try
+            {
+                Guna2MessageBox guna2MessageBox = new Guna2MessageBox();
+                guna2MessageBox.InstanceForm = _form;
+                guna2MessageBox.FormType = _type;
+                guna2MessageBox.FormMsg = _msg;
+                guna2MessageBox.StartForm();
 
-            Guna2MessageBox guna2MessageBox = new Guna2MessageBox(_type, _text);
-            guna2MessageBox.ShowDialog();
+                if (_data) dc.LogFileSave(_msg);
+            }
+            catch (Exception ex)
+            {
+                dc.LogFileSave(ex.Message);
+            }
         }
 
         public MainForm()
@@ -179,36 +215,26 @@ namespace EOM_v3_M
                 // 컨트롤 디자인 동적 설정
                 cbbProductName01 = cbbProductName;
                 cbbLineName01 = cbbLineName;
-                cbbMetroFloor01 = cbbMetroFloor;
+                cbbFloor01 = cbbFloor;
                 datagridview01 = dgvSelect;
                 datagridview02 = dgvGuest;
 
-                // 셋팅 값 로드
-                settingData = dc.DatFileLoad(@"settingData.dat");
-
-                // 현재 셋팅 데이터 체크
-                if (!dc.DatFileCheck(settingData, 9))
-                {
-#if DEBUG
-                    settingData = new string[] { "eom_1floor", "model_data", "eo_data", "print_data", "registrant_data", "log_data", "update_data", "127.0.0.1", "3306" };
-#else
-                    settingData = new string[] { "eom_1floor", "model_data", "eo_data", "print_data", "registrant_data", "log_data", "update_data", "10.239.19.91", "3306" };
-#endif
-                    dc.DatFileSave(settingFileName + extensionName, settingData);
-                }
+                // 2024.04.26
+                // 셋팅 파일 로드
+                settingData = dc.SettinFileLoad();
 
 #if DEBUG
                 Text += " [디버깅 모드]";
-
-                settingData[0] = "eom_1floor_trunk";
-                settingData[7] = "127.0.0.1";
+                strDbName = DB_NAME_DEBUG;
 #else
                 guna2ProgressBar1.Visible = false;
+                strDbName = DB_NAME_RELEASE;
 #endif
 
                 // 2020.09.04
                 // MariaDB 셋팅 먼저 검사
-                strConn = "Server=" + settingData[settingData.Length - 2] + ";Port=" + settingData[settingData.Length - 1] + ";Database=" + settingData[0] + ";Uid=user;Pwd=autonics12#;";
+                strConn = "Server=" + settingData[settingData.Length - 2] + ";Port=" + settingData[settingData.Length - 1] + ";Database=" + strDbName + ";Uid=root;Pwd=9001271;";
+
                 mariaDB.DbConnInfo = strConn;
 
                 pe = new PackingAndEOM(strConn);
@@ -216,7 +242,7 @@ namespace EOM_v3_M
                 // DB 서버 죽으면 점검 메세지
                 if (!mariaDB.IsConnected())
                 {
-                    Guna2Msg("오류", "서버 점검중 입니다");
+                    Guna2Msg(this, "오류", "서버 점검중 입니다");
                     Application.ExitThread();
                     return;
                 }
@@ -258,7 +284,7 @@ namespace EOM_v3_M
                 }
                 else
                 {
-                    cbbMetroFloor01.SelectedItem = floorData[0];
+                    cbbFloor01.SelectedItem = floorData[0];
                 }
                 */
 
@@ -281,7 +307,7 @@ namespace EOM_v3_M
 
                     btnProductAdd.Enabled = true;
                     //btnProductDelete.Enabled = true;
-                    cbbMetroFloor.Visible = false;
+                    cbbFloor.Visible = false;
                 }
 
                 // 2020.03.04
@@ -303,17 +329,17 @@ namespace EOM_v3_M
                     }
                     else
                     {
-                        cbbMetroFloor01.SelectedItem = floorData[0];
+                        cbbFloor01.SelectedItem = floorData[0];
                     }
 
-                    //cbbMetroFloor.Visible = true;
+                    //cbbFloor.Visible = true;
 
                     // 2020.09.01
                     // 콤보 박스 활성화
                     //VisibleFloor();
 
                     // 2F
-                    cbbMetroFloor01.SelectedItem = floorData[0];
+                    cbbFloor01.SelectedItem = floorData[0];
 
                     GuestDataGridViewUpdate();
 
@@ -340,8 +366,8 @@ namespace EOM_v3_M
                     UpdateListViewFormClass updateListViewFormClass = new UpdateListViewFormClass();
 
                     updateListViewFormClass.FormTitleName = programName + " - 업데이트 내역";
-                    updateListViewFormClass.DB = settingData[0];
-                    updateListViewFormClass.Table = settingData[6];
+                    updateListViewFormClass.DB = strDbName;
+                    updateListViewFormClass.Table = "update_data";
                     updateListViewFormClass.StrConn = strConn;
                     updateListViewFormClass.BoundsLocation = 0;
                     updateListViewFormClass.StartForm();
@@ -465,8 +491,8 @@ namespace EOM_v3_M
             {
                 string test = string.Empty;
 
-                if (cbbMetroFloor01.SelectedItem != null)
-                    test = cbbMetroFloor01.SelectedItem.ToString();
+                if (cbbFloor01.SelectedItem != null)
+                    test = cbbFloor01.SelectedItem.ToString();
 
                 //label11.Text = "floorData: " + floorData[0] + " / Select: " + test + " / lineSelectData: " + lineSelectData[0];
             }
@@ -486,7 +512,7 @@ namespace EOM_v3_M
         private string RegistrantFilterAdd(string _data)
         {
             string[] selectData = new string[] { "print_address", _data };
-            string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[4], selectData, "SELECT");
+            string query = dc.SelectDeleteQueryANDConvert(strDbName, "registrant_data", selectData, "SELECT");
             string[] tmpData = mariaDB.SelectQueryCount(query, "name");
 
             string returnData = string.Empty;
@@ -544,12 +570,12 @@ namespace EOM_v3_M
                 {
                     // 2020.09.08
                     // 예외 처리
-                    if (cbbMetroFloor01.SelectedItem == null)
+                    if (cbbFloor01.SelectedItem == null)
                     {
-                        cbbMetroFloor01.SelectedIndex = 0;
+                        cbbFloor01.SelectedIndex = 0;
                     }
 
-                    floorData[0] = cbbMetroFloor01.SelectedItem.ToString();
+                    floorData[0] = cbbFloor01.SelectedItem.ToString();
                 }
 
                 // dataGridView 초기화
@@ -559,7 +585,16 @@ namespace EOM_v3_M
                 lblDBUpTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ", " + sw.ElapsedMilliseconds.ToString() + "ms";
             }
 
-            query = "SELECT * FROM `" + settingData[0] + "`.`" + settingData[1] + "` WHERE (line = '" + cbbLineName01.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')" + RegistrantFilterAdd(floorData[0]);
+            // 클러스터, D-오디오 SUB는 등록자 여부 상관없이 보이도록 수정
+            if (cbbLineName01.Text == "클러스터" || cbbLineName01.Text == "D-오디오 SUB")
+            {
+                query = "SELECT * FROM `" + strDbName + "`.`model_data` WHERE (line = '" + cbbLineName01.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+            }
+            else
+            {
+                query = "SELECT * FROM `" + strDbName + "`.`model_data` WHERE (line = '" + cbbLineName01.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')" + RegistrantFilterAdd(floorData[0]);
+            }
+
             query += " ORDER BY start_date";
             // 2021.03.24
             // 첫 투입 내용은 제일 상단에 올리도록
@@ -601,24 +636,13 @@ namespace EOM_v3_M
             sw.Start();
 
             string[] selectData = new string[] { "line", cbbLineName01.Text };
-            //string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
-            string query = "SELECT model_name FROM `" + settingData[0] + "`.`" + settingData[1] + "` WHERE line = '" + cbbLineName01.Text + "' GROUP BY model_name";
+            //string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+            string query = "SELECT model_name FROM `" + strDbName + "`.`model_data` WHERE line = '" + cbbLineName01.Text + "' GROUP BY model_name";
             //string[] modelData = mariaDB.SelectQueryCount(query, "model_name");
             string[,] modelData = mariaDB.SelectQuery4(query, 1);
 
             // 모델 데이터 로드
             cbbProductName.Items.Clear();
-
-            /*
-            for (int i = 0; i < modelData.Length; i++)
-            {
-                // 중복 제거
-                if (!cbbProductName.Items.Contains(modelData[i]) && !modelData[i].Equals(string.Empty))
-                {
-                    cbbProductName.Items.Add(modelData[i]);
-                }
-            }
-            */
 
             for (int i = 0; i < modelData.GetLength(0); i++)
             {
@@ -664,7 +688,7 @@ namespace EOM_v3_M
         private void SetFloorData(string _data)
         {
             string[] selectData = new string[] { };
-            string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[4], selectData, "SELECT");
+            string query = dc.SelectDeleteQueryANDConvert(strDbName, "registrant_data", selectData, "SELECT");
             string[,] resultData = mariaDB.SelectQuery2(query);
 
             for (int i = 0; i < resultData.GetLength(0); i++)
@@ -679,7 +703,7 @@ namespace EOM_v3_M
         public static string SearchRegistrant(string _data)
         {
             string[] selectData = new string[] { };
-            string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[4], selectData, "SELECT");
+            string query = dc.SelectDeleteQueryANDConvert(strDbName, "registrant_data", selectData, "SELECT");
             string[,] tmpData = mariaDB.SelectQuery2(query);
 
             for (int i = 0; i < tmpData.GetLength(0); i++)
@@ -748,7 +772,8 @@ namespace EOM_v3_M
                         _data[i, 7],                                                            // 스티커 내용
                         Convert.ToDateTime(_data[i, 8]).ToString("yyyy-MM-dd HH:mm:ss"),        // 적용일
                         Convert.ToDateTime(_data[i, 9]).ToString("yyyy-MM-dd HH:mm:ss"),        // 종료일
-                        string.Empty,                                                           // -등록자
+                        //string.Empty,                                                           // -등록자
+                        _data[i, 10],                                                           // 등록자
                         printType,                                                              // 타입
                         shipment,                                                               // 출하지
                         eoMhtData,                                                              // mht
@@ -818,7 +843,7 @@ namespace EOM_v3_M
 
             // 모델 데이터 로드
             string[] selectData = new string[] { "line", cbbLineName01.Text, "model_name", _data };
-            string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+            string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
 
             // 2021.03.24
             // 첫 투입 내용은 제일 상단에 올리도록
@@ -832,7 +857,7 @@ namespace EOM_v3_M
             // 출하지 텍스트 출력
             if (pnShipmentView.Visible)
             {
-                string shipmentData = pe.NowShipment(settingData[0], cbbLineName.Text, cbbProductName.Text);
+                string shipmentData = pe.NowShipment(strDbName, cbbLineName.Text, cbbProductName.Text);
 
                 lblShipmentView.Text = shipmentData;
             }
@@ -840,7 +865,7 @@ namespace EOM_v3_M
             // 2023.05.17
             // 초물리스트 등록 여부
             selectData = new string[] { "line", cbbLineName01.Text, "model_name", _data };
-            query = dc.SelectDeleteQueryANDConvert("fpi", settingData[1], selectData, "SELECT");
+            query = dc.SelectDeleteQueryANDConvert("fpi", "model_data", selectData, "SELECT");
 
             string[] modelCount = mariaDB.SelectQueryCount(query, "model_name");
 
@@ -871,43 +896,43 @@ namespace EOM_v3_M
             if (_type == 1)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "car_name", _data };
-                query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
             }
             // 고객사 EO 조회
             else if (_type == 2)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "customer_eo_number", _data };
-                query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
             }
             // 모비스 EO 조회
             else if (_type == 3)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "mobis_eo_number", _data };
-                query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
             }
 
             // EO 내용 조회
             else if (_type == 4)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "eo_contents", _data };
-                query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
             }
             // MAIN PCB 조회
             else if (_type == 5)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "main_pcb_name", _data };
-                query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
             }
             // SUB PCB 조회
             else if (_type == 6)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "sub_pcb_name", _data };
-                query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
             }
 
             else
             {
-                Guna2Msg("오류", "치명적인 오류");
+                Guna2Msg(this, "오류", "치명적인 오류");
                 return;
             }
 
@@ -1047,14 +1072,6 @@ namespace EOM_v3_M
         {
             try
             {
-                // 2020.06.22
-                // D-오디오 수삽 인쇄 안됨
-                /*
-                if (metroComboBox2.Text.Equals("D-오디오 수삽"))
-                {
-                    return;
-                }
-                */
                 if (btnProductAdd.Enabled || adminMode)
                 {
                     string[] columnData = new string[_dataGridView.ColumnCount];
@@ -1146,7 +1163,7 @@ namespace EOM_v3_M
         {
             try
             {
-                string[,] s = mariaDB.SelectQuery2("SELECT * FROM `eom_1floor`.`message_data` WHERE receive_name = '" + userNameData + "' AND receive_check = 'C' ORDER BY write_time");
+                string[,] s = mariaDB.SelectQuery2("SELECT * FROM `" + strDbName + "`.`message_data` WHERE receive_name = '" + userNameData + "' AND receive_check = 'C' ORDER BY write_time");
 
                 // 메세지가 있다면
                 if (s.GetLength(0) > 0)
@@ -1237,7 +1254,6 @@ namespace EOM_v3_M
 
                     if (passwordFormClass.ReturnValue)
                     {
-                        //AddMetroBtn.Enabled = true;
                         adminMode = true;
                         dgvSelect.Visible = true;
                         //DataGridViewUpdate();
@@ -1273,8 +1289,8 @@ namespace EOM_v3_M
             UpdateListViewFormClass updateListViewFormClass = new UpdateListViewFormClass();
 
             updateListViewFormClass.FormTitleName = programName + " - 업데이트 내역";
-            updateListViewFormClass.DB = settingData[0];
-            updateListViewFormClass.Table = settingData[6];
+            updateListViewFormClass.DB = strDbName;
+            updateListViewFormClass.Table = "update_data";
             updateListViewFormClass.StrConn = strConn;
             updateListViewFormClass.BoundsLocation = 0;
             updateListViewFormClass.StartForm();
@@ -1307,7 +1323,7 @@ namespace EOM_v3_M
             }
             else
             {
-                Guna2Msg("오류", "라인을 선택해주세요");
+                Guna2Msg(this, "오류", "라인을 선택해주세요");
             }
         }
 
@@ -1330,7 +1346,7 @@ namespace EOM_v3_M
             }
             else
             {
-                Guna2Msg("오류", "라인을 선택해주세요");
+                Guna2Msg(this, "오류", "라인을 선택해주세요");
             }
         }
 
@@ -1370,7 +1386,7 @@ namespace EOM_v3_M
                             dgvSelect.Rows[i].Cells[11].Value.ToString(),
                         };
 
-                        string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], deleteData, "DELETE");
+                        string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", deleteData, "DELETE");
                         mariaDB.EtcQuery(query);
 
                         // 로그
@@ -1401,11 +1417,11 @@ namespace EOM_v3_M
                     dgvSelect.Rows.Clear();
                     cbbProductName01.SelectedItem = tmpData;
 
-                    Guna2Msg("오류", count.ToString() + "건 삭제가 완료되었습니다");
+                    Guna2Msg(this, "오류", count.ToString() + "건 삭제가 완료되었습니다");
                 }
                 else
                 {
-                    Guna2Msg("오류", "선택 된 자료가 없습니다");
+                    Guna2Msg(this, "오류", "선택 된 자료가 없습니다");
                 }
             }
             catch (Exception ex)
@@ -1428,10 +1444,14 @@ namespace EOM_v3_M
                 }
                 else
                 {
-                    Guna2Msg("오류", "라인을 선택해주세요");
+                    Guna2Msg(this, "오류", "라인을 선택해주세요");
                 }
 
                 BtnProductUpdate.Enabled = true;
+
+                // 2024.04.04
+                lblFpiCheck.Text = "초물 확인";
+                lblFpiCheck.ForeColor = Color.Blue;
 
                 debugLabel();
             }
@@ -1454,12 +1474,21 @@ namespace EOM_v3_M
                         _dataGridView.Rows[_e.RowIndex].Selected = true;                         // 마우스 우 클릭 선택
                         _dataGridView.CurrentCell = _dataGridView.Rows[_e.RowIndex].Cells[0];    // index 보정
 
-                        string[] data = new string[_dataGridView.ColumnCount];
+                        string[] data = new string[_dataGridView.ColumnCount + 1];
 
-                        for (int i = 0; i < data.Length; i++)
+                        for (int i = 0; i < 6; i++)
                         {
                             data[i] = _dataGridView.Rows[_dataGridView.CurrentCell.RowIndex].Cells[i].Value.ToString();
                         }
+
+                        // 스티커 색상
+                        data[6] = _dataGridView.Rows[_dataGridView.CurrentRow.Index].Cells[6].Style.BackColor.Name.ToString();
+
+                        for (int i = 7; i < data.Length; i++)
+                        {
+                            data[i] = _dataGridView.Rows[_dataGridView.CurrentCell.RowIndex].Cells[i - 1].Value.ToString();
+                        }
+
 
                         MouseRightMenuDGV(_dataGridView, data);
                     }
@@ -1467,7 +1496,7 @@ namespace EOM_v3_M
             }
             catch (Exception ex)
             {
-                Guna2Msg("오류", ex.Message, true);
+                Guna2Msg(this, "오류", ex.Message, true);
             }
         }
 
@@ -1478,7 +1507,7 @@ namespace EOM_v3_M
             {
                 string[] selectData = new string[]
                 {
-                    "line", cbbLineName01.Text,                                                            // 라인
+                    "line", cbbLineName01.Text,                                                             // 라인
                     "car_name", _dgv.Rows[_dgv.CurrentRow.Index].Cells[2].Value.ToString(),                 // 차종
                     "customer_eo_number", _dgv.Rows[_dgv.CurrentRow.Index].Cells[3].Value.ToString(),       // 고객사 EO
                     "mobis_eo_number", _dgv.Rows[_dgv.CurrentRow.Index].Cells[4].Value.ToString(),          // 모비스 EO
@@ -1487,7 +1516,7 @@ namespace EOM_v3_M
                     "print_type", _dgv.Rows[_dgv.CurrentRow.Index].Cells[10].Value.ToString(),              // 타입
                     "shipment", _dgv.Rows[_dgv.CurrentRow.Index].Cells[11].Value.ToString()                 // 출하지
                 };
-                string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+                string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
                 string[] columnData = mariaDB.SelectQueryCount(query, "mht_data");
 
                 // 공백이 아니라면 파일 생성
@@ -1535,7 +1564,7 @@ namespace EOM_v3_M
 
         private void MouseRightMenuDGV(DataGridView _dgv, string[] _data)
         {
-            string shipmentData = pe.NowShipment(settingData[0], cbbLineName.Text, _data[1]);
+            string shipmentData = pe.NowShipment(strDbName, cbbLineName.Text, _data[1]);
 
             ContextMenu m = new ContextMenu();
 
@@ -1549,8 +1578,8 @@ namespace EOM_v3_M
             MenuItem menuItem13 = new MenuItem("동일 내용 검색 (고객사 EO '" + _data[3] + "')");
             MenuItem menuItem14 = new MenuItem("동일 내용 검색 (모비스 EO '" + _data[4] + "')");
             MenuItem menuItem15 = new MenuItem("동일 내용 검색 (EO 내용 '" + _data[5] + "')");
-            MenuItem menuItem16 = new MenuItem("동일 내용 검색 (MAIN PCB '" + _data[13] + "')");
-            MenuItem menuItem17 = new MenuItem("동일 내용 검색 (SUB PCB '" + _data[14] + "')");
+            MenuItem menuItem16 = new MenuItem("동일 내용 검색 (MAIN PCB '" + _data[14] + "')");
+            MenuItem menuItem17 = new MenuItem("동일 내용 검색 (SUB PCB '" + _data[15] + "')");
             MenuItem menuItemLine3 = new MenuItem("-");
 
             MenuItem menuItem21 = new MenuItem("출하지 수정 (현재 '" + shipmentData + "')");
@@ -1646,7 +1675,7 @@ namespace EOM_v3_M
                 case 1:
                     if (_data[5] == "---------- 첫 투입 품번 등록 ----------")
                     {
-                        Guna2Msg("오류", "수정할 수 없는 내용입니다");
+                        Guna2Msg(this, "오류", "수정할 수 없는 내용입니다");
                         return;
                     }
 
@@ -1658,9 +1687,9 @@ namespace EOM_v3_M
                         "customer_eo_number", _data[3],
                         "mobis_eo_number", _data[4],
                         "eo_contents", _data[5],
-                        "shipment", _data[11]
+                        "shipment", _data[12]
                     };
-                    string query = dc.SelectDeleteQueryANDConvert(settingData[0], settingData[1], selectData, "SELECT");
+                    string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
                     string[,] resultData = mariaDB.SelectQuery2(query);
 
                     if (resultData.GetLength(0) == 1)
@@ -1683,9 +1712,9 @@ namespace EOM_v3_M
                     }
                     break;
                 case 2:
-                    Guna2Msg("오류", "이 기능은 미입력 될 경우 보정할 때 사용하므로 문의 후 사용바랍니다");
+                    Guna2Msg(this, "오류", "이 기능은 미입력 될 경우 보정할 때 사용하므로 문의 후 사용바랍니다");
 
-                    query = "SELECT * FROM `packingtoorder`.`" + settingData[5] + "` WHERE contents LIKE '%" + _data[1] + "%' AND contents LIKE '%" + _data[5] + "%' ORDER BY write_time";
+                    query = "SELECT * FROM `packingtoorder`.`" + "log_data" + "` WHERE contents LIKE '%" + _data[1] + "%' AND contents LIKE '%" + _data[5] + "%' ORDER BY write_time";
                     query = query.Replace("\r\n", " "); // 보정 필요
                     string[] resultData2 = mariaDB.SelectQueryCount(query, "write_time");
 
@@ -1693,7 +1722,7 @@ namespace EOM_v3_M
                     {
                         DateTime indexDateTime = Convert.ToDateTime(resultData2[0]);
 
-                        query = "SELECT * FROM `packingtoorder`.`" + settingData[5] + "` WHERE write_time < '" + indexDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "' AND write_time > '" + indexDateTime.AddMinutes(-10).ToString("yyyy-MM-dd HH:mm:ss") + "' AND contents LIKE '%" + _data[1] + "%'";
+                        query = "SELECT * FROM `packingtoorder`.`" + "log_data" + "` WHERE write_time < '" + indexDateTime.ToString("yyyy-MM-dd HH:mm:ss") + "' AND write_time > '" + indexDateTime.AddMinutes(-10).ToString("yyyy-MM-dd HH:mm:ss") + "' AND contents LIKE '%" + _data[1] + "%'";
                         string[,] resultData3 = mariaDB.SelectQuery2(query);
 
                         if (resultData3.GetLength(0) > 0)
@@ -1709,36 +1738,36 @@ namespace EOM_v3_M
                                 {
                                     if (MessageBox.Show("누락된 오더 '" + spilitContents[5] + "' 입력하시겠습니까?", "알림", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                                     {
-                                        string conditionQuery = "WHERE line = '" + cbbLineName01.Text + "' AND model_name = '" + _data[1] + "' AND car_name = '" + _data[2] + "' AND customer_eo_number = '" + _data[3] + "' AND mobis_eo_number = '" + _data[4] + "' AND eo_contents = '" + _data[5] + "' AND shipment = '" + _data[11] + "'";
-                                        query = "SELECT * FROM `" + settingData[0] + "`.`" + settingData[1] + "` " + conditionQuery;
+                                        string conditionQuery = "WHERE line = '" + cbbLineName01.Text + "' AND model_name = '" + _data[1] + "' AND car_name = '" + _data[2] + "' AND customer_eo_number = '" + _data[3] + "' AND mobis_eo_number = '" + _data[4] + "' AND eo_contents = '" + _data[5] + "' AND shipment = '" + _data[12] + "'";
+                                        query = "SELECT * FROM `" + strDbName + "`.`model_data` " + conditionQuery;
                                         string[,] resultData4 = mariaDB.SelectQuery2(query);
 
                                         if (resultData4.GetLength(0) == 1)
                                         {
-                                            query = "UPDATE `" + settingData[0] + "`.`" + settingData[1] + "` SET start_order = '" + spilitContents[5] + "' " + conditionQuery;
+                                            query = "UPDATE `" + strDbName + "`.`model_data` SET start_order = '" + spilitContents[5] + "' " + conditionQuery;
                                             mariaDB.EtcQuery(query);
                                             //Clipboard.SetText(query);
-                                            Guna2Msg("알림", "정상적으로 입력되었습니다");
+                                            Guna2Msg(this, "알림", "정상적으로 입력되었습니다");
                                         }
                                         else
                                         {
-                                            Guna2Msg("오류", "1개 초과 조회 오류 [윤민규 사원 문의]");
+                                            Guna2Msg(this, "오류", "1개 초과 조회 오류 [윤민규 사원 문의]");
                                         }
                                     }
                                     else
                                     {
-                                        Guna2Msg("오류", "입력이 취소되었습니다");
+                                        Guna2Msg(this, "오류", "입력이 취소되었습니다");
                                     }
                                 }
                                 else
                                 {
-                                    Guna2Msg("오류", "오더 자리수 불일치");
+                                    Guna2Msg(this, "오류", "오더 자리수 불일치");
                                 }
                             }
                         }
                         else
                         {
-                            Guna2Msg("오류", "검색된 데이터가 없어 자동 입력이 불가합니다 [2]");
+                            Guna2Msg(this, "오류", "검색된 데이터가 없어 자동 입력이 불가합니다 [2]");
                         }
                     }
                     else
@@ -1746,7 +1775,7 @@ namespace EOM_v3_M
 #if DEBUG
 
 #endif
-                        Guna2Msg("오류", "검색된 데이터가 없어 자동 입력이 불가합니다 [1]");
+                        Guna2Msg(this, "오류", "검색된 데이터가 없어 자동 입력이 불가합니다 [1]");
                     }
                     break;
                 // ---------------------
@@ -1787,7 +1816,7 @@ namespace EOM_v3_M
                     break;
                 // ---------------------
                 case 21:
-                    string shipmentData = pe.NowShipment(settingData[0], cbbLineName.Text, _data[1]);
+                    string shipmentData = pe.NowShipment(strDbName, cbbLineName.Text, _data[1]);
                     string[] sendData = { "", _data[1], shipmentData, "", "", "", "", "" };
 
                     OrderMasterForm_E orderMasterForm_E = new OrderMasterForm_E(sendData);
@@ -1892,7 +1921,7 @@ namespace EOM_v3_M
             Opacity = 1;
         }
 
-        private void metroComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbbProductName_SelectedIndexChanged(object sender, EventArgs e)
         {
             // 2022.06.30
             // 중복 모델 선택 시퀀스 예방
@@ -1904,7 +1933,7 @@ namespace EOM_v3_M
             }
         }
 
-        private void metroComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbbLineName_SelectedIndexChanged(object sender, EventArgs e)
         {
             lineSelectData[0] = cbbLineName01.SelectedIndex.ToString();
 
@@ -1917,11 +1946,11 @@ namespace EOM_v3_M
             {
                 if (cbbLineName01.Text == "D-오디오 조립")
                 {
-                    cbbMetroFloor01.Visible = true;
+                    cbbFloor01.Visible = true;
                 }
                 else
                 {
-                    cbbMetroFloor01.Visible = false;
+                    cbbFloor01.Visible = false;
                 }
             }
 
@@ -1935,11 +1964,13 @@ namespace EOM_v3_M
             {
                 btnShipmentMaster.Visible = true;
                 btnShipmentChange.Visible = true;
+                pnFpiCheck.Visible = true;
             }
             else
             {
                 btnShipmentMaster.Visible = false;
                 btnShipmentChange.Visible = false;
+                pnFpiCheck.Visible = false;
             }
         }
 
@@ -1991,7 +2022,18 @@ namespace EOM_v3_M
             //}
         }
 
-        private void metroComboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        private void lblFpiCheck_Click(object sender, EventArgs e)
+        {
+            FpiCheckForm fpiCheckForm = new FpiCheckForm();
+            fpiCheckForm.ShowDialog();
+        }
+
+        private void 실험실ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbbFloor_SelectedIndexChanged(object sender, EventArgs e)
         {
             BtnProductUpdate.PerformClick();
         }
@@ -2012,13 +2054,13 @@ namespace EOM_v3_M
                 if (cbbLineName.Text == "D-오디오 조립")
                 {
                     pnShipmentView.Visible = true;
-                    pnFpiCheck.Visible = true;
+                    //pnFpiCheck.Visible = true;
                 }
             }
             else
             {
                 pnShipmentView.Visible = false;
-                pnFpiCheck.Visible = false;
+                //pnFpiCheck.Visible = false;
             }
         }
 

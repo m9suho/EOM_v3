@@ -52,15 +52,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>ICON\Cjdowner-Cryptocurrency-Flat-Enjin-Coin-ENJ.ico</ApplicationIcon>
+    <ApplicationIcon>Cjdowner-Cryptocurrency-Flat-Enjin-Coin-ENJ.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
-      <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Google.Protobuf, Version=3.14.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Protobuf.3.14.0\lib\net45\Google.Protobuf.dll</HintPath>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.2.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.21.9.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.21.9\lib\net45\Google.Protobuf.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Guna.UI2, Version=2.0.3.5, Culture=neutral, PublicKeyToken=4015e4865bda28a4, processorArchitecture=MSIL">
@@ -70,30 +74,26 @@
       <HintPath>..\packages\IconButton.3.1.0\lib\netstandard2.0\IconButton.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="K4os.Compression.LZ4, Version=1.2.6.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
-      <HintPath>..\packages\K4os.Compression.LZ4.1.2.6\lib\net46\K4os.Compression.LZ4.dll</HintPath>
+    <Reference Include="K4os.Compression.LZ4, Version=1.3.5.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.1.3.5\lib\netstandard2.0\K4os.Compression.LZ4.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="K4os.Compression.LZ4.Streams, Version=1.2.6.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
-      <HintPath>..\packages\K4os.Compression.LZ4.Streams.1.2.6\lib\net46\K4os.Compression.LZ4.Streams.dll</HintPath>
+    <Reference Include="K4os.Compression.LZ4.Streams, Version=1.3.5.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.Streams.1.3.5\lib\netstandard2.0\K4os.Compression.LZ4.Streams.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="K4os.Hash.xxHash, Version=1.0.6.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
-      <HintPath>..\packages\K4os.Hash.xxHash.1.0.6\lib\net46\K4os.Hash.xxHash.dll</HintPath>
+    <Reference Include="K4os.Hash.xxHash, Version=1.0.8.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Hash.xxHash.1.0.8\lib\netstandard2.0\K4os.Hash.xxHash.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="MetroFramework.Design, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MySql.Data, Version=8.0.22.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.22\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
       <Private>False</Private>
@@ -104,23 +104,72 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing.Design" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.4.4.1\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.7.0.2\lib\netstandard2.0\System.Diagnostics.DiagnosticSource.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Loader, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.Loader.4.3.0\lib\netstandard1.5\System.Runtime.Loader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.AccessControl, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.4.7.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Security.Permissions, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Permissions.4.7.0\lib\net461\System.Security.Permissions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.4.7.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.4.4.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.7.0.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.7.0.1\lib\netstandard2.0\System.Text.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Transactions" />
@@ -136,6 +185,7 @@
       <HintPath>..\packages\MySql.Data.8.0.22\lib\net452\Ubiety.Dns.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.Forms.4.8.0.1821\lib\netstandard2.0\Xamarin.Forms.Core.dll</HintPath>
       <Private>False</Private>
@@ -152,10 +202,17 @@
       <HintPath>..\packages\MySql.Data.8.0.22\lib\net452\Zstandard.Net.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ZstdSharp, Version=0.7.1.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZstdSharp.Port.0.7.1\lib\net461\ZstdSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Public\DefaultClass.cs">
       <Link>클래스\DefaultClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Public\Guna2MessageBox.cs">
+      <Link>클래스\Guna2MessageBox.cs</Link>
     </Compile>
     <Compile Include="..\..\Public\Guna2UpdateFormClass.cs">
       <Link>클래스\Guna2UpdateFormClass.cs</Link>
@@ -178,39 +235,43 @@
     <Compile Include="..\..\Public\UpdateListViewFormClass.cs">
       <Link>클래스\UpdateListViewFormClass.cs</Link>
     </Compile>
+    <Compile Include="..\..\Public\WebClientPlus.cs">
+      <Link>클래스\WebClientPlus.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="폼\Guna2MessageBox.cs">
+    <Compile Include="폼\FpiCheckForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\Guna2MessageBox.Designer.cs">
-      <DependentUpon>Guna2MessageBox.cs</DependentUpon>
+    <Compile Include="폼\FpiCheckForm.Designer.cs">
+      <DependentUpon>FpiCheckForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\MESSAGE\MessageForm_List.cs">
+    <Compile Include="폼\MessageForm_List.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\MESSAGE\MessageForm_List.Designer.cs">
+    <Compile Include="폼\MessageForm_List.Designer.cs">
       <DependentUpon>MessageForm_List.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\MESSAGE\MessageForm_Receive.cs">
+    <Compile Include="폼\MessageForm_Receive.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\MESSAGE\MessageForm_Receive.Designer.cs">
+    <Compile Include="폼\MessageForm_Receive.Designer.cs">
       <DependentUpon>MessageForm_Receive.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\MESSAGE\MessageForm_Send.cs">
+    <Compile Include="폼\MessageForm_Send.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\MESSAGE\MessageForm_Send.Designer.cs">
+    <Compile Include="폼\MessageForm_Send.Designer.cs">
       <DependentUpon>MessageForm_Send.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\MODELREGISTER\ModelForm_E.cs">
+    <Compile Include="폼\ModelForm_E.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\MODELREGISTER\ModelForm_E.designer.cs">
+    <Compile Include="폼\ModelForm_E.designer.cs">
       <DependentUpon>ModelForm_E.cs</DependentUpon>
     </Compile>
     <Compile Include="폼\MainForm_M.cs">
@@ -219,66 +280,60 @@
     <Compile Include="폼\MainForm_M.Designer.cs">
       <DependentUpon>MainForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\MODELREGISTER\ModelForm_M.cs">
+    <Compile Include="폼\ModelForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\MODELREGISTER\ModelForm_M.Designer.cs">
+    <Compile Include="폼\ModelForm_M.Designer.cs">
       <DependentUpon>ModelForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\EO\EOForm_M.cs">
+    <Compile Include="폼\EOForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\EO\EOForm_M.Designer.cs">
+    <Compile Include="폼\EOForm_M.Designer.cs">
       <DependentUpon>EOForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\ETC\LoginForm_M.cs">
+    <Compile Include="폼\OrderMasterForm_E.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\ETC\LoginForm_M.Designer.cs">
-      <DependentUpon>LoginForm_M.cs</DependentUpon>
-    </Compile>
-    <Compile Include="폼\MASTER\OrderMasterForm_E.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="폼\MASTER\OrderMasterForm_E.Designer.cs">
+    <Compile Include="폼\OrderMasterForm_E.Designer.cs">
       <DependentUpon>OrderMasterForm_E.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\EO\EOCheckForm_M.cs">
+    <Compile Include="폼\EOCheckForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\EO\EOCheckForm_M.Designer.cs">
+    <Compile Include="폼\EOCheckForm_M.Designer.cs">
       <DependentUpon>EOCheckForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\MASTER\OrderMasterForm_H.cs">
+    <Compile Include="폼\OrderMasterForm_H.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\MASTER\OrderMasterForm_H.Designer.cs">
+    <Compile Include="폼\OrderMasterForm_H.Designer.cs">
       <DependentUpon>OrderMasterForm_H.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\MASTER\OrderMasterForm_M.cs">
+    <Compile Include="폼\OrderMasterForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\MASTER\OrderMasterForm_M.Designer.cs">
+    <Compile Include="폼\OrderMasterForm_M.Designer.cs">
       <DependentUpon>OrderMasterForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\ETC\SearchForm_M.cs">
+    <Compile Include="폼\SearchForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\ETC\SearchForm_M.Designer.cs">
+    <Compile Include="폼\SearchForm_M.Designer.cs">
       <DependentUpon>SearchForm_M.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\PRINT\PrintForm_M.cs">
+    <Compile Include="폼\PrintForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\PRINT\PrintForm_M.Designer.cs">
+    <Compile Include="폼\PrintForm_M.Designer.cs">
       <DependentUpon>PrintForm_M.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="폼\ETC\SignForm.cs">
+    <Compile Include="폼\SignForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\ETC\SignForm.Designer.cs">
+    <Compile Include="폼\SignForm.Designer.cs">
       <DependentUpon>SignForm.cs</DependentUpon>
     </Compile>
     <Compile Include="폼\ViewForm.cs">
@@ -287,50 +342,47 @@
     <Compile Include="폼\ViewForm.Designer.cs">
       <DependentUpon>ViewForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="폼\Guna2MessageBox.resx">
-      <DependentUpon>Guna2MessageBox.cs</DependentUpon>
+    <EmbeddedResource Include="폼\FpiCheckForm.resx">
+      <DependentUpon>FpiCheckForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\MESSAGE\MessageForm_List.resx">
+    <EmbeddedResource Include="폼\MessageForm_List.resx">
       <DependentUpon>MessageForm_List.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\MESSAGE\MessageForm_Receive.resx">
+    <EmbeddedResource Include="폼\MessageForm_Receive.resx">
       <DependentUpon>MessageForm_Receive.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\MESSAGE\MessageForm_Send.resx">
+    <EmbeddedResource Include="폼\MessageForm_Send.resx">
       <DependentUpon>MessageForm_Send.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\MODELREGISTER\ModelForm_E.resx">
+    <EmbeddedResource Include="폼\ModelForm_E.resx">
       <DependentUpon>ModelForm_E.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="폼\MainForm_M.resx">
       <DependentUpon>MainForm_M.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\MODELREGISTER\ModelForm_M.resx">
+    <EmbeddedResource Include="폼\ModelForm_M.resx">
       <DependentUpon>ModelForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\EO\EOForm_M.resx">
+    <EmbeddedResource Include="폼\EOForm_M.resx">
       <DependentUpon>EOForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\ETC\LoginForm_M.resx">
-      <DependentUpon>LoginForm_M.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="폼\MASTER\OrderMasterForm_E.resx">
+    <EmbeddedResource Include="폼\OrderMasterForm_E.resx">
       <DependentUpon>OrderMasterForm_E.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\EO\EOCheckForm_M.resx">
+    <EmbeddedResource Include="폼\EOCheckForm_M.resx">
       <DependentUpon>EOCheckForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\MASTER\OrderMasterForm_H.resx">
+    <EmbeddedResource Include="폼\OrderMasterForm_H.resx">
       <DependentUpon>OrderMasterForm_H.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\MASTER\OrderMasterForm_M.resx">
+    <EmbeddedResource Include="폼\OrderMasterForm_M.resx">
       <DependentUpon>OrderMasterForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\ETC\SearchForm_M.resx">
+    <EmbeddedResource Include="폼\SearchForm_M.resx">
       <DependentUpon>SearchForm_M.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\PRINT\PrintForm_M.resx">
+    <EmbeddedResource Include="폼\PrintForm_M.resx">
       <DependentUpon>PrintForm_M.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -338,7 +390,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\ETC\SignForm.resx">
+    <EmbeddedResource Include="폼\SignForm.resx">
       <DependentUpon>SignForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="폼\ViewForm.resx">
@@ -408,7 +460,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ICON\Cjdowner-Cryptocurrency-Flat-Enjin-Coin-ENJ.ico" />
+    <Content Include="..\..\Public\OK.png">
+      <Link>OK.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Public\WARNING.png">
+      <Link>WARNING.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Cjdowner-Cryptocurrency-Flat-Enjin-Coin-ENJ.ico" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

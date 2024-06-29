@@ -98,10 +98,5 @@ namespace EOM_v3_M
                 //File.WriteAllText(saveFileDialog.FileName, elem.OuterHtml, Encoding.Unicode);
             }
         }
-
-        private void metroButton1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
