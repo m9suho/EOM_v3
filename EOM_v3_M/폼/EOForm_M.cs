@@ -84,7 +84,7 @@ namespace EOM_v3_M
                     /*
                     // 2020.06.22
                     // D-오디오 수삽
-                    if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]))
+                    if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[0]))
                     {
                         printType = "초도품";
                     }
@@ -188,7 +188,7 @@ namespace EOM_v3_M
 
         private string ShipmentData()
         {
-            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[0]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[2]))
             {
                 return "-";
             }
@@ -372,7 +372,7 @@ namespace EOM_v3_M
             eoData = MainForm.mariaDB.SelectQuery2(query);
 
             // SUB 고객사 EO FALSE
-            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[2]))
             {
                 txtCustomerEO.Enabled = false;
                 txtCustomerEO.Text = "-";
@@ -555,7 +555,7 @@ namespace EOM_v3_M
 
             /*
             // D-오디오 수삽
-            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[0]))
             {
                 rdoFirst.Enabled = false;
                 rdoSample.Enabled = false;
@@ -566,7 +566,7 @@ namespace EOM_v3_M
             */
 
             // D-오디오 수삽, D-오디오 SUB
-            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[0]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[2]))
             {
                 // 출하지
                 rdoOEM.Enabled = false;
@@ -580,7 +580,8 @@ namespace EOM_v3_M
                 grpEOType.Enabled = false;
             }
             // 클러스터, 허드
-            else if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[4]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[5]))
+            //else if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[4]))
+            else if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
             {
                 // 2021.03.08
                 // 판넬 활성화하고 이름은 변경
@@ -594,7 +595,7 @@ namespace EOM_v3_M
 
             // 식별 스티커
             // D-오디오 조립
-            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[2]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]))
             {
                 //groupBox4.Enabled = true;
             }
@@ -1240,7 +1241,7 @@ namespace EOM_v3_M
             }
         }
 
-        private void FillColor_Leave(object sender, EventArgs e)
+        private void txtFillColor_Leave(object sender, EventArgs e)
         {
             ((Guna2TextBox)sender).FillColor = Color.White;
         }

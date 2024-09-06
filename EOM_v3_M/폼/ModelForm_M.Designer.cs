@@ -345,7 +345,7 @@
             this.txtEOContents.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtEOContents.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtEOContents.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtEOContents.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.txtEOContents.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.txtEOContents.Location = new System.Drawing.Point(111, 309);
             this.txtEOContents.MaxLength = 10;
             this.txtEOContents.Multiline = true;

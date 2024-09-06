@@ -59,7 +59,8 @@ namespace EOM_v3_M
         public static string[] eoSelectData = new string[9];
         public static string[] printData = new string[13];
         public static string[] floorData = new string[] { "" };
-        public static readonly string[] LINE_NAME_LIST = new string[] { "오디오 플랫폼", "D-오디오 수삽", "D-오디오 조립", "D-오디오 SUB", "클러스터", "HUD" };
+        //public static readonly string[] LINE_NAME_LIST = new string[] { "오디오 플랫폼", "D-오디오 수삽", "D-오디오 조립", "D-오디오 SUB", "클러스터", "HUD" };
+        public static readonly string[] LINE_NAME_LIST = new string[] { "D-오디오 수삽", "D-오디오 조립", "D-오디오 SUB", "클러스터" };
         //public static string[] shipmentData = { "OEM", "CKD", "KD" };
         public static string[] searchData = new string[] { "", "" };
 
@@ -134,13 +135,21 @@ namespace EOM_v3_M
             lblUserName.Left = Width - 245;
             // 2022.11.22
             // 출하지 폼 크기 위치 이동 수정
+            
             txtMenuAllSearch.Left =     Width - txtMenuAllSearch.Width  - 107;
-            pnShipmentView.Left =       Width - pnShipmentView.Width    - 591;
-            btnShipmentMaster.Left =    Width - btnShipmentMaster.Width - 475;
-            btnShipmentChange.Left =    Width - btnShipmentChange.Width - 359;
-            btnProductSearch.Left =     Width - btnProductSearch.Width  - 243;
-            btnProductAdd.Left =        Width - btnProductAdd.Width     - 127;
-            btnProductDelete.Left =     Width - btnProductDelete.Width  - 11;
+
+            /*
+            nShipmentView.Left =        Width - pnShipmentView.Width    - 474;
+            btnShipmentMaster.Left =    Width - btnShipmentMaster.Width - 378;
+            btnShipmentChange.Left =    Width - btnShipmentChange.Width - 282;
+            btnProductSearch.Left =     Width - btnProductSearch.Width  - 185;
+            btnProductAdd.Left =        Width - btnProductAdd.Width     - 99;
+            btnProductDelete.Left =     Width - btnProductDelete.Width  - 13;
+            */
+
+            grpProduct.Left =             Width - grpProduct.Width  - 10;
+            grpEOCheck.Left =   grpProduct.Left - grpEOCheck.Width  - 8;
+            grpShipment.Left =  grpEOCheck.Left - grpShipment.Width - 8;
 
             dgvGuest.Size =  new Size(Width - 22, Height - 204);
             dgvSelect.Size = new Size(Width - 22, Height - 204);
@@ -215,7 +224,7 @@ namespace EOM_v3_M
                 // 컨트롤 디자인 동적 설정
                 cbbProductName01 = cbbProductName;
                 cbbLineName01 = cbbLineName;
-                cbbFloor01 = cbbFloor;
+                //cbbFloor01 = cbbFloor;
                 datagridview01 = dgvSelect;
                 datagridview02 = dgvGuest;
 
@@ -227,7 +236,6 @@ namespace EOM_v3_M
                 Text += " [디버깅 모드]";
                 strDbName = DB_NAME_DEBUG;
 #else
-                guna2ProgressBar1.Visible = false;
                 strDbName = DB_NAME_RELEASE;
 #endif
 
@@ -261,9 +269,7 @@ namespace EOM_v3_M
                 cbbLineName.Items.Clear();
 
                 // 라인 설정
-                // 2021.02.02
-                // 오디오 플랫폼 제외
-                for (int i = 1; i < LINE_NAME_LIST.Length; i++)
+                for (int i = 0; i < LINE_NAME_LIST.Length; i++)
                 {
                     cbbLineName.Items.Add(LINE_NAME_LIST[i]);
                 }
@@ -307,7 +313,7 @@ namespace EOM_v3_M
 
                     btnProductAdd.Enabled = true;
                     //btnProductDelete.Enabled = true;
-                    cbbFloor.Visible = false;
+                    //cbbFloor.Visible = false;
                 }
 
                 // 2020.03.04
@@ -600,8 +606,6 @@ namespace EOM_v3_M
             // 첫 투입 내용은 제일 상단에 올리도록
             //query += " ORDER BY FIELD(eo_contents, '" + PACKING_REGISTER_CONTENTS + "') DESC, start_date ASC";
 
-            //Clipboard.SetText(query);
-
             string[,] modelData = mariaDB.SelectQuery2(query);
 
             DGVRowsDataAdd(dgvGuest, modelData, 1);
@@ -735,14 +739,14 @@ namespace EOM_v3_M
                 /*
                 // 타입
                 // D-오디오 수삽
-                printType = cbbLineName.SelectedItem.Equals(LINE_NAME_LIST[1]) ? "사내용" : _data[i, 11];
+                printType = cbbLineName.SelectedItem.Equals(LINE_NAME_LIST[0]) ? "사내용" : _data[i, 11];
                 */
 
                 string shipment = string.Empty;
 
                 // 출하지
                 // D-오디오 수삽, D-오디오 SUB
-                if (cbbLineName.SelectedItem.Equals(LINE_NAME_LIST[1]) || cbbLineName.SelectedItem.Equals(LINE_NAME_LIST[3]))
+                if (cbbLineName.SelectedItem.Equals(LINE_NAME_LIST[0]) || cbbLineName.SelectedItem.Equals(LINE_NAME_LIST[2]))
                 {
                     shipment = "-";
                 }
@@ -935,8 +939,6 @@ namespace EOM_v3_M
                 Guna2Msg(this, "오류", "치명적인 오류");
                 return;
             }
-
-            //Clipboard.SetText(query);
 
             string[,] resultData = mariaDB.SelectQuery2(query);
 
@@ -1587,7 +1589,7 @@ namespace EOM_v3_M
 
             MenuItem menuItem22 = new MenuItem("출하지 변경이력");
             MenuItem menuItemLine4 = new MenuItem("-");
-            MenuItem menuItem31 = new MenuItem("EO 적용 여부 점검");
+            MenuItem menuItem31 = new MenuItem("EO 적용 점검 (EO 내용)");
 
             m.MenuItems.Add(menuItem0);
             m.MenuItems.Add(menuItemLine1);
@@ -1746,7 +1748,6 @@ namespace EOM_v3_M
                                         {
                                             query = "UPDATE `" + strDbName + "`.`model_data` SET start_order = '" + spilitContents[5] + "' " + conditionQuery;
                                             mariaDB.EtcQuery(query);
-                                            //Clipboard.SetText(query);
                                             Guna2Msg(this, "알림", "정상적으로 입력되었습니다");
                                         }
                                         else
@@ -1832,13 +1833,16 @@ namespace EOM_v3_M
                     orderMasterForm_H.ShowDialog();
                     break;
                 case 31:
-                    // M/PCB, 고객사 EO, 모비스 EO, EO 내용
-                    //string[] sendData = {  };
+                    /*
+                    if (_data[16] != "MAIN PCB" && _data[16] != "SUB PCB")
+                    {
+                        Guna2Msg(this, "오류", "EO 구분이 메인 PCB 또는 서브 PCB만 조회할 수 있습니다");
+                        return;
+                    }
+                    */
 
-                    EOCheckForm_M eoCheckForm_M = new EOCheckForm_M(_data);
-                    //eoCheckForm_M.Owner = this;
-                    //eoCheckForm_M.ShowDialog();
-                    eoCheckForm_M.Show();
+                    EOCheckContentsForm_M eOCheckContentsForm_M = new EOCheckContentsForm_M(_data);
+                    eOCheckContentsForm_M.Show();
                     break;
             }
         }
@@ -1962,14 +1966,18 @@ namespace EOM_v3_M
             // 출하지 마스터 활성화
             if (cbbLineName01.Text == "D-오디오 조립")
             {
-                btnShipmentMaster.Visible = true;
-                btnShipmentChange.Visible = true;
+                grpShipment.Visible = true;
+                grpEOCheck.Visible = true;
+                //btnShipmentMaster.Visible = true;
+                //btnShipmentChange.Visible = true;
                 pnFpiCheck.Visible = true;
             }
             else
             {
-                btnShipmentMaster.Visible = false;
-                btnShipmentChange.Visible = false;
+                grpShipment.Visible = false;
+                grpEOCheck.Visible = false;
+                //btnShipmentMaster.Visible = false;
+                //btnShipmentChange.Visible = false;
                 pnFpiCheck.Visible = false;
             }
         }
@@ -1992,6 +2000,7 @@ namespace EOM_v3_M
 
         private void lblLine_Click(object sender, EventArgs e)
         {
+
 #if DEBUG
             EOForm eOForm = new EOForm();
             eOForm.ShowDialog();
@@ -2033,6 +2042,18 @@ namespace EOM_v3_M
 
         }
 
+        private void btnEOSearch_Click(object sender, EventArgs e)
+        {
+            EOCheckContentsForm_M eOCheckContentsForm_M = new EOCheckContentsForm_M();
+            eOCheckContentsForm_M.Show();
+        }
+
+        private void btnEOPCB_Click(object sender, EventArgs e)
+        {
+            EOCheckPCBForm_M eOCheckPCBForm_M = new EOCheckPCBForm_M();
+            eOCheckPCBForm_M.Show();
+        }
+
         private void cbbFloor_SelectedIndexChanged(object sender, EventArgs e)
         {
             BtnProductUpdate.PerformClick();
@@ -2053,13 +2074,14 @@ namespace EOM_v3_M
                 // 출하지 텍스트 출력
                 if (cbbLineName.Text == "D-오디오 조립")
                 {
-                    pnShipmentView.Visible = true;
+                    //pnShipmentView.Visible = true;
                     //pnFpiCheck.Visible = true;
                 }
             }
             else
             {
-                pnShipmentView.Visible = false;
+                lblShipmentView.Text = "-";
+                //pnShipmentView.Visible = false;
                 //pnFpiCheck.Visible = false;
             }
         }

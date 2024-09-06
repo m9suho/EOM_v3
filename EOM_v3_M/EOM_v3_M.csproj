@@ -244,6 +244,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="폼\EOCheckPCBForm_M.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="폼\EOCheckPCBForm_M.designer.cs">
+      <DependentUpon>EOCheckPCBForm_M.cs</DependentUpon>
+    </Compile>
     <Compile Include="폼\FpiCheckForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -298,11 +304,11 @@
     <Compile Include="폼\OrderMasterForm_E.Designer.cs">
       <DependentUpon>OrderMasterForm_E.cs</DependentUpon>
     </Compile>
-    <Compile Include="폼\EOCheckForm_M.cs">
+    <Compile Include="폼\EOCheckContentsForm_M.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="폼\EOCheckForm_M.Designer.cs">
-      <DependentUpon>EOCheckForm_M.cs</DependentUpon>
+    <Compile Include="폼\EOCheckContentsForm_M.Designer.cs">
+      <DependentUpon>EOCheckContentsForm_M.cs</DependentUpon>
     </Compile>
     <Compile Include="폼\OrderMasterForm_H.cs">
       <SubType>Form</SubType>
@@ -342,6 +348,9 @@
     <Compile Include="폼\ViewForm.Designer.cs">
       <DependentUpon>ViewForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="폼\EOCheckPCBForm_M.resx">
+      <DependentUpon>EOCheckPCBForm_M.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="폼\FpiCheckForm.resx">
       <DependentUpon>FpiCheckForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -370,8 +379,8 @@
     <EmbeddedResource Include="폼\OrderMasterForm_E.resx">
       <DependentUpon>OrderMasterForm_E.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="폼\EOCheckForm_M.resx">
-      <DependentUpon>EOCheckForm_M.cs</DependentUpon>
+    <EmbeddedResource Include="폼\EOCheckContentsForm_M.resx">
+      <DependentUpon>EOCheckContentsForm_M.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="폼\OrderMasterForm_H.resx">
       <DependentUpon>OrderMasterForm_H.cs</DependentUpon>

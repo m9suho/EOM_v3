@@ -9,3 +9,4 @@ D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.csproj.CoreCompileInputs.cache
 D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.csproj.CopyComplete
 D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.exe
 D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.pdb
+D:\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.csprojAssemblyReference.cache

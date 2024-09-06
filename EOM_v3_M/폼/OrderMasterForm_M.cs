@@ -104,8 +104,6 @@ namespace EOM_v3_M
                     }
                 }
 
-                //Clipboard.SetText(query);
-
                 contentsData = MainForm.mariaDB.SelectQuery4(query, 6);
 
                 totalData = new string[orderData.GetLength(0), orderData.GetLength(1) + 5];

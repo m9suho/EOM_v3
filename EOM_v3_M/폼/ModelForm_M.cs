@@ -248,7 +248,7 @@ namespace EOM_v3_M
             }
             // 2020.04.09
             // 클러스터 제외
-            //if (txtMobisEO.Text.Equals(string.Empty) && !MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[4]))
+            //if (txtMobisEO.Text.Equals(string.Empty) && !MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
             // 2021.12.12
             // 클러스터 포함
             if (txtMobisEO.Text.Equals(string.Empty))
@@ -367,7 +367,7 @@ namespace EOM_v3_M
             MainForm.dc.InitialSetTextBox(this);
 
             // D-오디오 수삽, D-오디오 SUB
-            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
+            if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[0]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[2]))
             {
                 txtProductName.Text = "M";
                 txtProductName.Select(txtProductName.MaxLength + 1, 0);
@@ -484,7 +484,8 @@ namespace EOM_v3_M
         {
             try
             {
-                if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[1] || MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[3])
+                // 
+                if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[0] || MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[2])
                 {
                     if (((Guna2TextBox)sender).TextLength == 0)
                     {
@@ -524,7 +525,7 @@ namespace EOM_v3_M
                     // 2020.12.14
                     // D-오디오 조립만 M17
                     // 그 외 M15
-                    if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[2])
+                    if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[1])
                     {
                         //((Guna2TextBox)sender).Text = "M17";
                     }
@@ -736,7 +737,7 @@ namespace EOM_v3_M
 
                 // D-오디오 수삽
                 // D-오디오 SUB
-                if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
+                if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[0]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[2]))
                 {
                     insertData = DatabaseColumnData(1);
                 }
@@ -826,7 +827,7 @@ namespace EOM_v3_M
             // 2020.12.14
             // D-오디오 조립만 M17
             // 그 외 M15
-            if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[2])
+            if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[1])
             {
                 txtSubPCB.Text = "M17";
             }
@@ -939,7 +940,7 @@ namespace EOM_v3_M
 
                         // 2021.01.26
                         // D-오디오 수삽, D-오디오 조립 외만
-                        if (MainForm.cbbLineName01.Text != MainForm.LINE_NAME_LIST[1] && MainForm.cbbLineName01.Text != MainForm.LINE_NAME_LIST[3])
+                        if (MainForm.cbbLineName01.Text != MainForm.LINE_NAME_LIST[0] && MainForm.cbbLineName01.Text != MainForm.LINE_NAME_LIST[2])
                         {
                             chkNonInput.Enabled = true;
                         }

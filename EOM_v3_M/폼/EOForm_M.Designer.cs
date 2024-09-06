@@ -526,7 +526,7 @@
             this.txtCarName.Enter += new System.EventHandler(this.txtFillColor_Enter);
             this.txtCarName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ImeMode_KeyDown);
             this.txtCarName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCarName_KeyUp);
-            this.txtCarName.Leave += new System.EventHandler(this.FillColor_Leave);
+            this.txtCarName.Leave += new System.EventHandler(this.txtFillColor_Leave);
             // 
             // pnTitle
             // 
@@ -875,7 +875,7 @@
             this.txtCustomerEO.Enter += new System.EventHandler(this.txtFillColor_Enter);
             this.txtCustomerEO.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ImeMode_KeyDown);
             this.txtCustomerEO.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumAlphaBetString_KeyPress);
-            this.txtCustomerEO.Leave += new System.EventHandler(this.FillColor_Leave);
+            this.txtCustomerEO.Leave += new System.EventHandler(this.txtFillColor_Leave);
             // 
             // txtMobisEO1
             // 
@@ -903,7 +903,7 @@
             this.txtMobisEO1.Enter += new System.EventHandler(this.txtFillColor_Enter);
             this.txtMobisEO1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ImeMode_KeyDown);
             this.txtMobisEO1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumAlphaBetString_KeyPress);
-            this.txtMobisEO1.Leave += new System.EventHandler(this.FillColor_Leave);
+            this.txtMobisEO1.Leave += new System.EventHandler(this.txtFillColor_Leave);
             // 
             // txtMobisEO2
             // 
@@ -930,7 +930,7 @@
             this.txtMobisEO2.TabIndex = 147;
             this.txtMobisEO2.Enter += new System.EventHandler(this.txtFillColor_Enter);
             this.txtMobisEO2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ImeMode_KeyDown);
-            this.txtMobisEO2.Leave += new System.EventHandler(this.FillColor_Leave);
+            this.txtMobisEO2.Leave += new System.EventHandler(this.txtFillColor_Leave);
             // 
             // chkDualEO
             // 

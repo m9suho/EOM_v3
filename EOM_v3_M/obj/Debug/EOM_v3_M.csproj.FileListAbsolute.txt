@@ -19,7 +19,6 @@ D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.MainForm.resources
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.ModelForm_M.resources
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.EOForm.resources
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.OrderMasterForm_E.resources
-D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.EOCheckForm_M.resources
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.OrderMasterForm_H.resources
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.OrderMasterForm_M.resources
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.SearchForm.resources
@@ -33,3 +32,5 @@ D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csproj.CopyComplete
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.exe
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.pdb
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csprojAssemblyReference.cache
+D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.EOCheckPCBForm_M.resources
+D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.EOCheckContentsForm_M.resources
