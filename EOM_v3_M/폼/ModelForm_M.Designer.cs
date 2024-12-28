@@ -219,6 +219,7 @@
             this.dtpEndDate.BorderThickness = 1;
             this.dtpEndDate.Checked = true;
             this.dtpEndDate.CustomFormat = "yyyy년 M월 d일 dddd";
+            this.dtpEndDate.Enabled = false;
             this.dtpEndDate.FillColor = System.Drawing.Color.White;
             this.dtpEndDate.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.dtpEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
@@ -239,6 +240,7 @@
             this.dtpStartDate.BorderThickness = 1;
             this.dtpStartDate.Checked = true;
             this.dtpStartDate.CustomFormat = "yyyy년 M월 d일 dddd";
+            this.dtpStartDate.Enabled = false;
             this.dtpStartDate.FillColor = System.Drawing.Color.White;
             this.dtpStartDate.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
@@ -463,9 +465,8 @@
             this.txtSubPCB.Size = new System.Drawing.Size(341, 29);
             this.txtSubPCB.TabIndex = 3;
             this.txtSubPCB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtSubPCB.TextChanged += new System.EventHandler(this.txtSubPCB_TextChanged);
             this.txtSubPCB.Enter += new System.EventHandler(this.txtSubPCB_Enter);
-            this.txtSubPCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSubPCB_KeyPress);
+            this.txtSubPCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumAlphaBetString_KeyPress);
             this.txtSubPCB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAddHyphenCheckFirstChar_KeyUp);
             this.txtSubPCB.Leave += new System.EventHandler(this.txtFillColor_Leave);
             // 
@@ -493,9 +494,8 @@
             this.txtMainPCB.Size = new System.Drawing.Size(424, 29);
             this.txtMainPCB.TabIndex = 2;
             this.txtMainPCB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtMainPCB.TextChanged += new System.EventHandler(this.txtMainPCB_TextChanged);
             this.txtMainPCB.Enter += new System.EventHandler(this.txtMainPCB_Enter);
-            this.txtMainPCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMainPCB_KeyPress);
+            this.txtMainPCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumAlphaBetString_KeyPress);
             this.txtMainPCB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAddHyphenCheckFirstChar_KeyUp);
             this.txtMainPCB.Leave += new System.EventHandler(this.txtMainPCB_Leave);
             // 
@@ -523,7 +523,7 @@
             this.txtCarName.TabIndex = 1;
             this.txtCarName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtCarName.Enter += new System.EventHandler(this.txtFillColor_Enter);
-            this.txtCarName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCarName_KeyPress);
+            this.txtCarName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumAlphaSpaceString_KeyPress);
             this.txtCarName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCarName_KeyUp);
             this.txtCarName.Leave += new System.EventHandler(this.txtFillColor_Leave);
             // 
@@ -551,9 +551,9 @@
             this.txtProductName.Size = new System.Drawing.Size(424, 29);
             this.txtProductName.TabIndex = 0;
             this.txtProductName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtProductName.TextChanged += new System.EventHandler(this.txtProductName_TextChanged);
             this.txtProductName.Enter += new System.EventHandler(this.txtFillColor_Enter);
             this.txtProductName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtProductName_KeyDown);
+            this.txtProductName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumAlphaBetString_KeyPress);
             this.txtProductName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAddHyphenCheckFirstChar_KeyUp);
             this.txtProductName.Leave += new System.EventHandler(this.txtProductName_Leave);
             // 

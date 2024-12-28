@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
@@ -17,8 +18,11 @@ namespace EOM_v3_M
         const int FORM_HEIGHT_SIZE = 700;
         const string PACKING_REGISTER_CONTENTS = "---------- 첫 투입 품번 등록 ----------";
         const string GUEST_LOGIN_MSG = "GUEST님 로그인";
-        const string DB_NAME_RELEASE = "eom_1floor";
-        const string DB_NAME_DEBUG = "eom_1floor_trunk";
+#if !DEBUG
+        public static readonly string DATABASE_NAME = "eom_1floor";
+#else
+        public static readonly string DATABASE_NAME = "eom_1floor_trunk";
+#endif
 
         string strConn = string.Empty;
         
@@ -31,13 +35,12 @@ namespace EOM_v3_M
         public static int login = 0;
         public static int permission = 0;
 
-        public static string strDbName = string.Empty;
         public static string searchType = string.Empty;
         public static string eoType = string.Empty;
         public static string eoCarData = string.Empty; 
         //public static string eoViewData = string.Empty;
         //public static string subjectData = string.Empty;
-        public static string userNameData = string.Empty;
+        //public static string userNameData = string.Empty;
         public static string programName = "Engineer Order Manager v3.1 (멀티 통합)";
         public static string settingFileName = @"settingData";
         public static string updateFileName = @"updateData";
@@ -55,11 +58,17 @@ namespace EOM_v3_M
         /// [0] : eom_1floor
         /// [1] : model_data
         public static string[] settingData;
+        /// <summary>
+        /// 2024.11.03
+        /// 데이터베이스 전환
+        /// [0]: 이름
+        /// [1]: 네트워크 맥 주소
+        /// [2]: 프린터 이름
+        /// </summary>
+        public static string[] strUserAddressData;
         public static string[] updateData, lineSelectData;
         public static string[] eoSelectData = new string[9];
         public static string[] printData = new string[13];
-        public static string[] floorData = new string[] { "" };
-        //public static readonly string[] LINE_NAME_LIST = new string[] { "오디오 플랫폼", "D-오디오 수삽", "D-오디오 조립", "D-오디오 SUB", "클러스터", "HUD" };
         public static readonly string[] LINE_NAME_LIST = new string[] { "D-오디오 수삽", "D-오디오 조립", "D-오디오 SUB", "클러스터" };
         //public static string[] shipmentData = { "OEM", "CKD", "KD" };
         public static string[] searchData = new string[] { "", "" };
@@ -70,34 +79,44 @@ namespace EOM_v3_M
         public static ComboBox cbbProductName01, cbbLineName01, cbbFloor01;
         public static DataGridView datagridview01, datagridview02;
 
+        /// <summary>
+        /// DataGridView 초기 설정
+        /// </summary>
         private void initialSetDataGridView()
         {
+            dc.DataGridViewDoubleBuffered(dgvMain, true);
             dc.DataGridViewDoubleBuffered(dgvSelect, true);
-            dc.DataGridViewDoubleBuffered(dgvGuest, true);
 
             // dataGridView 자동 조절
-            dgvSelect.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dgvGuest.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            //dgvMain.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            //dgvSelect.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
             // dataGridView 줄바꿈
+            dgvMain.Columns[5].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dgvSelect.Columns[5].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dgvGuest.Columns[5].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
             // dataGridView 정렬
             ModelSort();
 
             // 처음 위치 재설정
-            dgvSelect.Location = new Point(11, 193);
-            dgvGuest.Location = new Point(11, 193);
+            //dgvSelect.Location = new Point(11, 193);
+            //dgvMain.Location = new Point(11, 193);
+            pnMain.Location = new Point(11, 193);
+            pnSelect.Location = new Point(11, 193);
 
-            //dgvGuest.Visible = false;
+            pnMain.Visible = true;
+            pnSelect.Visible = false;
 
             // 2022.07.01
             // 그리드 뷰 사이즈 조정 
+            SetDataGridViewCellsWidthSize(dgvMain);
             SetDataGridViewCellsWidthSize(dgvSelect);
-            SetDataGridViewCellsWidthSize(dgvGuest);
         }
 
+        /// <summary>
+        /// DataGridView 셀 넓이 초기 설정
+        /// </summary>
+        /// <param name="_dataGridView"></param>
         private void SetDataGridViewCellsWidthSize(DataGridView _dataGridView)
         {
             int[] setSize =
@@ -130,6 +149,9 @@ namespace EOM_v3_M
             }
         }
 
+        /// <summary>
+        /// 컨트롤 위치 초기 설정
+        /// </summary>
         private void InitialControlSize()
         {
             lblUserName.Left = Width - 245;
@@ -147,12 +169,15 @@ namespace EOM_v3_M
             btnProductDelete.Left =     Width - btnProductDelete.Width  - 13;
             */
 
-            grpProduct.Left =             Width - grpProduct.Width  - 10;
-            grpEOCheck.Left =   grpProduct.Left - grpEOCheck.Width  - 8;
-            grpShipment.Left =  grpEOCheck.Left - grpShipment.Width - 8;
+            grpProduct.Left = Width - grpProduct.Width - 10;
+            grpEOCheck.Left = grpProduct.Left - grpEOCheck.Width - 6;
+            grpShipment.Left = grpEOCheck.Left - grpShipment.Width - 6;
+            grpDgvFilter.Left = grpShipment.Left - grpDgvFilter.Width - 6;
 
-            dgvGuest.Size =  new Size(Width - 22, Height - 204);
-            dgvSelect.Size = new Size(Width - 22, Height - 204);
+            //dgvMain.Size =  new Size(Width - 22, Height - 204);
+            //dgvSelect.Size = new Size(Width - 22, Height - 204);
+            pnMain.Size =  new Size(Width - 22, Height - 204);
+            pnSelect.Size = new Size(Width - 22, Height - 204);
         }
 
         /// <summary>
@@ -226,7 +251,7 @@ namespace EOM_v3_M
                 cbbLineName01 = cbbLineName;
                 //cbbFloor01 = cbbFloor;
                 datagridview01 = dgvSelect;
-                datagridview02 = dgvGuest;
+                datagridview02 = dgvMain;
 
                 // 2024.04.26
                 // 셋팅 파일 로드
@@ -234,14 +259,11 @@ namespace EOM_v3_M
 
 #if DEBUG
                 Text += " [디버깅 모드]";
-                strDbName = DB_NAME_DEBUG;
-#else
-                strDbName = DB_NAME_RELEASE;
 #endif
 
                 // 2020.09.04
                 // MariaDB 셋팅 먼저 검사
-                strConn = "Server=" + settingData[settingData.Length - 2] + ";Port=" + settingData[settingData.Length - 1] + ";Database=" + strDbName + ";Uid=root;Pwd=9001271;";
+                strConn = "Server=" + settingData[settingData.Length - 2] + "; Port=" + settingData[settingData.Length - 1] + "; Database=" + DATABASE_NAME + "; Uid=root; Pwd=9001271;";
 
                 mariaDB.DbConnInfo = strConn;
 
@@ -250,7 +272,7 @@ namespace EOM_v3_M
                 // DB 서버 죽으면 점검 메세지
                 if (!mariaDB.IsConnected())
                 {
-                    Guna2Msg(this, "오류", "서버 점검중 입니다");
+                    Guna2Msg(this, "오류", "서버 연결에 실패하였습니다.");
                     Application.ExitThread();
                     return;
                 }
@@ -294,22 +316,24 @@ namespace EOM_v3_M
                 }
                 */
 
-                // 사용자 확인
-                string userData = NetworkInterface.GetAllNetworkInterfaces()[0].GetPhysicalAddress().ToString();
-
                 // 2021.02.16
                 // Floor 정보는 여기서 채워짐 (1F, 2F) ++++++++ 추가
-                SetFloorData(userData);
+                // SetFloorData(userData);
+
+                // 2024.11.03
+                // 사용자 설정 NEW
+                strUserAddressData = mariaDB.SelectRegstrant("user_data");
 
                 // 2021.08.27
                 // 조별 선임 체크 선언
-                userNameData = SearchRegistrant(userData);
+                //userNameData = SearchRegistrant(userData);
 
                 // 사용자 확인되면 버튼 활성화
                 // Floor 정보는 여기서 채워짐 (1F, 2F) -------- 삭제
-                if (!userNameData.Equals(userData))
+                //if (!userNameData.Equals(userData))
+                if (strUserAddressData != null)
                 {
-                    lblUserName.Text = userNameData + "님(" + floorData[0] + ") 로그인";
+                    lblUserName.Text = strUserAddressData[0] + "님(" + strUserAddressData[2] + ") 로그인";
 
                     btnProductAdd.Enabled = true;
                     //btnProductDelete.Enabled = true;
@@ -326,6 +350,7 @@ namespace EOM_v3_M
                 // 게스트 모드 조건 변경
                 if (lblUserName.Text == GUEST_LOGIN_MSG)
                 {
+                    /*
                     // 층 설정
                     floorData = dc.DatFileLoad(@"floorData.dat");
 
@@ -346,6 +371,7 @@ namespace EOM_v3_M
 
                     // 2F
                     cbbFloor01.SelectedItem = floorData[0];
+                    */
 
                     GuestDataGridViewUpdate();
 
@@ -372,7 +398,7 @@ namespace EOM_v3_M
                     UpdateListViewFormClass updateListViewFormClass = new UpdateListViewFormClass();
 
                     updateListViewFormClass.FormTitleName = programName + " - 업데이트 내역";
-                    updateListViewFormClass.DB = strDbName;
+                    updateListViewFormClass.DB = DATABASE_NAME;
                     updateListViewFormClass.Table = "update_data";
                     updateListViewFormClass.StrConn = strConn;
                     updateListViewFormClass.BoundsLocation = 0;
@@ -408,7 +434,8 @@ namespace EOM_v3_M
                 timer3.Start();
 
                 // 접속 로그
-                mariaDB.InsertLogDB("프로그램 시작 [" + dc.Version() + "], " + sw.ElapsedMilliseconds + "ms", false);
+                //mariaDB.InsertLogDB("프로그램 시작 [" + dc.Version() + "], " + sw.ElapsedMilliseconds + "ms", false);
+                mariaDB.InsertLogDB(DATABASE_NAME, "프로그램 시작[" + dc.Version() + "], " + sw.ElapsedMilliseconds + "ms", "user_data", false);
 
 #if DEBUG
 #else
@@ -429,15 +456,17 @@ namespace EOM_v3_M
             }
             catch (Exception ex)
             {
-                mariaDB.InsertLogDB(ex.Message, false);
-                mariaDB.InsertLogDB(ex.StackTrace, false);
+                //mariaDB.InsertLogDB(ex.Message, false);
+                //mariaDB.InsertLogDB(ex.StackTrace, false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.Message, "user_data", false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.StackTrace, "user_data", false);
             }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // 접속 로그
-            mariaDB.InsertLogDB("프로그램 종료", false);
+            mariaDB.InsertLogDB(DATABASE_NAME, "프로그램 종료", "user_data", false);
 
             // 게스트 모드라면
             //if (!btnProductDelete.Enabled)
@@ -449,7 +478,7 @@ namespace EOM_v3_M
                 // 비활성화 경우가 발생하면 값을 불러오지 못함
 
                 // 층 설정 파일 저장
-                dc.DatFileSave(floorFileName + extensionName, floorData);
+                //dc.DatFileSave(floorFileName + extensionName, floorData);
             }
 
             // 라인 설정 파일 저장
@@ -510,7 +539,7 @@ namespace EOM_v3_M
 
         private void GuestModeView()
         {
-            dgvGuest.Visible = true;
+            pnMain.Visible = true;
 
             GuestDataGridViewUpdate();
         }
@@ -518,7 +547,7 @@ namespace EOM_v3_M
         private string RegistrantFilterAdd(string _data)
         {
             string[] selectData = new string[] { "print_address", _data };
-            string query = dc.SelectDeleteQueryANDConvert(strDbName, "registrant_data", selectData, "SELECT");
+            string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "registrant_data", selectData, "SELECT");
             string[] tmpData = mariaDB.SelectQueryCount(query, "name");
 
             string returnData = string.Empty;
@@ -564,12 +593,12 @@ namespace EOM_v3_M
                 // 1F
                 if (cbbLineName01.Text == "오디오 플랫폼" || cbbLineName01.Text == "D-오디오 SUB")
                 {
-                    floorData[0] = "1F";
+                    //floorData[0] = "1F";
                 }
                 // 2F
                 else if (cbbLineName01.Text == "D-오디오 수삽" || cbbLineName01.Text == "클러스터" || cbbLineName01.Text == "HUD")
                 {
-                    floorData[0] = "2F";
+                    //floorData[0] = "2F";
                 }
                 // 1F or 2F
                 else
@@ -581,11 +610,11 @@ namespace EOM_v3_M
                         cbbFloor01.SelectedIndex = 0;
                     }
 
-                    floorData[0] = cbbFloor01.SelectedItem.ToString();
+                    //floorData[0] = cbbFloor01.SelectedItem.ToString();
                 }
 
                 // dataGridView 초기화
-                dgvGuest.Rows.Clear();
+                dgvMain.Rows.Clear();
 
                 // Update Time
                 lblDBUpTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ", " + sw.ElapsedMilliseconds.ToString() + "ms";
@@ -594,11 +623,11 @@ namespace EOM_v3_M
             // 클러스터, D-오디오 SUB는 등록자 여부 상관없이 보이도록 수정
             if (cbbLineName01.Text == "클러스터" || cbbLineName01.Text == "D-오디오 SUB")
             {
-                query = "SELECT * FROM `" + strDbName + "`.`model_data` WHERE (line = '" + cbbLineName01.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')";
+                query = "SELECT * FROM `" + DATABASE_NAME + "`.`model_data` WHERE (line = '" + cbbLineName01.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')";
             }
             else
             {
-                query = "SELECT * FROM `" + strDbName + "`.`model_data` WHERE (line = '" + cbbLineName01.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')" + RegistrantFilterAdd(floorData[0]);
+                query = "SELECT * FROM `" + DATABASE_NAME + "`.`model_data` WHERE (line = '" + cbbLineName01.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "')" + RegistrantFilterAdd(strUserAddressData[2]);
             }
 
             query += " ORDER BY start_date";
@@ -608,7 +637,9 @@ namespace EOM_v3_M
 
             string[,] modelData = mariaDB.SelectQuery2(query);
 
-            DGVRowsDataAdd(dgvGuest, modelData, 1);
+            dc.LogFileSave(query);
+
+            DGVRowsDataAdd(dgvMain, modelData, 1);
 
             ModelSort();
 
@@ -640,8 +671,8 @@ namespace EOM_v3_M
             sw.Start();
 
             string[] selectData = new string[] { "line", cbbLineName01.Text };
-            //string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
-            string query = "SELECT model_name FROM `" + strDbName + "`.`model_data` WHERE line = '" + cbbLineName01.Text + "' GROUP BY model_name";
+            //string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
+            string query = "SELECT model_name FROM `" + DATABASE_NAME + "`.`model_data` WHERE line = '" + cbbLineName01.Text + "' GROUP BY model_name";
             //string[] modelData = mariaDB.SelectQueryCount(query, "model_name");
             string[,] modelData = mariaDB.SelectQuery4(query, 1);
 
@@ -689,10 +720,11 @@ namespace EOM_v3_M
             return convertData;
         }
 
+        /*
         private void SetFloorData(string _data)
         {
             string[] selectData = new string[] { };
-            string query = dc.SelectDeleteQueryANDConvert(strDbName, "registrant_data", selectData, "SELECT");
+            string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "registrant_data", selectData, "SELECT");
             string[,] resultData = mariaDB.SelectQuery2(query);
 
             for (int i = 0; i < resultData.GetLength(0); i++)
@@ -703,11 +735,12 @@ namespace EOM_v3_M
                 }
             }
         }
+        */
 
         public static string SearchRegistrant(string _data)
         {
             string[] selectData = new string[] { };
-            string query = dc.SelectDeleteQueryANDConvert(strDbName, "registrant_data", selectData, "SELECT");
+            string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "registrant_data", selectData, "SELECT");
             string[,] tmpData = mariaDB.SelectQuery2(query);
 
             for (int i = 0; i < tmpData.GetLength(0); i++)
@@ -726,8 +759,18 @@ namespace EOM_v3_M
 
         private void DGVRowsDataAdd(DataGridView _dgv, string[,] _data, int _type)
         {
+            Stopwatch sw = new Stopwatch();
+
+            sw.Start();
+
             // dataGridView 초기화
             _dgv.Rows.Clear();
+
+            // dataGridView 초기화
+            dgvSelect.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            dgvMain.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+
+            dc.LogFileSave(_data.GetLength(0) + "EA");
 
             for (int i = 0; i < _data.GetLength(0); i++)
             {
@@ -764,7 +807,7 @@ namespace EOM_v3_M
                 // 방문자
                 if (_type == 1)
                 {
-                    dgvGuest.Visible = true;
+                    pnMain.Visible = true;
 
                     _dgv.Rows.Add(
                         false,
@@ -790,7 +833,7 @@ namespace EOM_v3_M
                 // 사용자
                 else if (_type == 2)
                 {
-                    dgvSelect.Visible = true;
+                    pnSelect.Visible = true;
 
                     _dgv.Rows.Add(
                         false,
@@ -837,7 +880,13 @@ namespace EOM_v3_M
                 }
             }
 
-            ModelSort();
+            //ModelSort();
+
+            // dataGridView 자동 조절
+            dgvSelect.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvMain.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
+            dc.LogFileSave("DataGridView Add items.. " + sw.ElapsedMilliseconds + "ms");
         }
 
         public void ModelSelect(string _data)
@@ -847,7 +896,7 @@ namespace EOM_v3_M
 
             // 모델 데이터 로드
             string[] selectData = new string[] { "line", cbbLineName01.Text, "model_name", _data };
-            string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+            string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
 
             // 2021.03.24
             // 첫 투입 내용은 제일 상단에 올리도록
@@ -861,7 +910,7 @@ namespace EOM_v3_M
             // 출하지 텍스트 출력
             if (pnShipmentView.Visible)
             {
-                string shipmentData = pe.NowShipment(strDbName, cbbLineName.Text, cbbProductName.Text);
+                string shipmentData = pe.NowShipment(DATABASE_NAME, cbbLineName.Text, cbbProductName.Text);
 
                 lblShipmentView.Text = shipmentData;
             }
@@ -900,38 +949,38 @@ namespace EOM_v3_M
             if (_type == 1)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "car_name", _data };
-                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
             }
             // 고객사 EO 조회
             else if (_type == 2)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "customer_eo_number", _data };
-                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
             }
             // 모비스 EO 조회
             else if (_type == 3)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "mobis_eo_number", _data };
-                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
             }
 
             // EO 내용 조회
             else if (_type == 4)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "eo_contents", _data };
-                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
             }
             // MAIN PCB 조회
             else if (_type == 5)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "main_pcb_name", _data };
-                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
             }
             // SUB PCB 조회
             else if (_type == 6)
             {
                 string[] selectData = new string[] { "line", cbbLineName01.Text, "sub_pcb_name", _data };
-                query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+                query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
             }
 
             else
@@ -942,7 +991,7 @@ namespace EOM_v3_M
 
             string[,] resultData = mariaDB.SelectQuery2(query);
 
-            DGVRowsDataAdd(dgvGuest, resultData, 1);
+            DGVRowsDataAdd(dgvMain, resultData, 1);
         }
 
 
@@ -956,12 +1005,10 @@ namespace EOM_v3_M
 
         private void ModelSort()
         {
-            //dgvSelect.Sort(dgvSelect.Columns[6], ListSortDirection.Ascending);
-            //dgvGuest.Sort(dgvGuest.Columns[6], ListSortDirection.Ascending);
             SetDoNotSort(dgvSelect);
-            SetDoNotSort(dgvGuest);
+            SetDoNotSort(dgvMain);
             ShipmentBackColor(dgvSelect, 11);
-            ShipmentBackColor(dgvGuest, 11);
+            ShipmentBackColor(dgvMain, 11);
         }
 
         static public void ShipmentBackColor(DataGridView _dataGridView, int _index)
@@ -1122,7 +1169,9 @@ namespace EOM_v3_M
             }
             catch (Exception ex)
             {
-                mariaDB.InsertLogDB(ex.Message, false);
+                //mariaDB.InsertLogDB(ex.Message, false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.Message, "user_data", false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.StackTrace, "user_data", false);
             }
         }
 
@@ -1134,7 +1183,9 @@ namespace EOM_v3_M
             }
             catch (Exception ex)
             {
-                mariaDB.InsertLogDB(ex.Message, false);
+                //mariaDB.InsertLogDB(ex.Message, false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.Message, "user_data", false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.StackTrace, "user_data", false);
             }
         }
 
@@ -1165,7 +1216,7 @@ namespace EOM_v3_M
         {
             try
             {
-                string[,] s = mariaDB.SelectQuery2("SELECT * FROM `" + strDbName + "`.`message_data` WHERE receive_name = '" + userNameData + "' AND receive_check = 'C' ORDER BY write_time");
+                string[,] s = mariaDB.SelectQuery2("SELECT * FROM `" + DATABASE_NAME + "`.`message_data` WHERE receive_name = '" + strUserAddressData[0] + "' AND receive_check = 'C' ORDER BY write_time");
 
                 // 메세지가 있다면
                 if (s.GetLength(0) > 0)
@@ -1210,7 +1261,7 @@ namespace EOM_v3_M
             {
                 timer1.Stop();
 
-                mariaDB.InsertLogDB("업데이트 시도", false);
+                mariaDB.InsertLogDB(DATABASE_NAME, "업데이트 시도", "user_data", false);
 
                 Guna2UpdateFormClass updateForm = new Guna2UpdateFormClass();
 
@@ -1234,7 +1285,9 @@ namespace EOM_v3_M
             }
             catch (Exception ex)
             {
-                mariaDB.InsertLogDB(ex.Message, false);
+                //mariaDB.InsertLogDB(ex.Message, false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.Message, "user_data", false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.StackTrace, "user_data", false);
             }
         }
 
@@ -1257,12 +1310,12 @@ namespace EOM_v3_M
                     if (passwordFormClass.ReturnValue)
                     {
                         adminMode = true;
-                        dgvSelect.Visible = true;
+                        pnSelect.Visible = true;
                         //DataGridViewUpdate();
                         timer1.Stop();
 
-                        dgvGuest.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-                        dgvGuest.RowTemplate.Height = 50;
+                        dgvMain.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+                        dgvMain.RowTemplate.Height = 50;
 
                         BtnProductUpdate.PerformClick();
 
@@ -1273,11 +1326,10 @@ namespace EOM_v3_M
                 {
                     btnProductAdd.Enabled = false;
                     adminMode = false;
-                    dgvGuest.Visible = true;
                     GuestDataGridViewUpdate();
                     timer1.Start();
 
-                    dgvGuest.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                    dgvMain.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
                     BtnProductUpdate.PerformClick();
 
@@ -1291,7 +1343,7 @@ namespace EOM_v3_M
             UpdateListViewFormClass updateListViewFormClass = new UpdateListViewFormClass();
 
             updateListViewFormClass.FormTitleName = programName + " - 업데이트 내역";
-            updateListViewFormClass.DB = strDbName;
+            updateListViewFormClass.DB = DATABASE_NAME;
             updateListViewFormClass.Table = "update_data";
             updateListViewFormClass.StrConn = strConn;
             updateListViewFormClass.BoundsLocation = 0;
@@ -1388,7 +1440,7 @@ namespace EOM_v3_M
                             dgvSelect.Rows[i].Cells[11].Value.ToString(),
                         };
 
-                        string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", deleteData, "DELETE");
+                        string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", deleteData, "DELETE");
                         mariaDB.EtcQuery(query);
 
                         // 로그
@@ -1405,7 +1457,7 @@ namespace EOM_v3_M
                             //dc.LogFileSave(logData[j]);
                         }
 
-                        mariaDB.InsertLogDB(SplitConvert(logData) + " 모델 삭제", false);
+                        mariaDB.InsertLogDB(DATABASE_NAME, SplitConvert(logData) + " 모델 삭제", "user_data", false);
 
                         count++;
                     }
@@ -1428,12 +1480,15 @@ namespace EOM_v3_M
             }
             catch (Exception ex)
             {
-                mariaDB.InsertLogDB(ex.Message, false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.Message, "user_data", false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.StackTrace, "user_data", false);
             }
         }
 
         private void BtnProductUpdate_Click(object sender, EventArgs e)
         {
+            dc.LogFileSave("갱신 클릭");
+
             try
             {
                 BtnProductUpdate.Enabled = false;
@@ -1461,7 +1516,8 @@ namespace EOM_v3_M
             {
                 BtnProductUpdate.Enabled = true;
 
-                mariaDB.InsertLogDB(ex.Message, false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.Message, "user_data", false);
+                mariaDB.InsertLogDB(DATABASE_NAME, ex.StackTrace, "user_data", false);
             }
         }
 
@@ -1474,7 +1530,7 @@ namespace EOM_v3_M
                     if (_e.Button == MouseButtons.Right)
                     {
                         _dataGridView.Rows[_e.RowIndex].Selected = true;                         // 마우스 우 클릭 선택
-                        _dataGridView.CurrentCell = _dataGridView.Rows[_e.RowIndex].Cells[0];    // index 보정
+                        _dataGridView.CurrentCell = _dataGridView.Rows[_e.RowIndex].Cells[2];    // index 보정
 
                         string[] data = new string[_dataGridView.ColumnCount + 1];
 
@@ -1518,7 +1574,7 @@ namespace EOM_v3_M
                     "print_type", _dgv.Rows[_dgv.CurrentRow.Index].Cells[10].Value.ToString(),              // 타입
                     "shipment", _dgv.Rows[_dgv.CurrentRow.Index].Cells[11].Value.ToString()                 // 출하지
                 };
-                string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+                string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
                 string[] columnData = mariaDB.SelectQueryCount(query, "mht_data");
 
                 // 공백이 아니라면 파일 생성
@@ -1566,13 +1622,13 @@ namespace EOM_v3_M
 
         private void MouseRightMenuDGV(DataGridView _dgv, string[] _data)
         {
-            string shipmentData = pe.NowShipment(strDbName, cbbLineName.Text, _data[1]);
+            string shipmentData = pe.NowShipment(DATABASE_NAME, cbbLineName.Text, _data[1]);
 
             ContextMenu m = new ContextMenu();
 
             MenuItem menuItem0 = new MenuItem("설변 태그 인쇄");
             MenuItem menuItemLine1 = new MenuItem("-");
-            MenuItem menuItem1 = new MenuItem("등록 내용 수정 (" + dc.EditMasterConvert() + " 권한 부여)");
+            MenuItem menuItem1 = new MenuItem("등록 내용 수정 (" + dc.SeniorMasterConvert() + " 권한 부여)");
             MenuItem menuItem2 = new MenuItem("오더 누락 입력 (샘플 제외)");
             MenuItem menuItemLine2 = new MenuItem("-");
             MenuItem menuItem11 = new MenuItem("해당 품번 선택 (품번 '" + _data[1] + "')");
@@ -1589,7 +1645,9 @@ namespace EOM_v3_M
 
             MenuItem menuItem22 = new MenuItem("출하지 변경이력");
             MenuItem menuItemLine4 = new MenuItem("-");
-            MenuItem menuItem31 = new MenuItem("EO 적용 점검 (EO 내용)");
+            MenuItem menuItem31 = new MenuItem("EO 적용 점검 (MAIN PCB '" + _data[14] + "')");
+            MenuItem menuItem32 = new MenuItem("EO 적용 점검 (SUB PCB '" + _data[15] + "')");
+            MenuItem menuItem33 = new MenuItem("EO 적용 점검 (EO 내용)");
 
             m.MenuItems.Add(menuItem0);
             m.MenuItems.Add(menuItemLine1);
@@ -1602,7 +1660,7 @@ namespace EOM_v3_M
 
             m.MenuItems.Add(menuItemLine2);
 
-            if (dgvGuest.Visible)
+            if (pnMain.Visible)
             {
                 m.MenuItems.Add(menuItem11);
             }
@@ -1623,6 +1681,8 @@ namespace EOM_v3_M
             }
 
             m.MenuItems.Add(menuItem31);
+            m.MenuItems.Add(menuItem32);
+            m.MenuItems.Add(menuItem33);
 
             menuItem0.Click += new EventHandler(TagPrint);
             menuItem1.Click += new EventHandler((sender, e) => ModelCurrentSearch(sender, e, 1, _data));
@@ -1643,10 +1703,12 @@ namespace EOM_v3_M
             }
 
             menuItem31.Click += new EventHandler((sender, e) => ModelCurrentSearch(sender, e, 31, _data));
+            menuItem32.Click += new EventHandler((sender, e) => ModelCurrentSearch(sender, e, 32, _data));
+            menuItem33.Click += new EventHandler((sender, e) => ModelCurrentSearch(sender, e, 33, _data));
 
             // 2021.08.27
             // 조별 선임 권한
-            if (!dc.CheckEditMaster(userNameData))
+            if (!dc.CheckSeniorMaster(strUserAddressData[0]))
             {
                 menuItem1.Enabled = false;
                 menuItem2.Enabled = false;
@@ -1657,8 +1719,8 @@ namespace EOM_v3_M
 
         private void TagPrint(object sender, EventArgs e)
         {
-            if (dgvSelect.Visible) PrintDataSetting(dgvSelect);
-            else PrintDataSetting(dgvGuest);
+            if (pnSelect.Visible) PrintDataSetting(dgvSelect);
+            else PrintDataSetting(dgvMain);
         }
 
         private void ShipmentFirstData()
@@ -1691,7 +1753,7 @@ namespace EOM_v3_M
                         "eo_contents", _data[5],
                         "shipment", _data[12]
                     };
-                    string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+                    string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
                     string[,] resultData = mariaDB.SelectQuery2(query);
 
                     if (resultData.GetLength(0) == 1)
@@ -1741,12 +1803,12 @@ namespace EOM_v3_M
                                     if (MessageBox.Show("누락된 오더 '" + spilitContents[5] + "' 입력하시겠습니까?", "알림", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                                     {
                                         string conditionQuery = "WHERE line = '" + cbbLineName01.Text + "' AND model_name = '" + _data[1] + "' AND car_name = '" + _data[2] + "' AND customer_eo_number = '" + _data[3] + "' AND mobis_eo_number = '" + _data[4] + "' AND eo_contents = '" + _data[5] + "' AND shipment = '" + _data[12] + "'";
-                                        query = "SELECT * FROM `" + strDbName + "`.`model_data` " + conditionQuery;
+                                        query = "SELECT * FROM `" + DATABASE_NAME + "`.`model_data` " + conditionQuery;
                                         string[,] resultData4 = mariaDB.SelectQuery2(query);
 
                                         if (resultData4.GetLength(0) == 1)
                                         {
-                                            query = "UPDATE `" + strDbName + "`.`model_data` SET start_order = '" + spilitContents[5] + "' " + conditionQuery;
+                                            query = "UPDATE `" + DATABASE_NAME + "`.`model_data` SET start_order = '" + spilitContents[5] + "' " + conditionQuery;
                                             mariaDB.EtcQuery(query);
                                             Guna2Msg(this, "알림", "정상적으로 입력되었습니다");
                                         }
@@ -1784,9 +1846,9 @@ namespace EOM_v3_M
                 // ---------------------
                 case 11:
                     // 2
-                    if (dgvGuest.Visible)
+                    if (pnMain.Visible)
                     {
-                        cbbProductName.SelectedItem = dgvGuest.Rows[dgvGuest.CurrentCell.RowIndex].Cells[valueAfterCalibration].Value.ToString();
+                        cbbProductName.SelectedItem = dgvMain.Rows[dgvMain.CurrentCell.RowIndex].Cells[valueAfterCalibration].Value.ToString();
                     }
                     break;
                 // ---------------------
@@ -1800,8 +1862,8 @@ namespace EOM_v3_M
                     // 콤보 박스 선택 값 초기화
                     cbbProductName.SelectedIndex = -1;
 
-                    if (dgvSelect.Visible) ModelSelect(dgvSelect.Rows[dgvSelect.CurrentCell.RowIndex].Cells[valueAfterCalibration].Value.ToString(), valueAfterCalibration - 1);
-                    else ModelSelect(dgvGuest.Rows[dgvGuest.CurrentCell.RowIndex].Cells[valueAfterCalibration].Value.ToString(), valueAfterCalibration - 1);
+                    if (pnSelect.Visible) ModelSelect(dgvSelect.Rows[dgvSelect.CurrentCell.RowIndex].Cells[valueAfterCalibration].Value.ToString(), valueAfterCalibration - 1);
+                    else ModelSelect(dgvMain.Rows[dgvMain.CurrentCell.RowIndex].Cells[valueAfterCalibration].Value.ToString(), valueAfterCalibration - 1);
                     break;
                 // ---------------------
                 //  동일 내용 검색 (M/PCB, S/PCB)
@@ -1812,12 +1874,12 @@ namespace EOM_v3_M
                     // 콤보 박스 선택 값 초기화
                     cbbProductName.SelectedIndex = -1;
 
-                    if (dgvSelect.Visible) ModelSelect(dgvSelect.Rows[dgvSelect.CurrentCell.RowIndex].Cells[valueAfterCalibration + 7].Value.ToString(), valueAfterCalibration - 1);
-                    else ModelSelect(dgvGuest.Rows[dgvGuest.CurrentCell.RowIndex].Cells[valueAfterCalibration + 7].Value.ToString(), valueAfterCalibration - 1);
+                    if (pnSelect.Visible) ModelSelect(dgvSelect.Rows[dgvSelect.CurrentCell.RowIndex].Cells[valueAfterCalibration + 7].Value.ToString(), valueAfterCalibration - 1);
+                    else ModelSelect(dgvMain.Rows[dgvMain.CurrentCell.RowIndex].Cells[valueAfterCalibration + 7].Value.ToString(), valueAfterCalibration - 1);
                     break;
                 // ---------------------
                 case 21:
-                    string shipmentData = pe.NowShipment(strDbName, cbbLineName.Text, _data[1]);
+                    string shipmentData = pe.NowShipment(DATABASE_NAME, cbbLineName.Text, _data[1]);
                     string[] sendData = { "", _data[1], shipmentData, "", "", "", "", "" };
 
                     OrderMasterForm_E orderMasterForm_E = new OrderMasterForm_E(sendData);
@@ -1832,14 +1894,37 @@ namespace EOM_v3_M
                     orderMasterForm_H.Owner = this;
                     orderMasterForm_H.ShowDialog();
                     break;
+                    // 
                 case 31:
-                    /*
+                case 32:
+                    string[] productData = new string[2];
+
                     if (_data[16] != "MAIN PCB" && _data[16] != "SUB PCB")
                     {
-                        Guna2Msg(this, "오류", "EO 구분이 메인 PCB 또는 서브 PCB만 조회할 수 있습니다");
+                        Guna2Msg(this, "오류", "EO 구분이 MAIN PCB 또는 SUB PCB만 조회할 수 있습니다");
                         return;
                     }
-                    */
+
+                    if (_type == 31)
+                    {
+                        productData[0] = _data[14];
+                        productData[1] = "MAIN PCB";
+                    }
+                    else 
+                    {
+                        productData[0] = _data[15];
+                        productData[1] = "SUB PCB";
+                    }
+
+                    EOCheckPCBForm_M eOCheckPCBForm_M = new EOCheckPCBForm_M(productData);
+                    eOCheckPCBForm_M.Show();
+                    break;
+                case 33:
+                    if (_data[16] != "MAIN PCB" && _data[16] != "SUB PCB")
+                    {
+                        Guna2Msg(this, "오류", "EO 구분이 MAIN PCB 또는 SUB PCB만 조회할 수 있습니다");
+                        return;
+                    }
 
                     EOCheckContentsForm_M eOCheckContentsForm_M = new EOCheckContentsForm_M(_data);
                     eOCheckContentsForm_M.Show();
@@ -1864,13 +1949,13 @@ namespace EOM_v3_M
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            if (dgvSelect.Visible)
+            if (pnSelect.Visible)
             {
                 ExportToExcel(dgvSelect);
             }
-            else if (dgvGuest.Visible && dgvGuest.Rows.Count > 0)
+            else if (pnMain.Visible && dgvMain.Rows.Count > 0)
             {
-                ExportToExcel(dgvGuest);
+                ExportToExcel(dgvMain);
             }
         }
 
@@ -1911,6 +1996,11 @@ namespace EOM_v3_M
             viewForm.ShowDialog();
             */
 #endif
+        }
+
+        private void btnShipmentMaster_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void btnShipmentChange_Click(object sender, EventArgs e)
@@ -2000,7 +2090,6 @@ namespace EOM_v3_M
 
         private void lblLine_Click(object sender, EventArgs e)
         {
-
 #if DEBUG
             EOForm eOForm = new EOForm();
             eOForm.ShowDialog();
@@ -2039,7 +2128,14 @@ namespace EOM_v3_M
 
         private void 실험실ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            TestForm testForm = new TestForm();
+            testForm.Show();
+        }
 
+        private void btnEOPCB_Click(object sender, EventArgs e)
+        {
+            EOCheckPCBForm_M eOCheckPCBForm_M = new EOCheckPCBForm_M();
+            eOCheckPCBForm_M.Show();
         }
 
         private void btnEOSearch_Click(object sender, EventArgs e)
@@ -2048,10 +2144,95 @@ namespace EOM_v3_M
             eOCheckContentsForm_M.Show();
         }
 
-        private void btnEOPCB_Click(object sender, EventArgs e)
+        private void btnEOReservation_Click(object sender, EventArgs e)
         {
-            EOCheckPCBForm_M eOCheckPCBForm_M = new EOCheckPCBForm_M();
-            eOCheckPCBForm_M.Show();
+
+        }
+
+        /*
+        bool process = false;
+
+        /// <summary>
+        /// FTP 파일 다운로드
+        /// </summary>
+        /// <param name="_serverPath"></param>
+        /// <param name="_localPath"></param>
+        public void FtpWebClientDownload(string _serverPath, string _localPath)
+        {
+            WebClientPlus wc = new WebClientPlus();
+
+            wc.Credentials = new NetworkCredential("user", "autonics12#");
+            //wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressChanged);
+            wc.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCompleted);
+            wc.DownloadFileAsync(new Uri(_serverPath), _localPath);
+
+            while (process)
+            {
+                dc.LogFileSave("대기..");
+
+                System.Windows.Forms.Application.DoEvents();
+            }
+
+            wc.Dispose();
+        }
+
+        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            dc.LogFileSave("완료");
+
+            process = false;
+        }
+        */
+
+        private void pDFtoJPGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int count = 0;
+            string s = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\PDFtoIMG_Setup.exe";
+
+            FileInfo fi = new FileInfo(s);
+
+            if (fi.Exists)
+            {
+                fi.Delete();
+            }
+
+            menuStrip1.Enabled = false;
+
+            do
+            {
+                count++;
+
+                MessageFormClass messageFormClass = new MessageFormClass();
+                messageFormClass.FormMsg = count + "번째 다운로드 시도..";
+                messageFormClass.ShowDelay = 1000;
+                messageFormClass.StartForm();
+
+                dc.LogFileSave("PDFtoIMG_Setup.exe 파일 다운로드 시작");
+
+                dc.FtpWebClientDownload("ftp://10.239.19.91:2121/etc/PDFtoIMG_Setup.exe", s);
+
+                dc.Delay(1000);
+
+                fi = new FileInfo(s);
+
+                dc.LogFileSave("PDFtoIMG_Setup.exe 파일 [" + fi.Length + " Byte]");
+            }
+            while (fi.Length <= 0 && count < 3);
+
+            if (fi.Length > 0)
+            {
+                Guna2Msg(this, "알림", "PDFtoIMG_Setup.exe 파일 바탕화면 다운로드 성공");
+
+                Process.Start(s);
+            }
+            else
+            {
+                Guna2Msg(this, "알림", "PDFtoIMG_Setup.exe 파일 바탕화면 다운로드 실패");
+
+                fi.Delete();
+            }
+
+            menuStrip1.Enabled = true;
         }
 
         private void cbbFloor_SelectedIndexChanged(object sender, EventArgs e)
@@ -2066,9 +2247,9 @@ namespace EOM_v3_M
 
         private void dataGridView1_VisibleChanged(object sender, EventArgs e)
         {
-            if (dgvSelect.Visible)
+            if (pnSelect.Visible)
             {
-                dgvGuest.Visible = false;
+                pnMain.Visible = false;
 
                 // 2022.06.30
                 // 출하지 텍스트 출력
@@ -2086,11 +2267,11 @@ namespace EOM_v3_M
             }
         }
 
-        private void dgvGuest_VisibleChanged(object sender, EventArgs e)
+        private void pnMain_VisibleChanged(object sender, EventArgs e)
         {
-            if (dgvGuest.Visible)
+            if (pnMain.Visible)
             {
-                dgvSelect.Visible = false;
+                pnSelect.Visible = false;
 
                 btnProductDelete.Enabled = false;
             }
@@ -2099,6 +2280,5 @@ namespace EOM_v3_M
                 btnProductDelete.Enabled = true;
             }
         }
-
     }
 }

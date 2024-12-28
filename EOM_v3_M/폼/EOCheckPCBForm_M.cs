@@ -20,14 +20,18 @@ namespace EOM_v3_M
 
         Stopwatch sw = new Stopwatch();
 
-        private void DGVDataAdd(string[,] _data)
+        private void initialSetDataGridView()
         {
-            sw.Reset();
-            sw.Start();
+            MainForm.dc.DataGridViewDoubleBuffered(dgvMainSub, true);
+            MainForm.dc.DataGridViewDoubleBuffered(dgvExclude, true);
+        }
 
-            dgvSelect.Visible = false;
+        private void DGVDataAdd(DataGridView _dgv, string[,] _data)
+        {
+            dgvMainSub.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            dgvExclude.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
 
-            dgvSelect.Rows.Clear();
+            _dgv.Rows.Clear();
 
             for (int i = 0; i < _data.GetLength(0); i++)
             {
@@ -38,7 +42,7 @@ namespace EOM_v3_M
                 if (_data[i, 9] != "-") _data[i, 9] = Convert.ToDateTime(_data[i, 9]).ToString("yyyy-MM-dd HH:mm:ss");
                 //if (_data[i, 13] != "-") eoMhtData = "보기";
 
-                dgvSelect.Rows.Add(
+                _dgv.Rows.Add(
                     false,
                     _data[i, 1],                                                            // 품번
                     _data[i, 2],                                                            // 차종
@@ -57,12 +61,11 @@ namespace EOM_v3_M
                     _data[i, 16]                                                            // EO 구분
                 );
 
-                if (_data[i, 6] != "-") MainForm.dc.SetDGVCellsBackColor(dgvSelect, i, 6, _data[i, 6]);
+                if (_data[i, 6] != "-") MainForm.dc.SetDGVCellsBackColor(_dgv, i, 6, _data[i, 6]);
             }
 
-            dgvSelect.Visible = true;
-
-            sw.Stop();
+            dgvMainSub.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvExclude.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
         }
 
         public EOCheckPCBForm_M()
@@ -78,25 +81,31 @@ namespace EOM_v3_M
 
         private void EOCheckPCBForm_M_Load(object sender, EventArgs e)
         {
+            Text = lblFormTitle.Text;
+
 #if !DEBUG
             txtPCB.Text = string.Empty;
 #endif
 
             if (selectData != null)
             {
-                txtPCB.Enabled = false;
-                grpEOType.Enabled = false;
+                if (selectData[1] == "MAIN PCB") rdoMain.Checked = true;
+                else rdoSub.Checked = true;
+
+                txtPCB.Text = selectData[0];
+
+                btnSearch.PerformClick();
             }
-            else
-            {
-                txtPCB.Enabled = true;
-                grpEOType.Enabled = true;
-            }
+
+            txtPCB.Enabled = true;
+            grpEOType.Enabled = true;
         }
 
         private void EOCheckPCBForm_M_Resize(object sender, EventArgs e)
         {
-            dgvSelect.Size = new Size(Width - 22, Height - 150);
+            //dgvMainSub.Size = new Size(Width - 22, Height - 360);
+            dgvMainSub.Size = new Size(Width - 22, Height - 150);
+            dgvExclude.Size = new Size(Width - 22, Height - 470);
         }
 
         private void cbbShipment_SelectedIndexChanged(object sender, EventArgs e)
@@ -122,17 +131,17 @@ namespace EOM_v3_M
                         // 스티커 컬러, 차수
                         if (i == 6)
                         {
-                            gridData[6] = dgvSelect.Rows[e.RowIndex].Cells[6].Style.BackColor.Name.ToString();
-                            gridData[7] = dgvSelect.Rows[e.RowIndex].Cells[6].Value.ToString();
+                            gridData[6] = dgvMainSub.Rows[e.RowIndex].Cells[6].Style.BackColor.Name.ToString();
+                            gridData[7] = dgvMainSub.Rows[e.RowIndex].Cells[6].Value.ToString();
                             i++;
                         }
                         else if (i >= 8)
                         {
-                            gridData[i] = dgvSelect.Rows[e.RowIndex].Cells[i - 1].Value.ToString();
+                            gridData[i] = dgvMainSub.Rows[e.RowIndex].Cells[i - 1].Value.ToString();
                         }
                         else
                         {
-                            gridData[i] = dgvSelect.Rows[e.RowIndex].Cells[i].Value.ToString();
+                            gridData[i] = dgvMainSub.Rows[e.RowIndex].Cells[i].Value.ToString();
                         }
                     }
 
@@ -172,19 +181,44 @@ namespace EOM_v3_M
                 strColumnName = "sub_pcb_name";
                 strRadioButtonName = rdoSub.Text;
             }
+            /*
             else
             {
                 strRadioButtonName = rdoExclude.Text;
             }
+            */
 
-            string query = "SELECT * FROM `" + MainForm.strDbName + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%' AND eo_type = '" + strRadioButtonName + "' AND NOT eo_contents LIKE '%첫 투입 품번 등록%' GROUP BY eo_contents ORDER BY start_date";
-            string[,] resultData = MainForm.mariaDB.SelectQuery2(query);
+            PackingAndEOM pae = new PackingAndEOM();
 
-#if !DEBUG
-            Clipboard.SetText(query);
-#endif
+            // 1. MAIN PCB 또는 SUB PCB
+            //string query2 = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%' AND eo_type = '" + strRadioButtonName + "' AND NOT eo_contents LIKE '%첫 투입 품번 등록%' GROUP BY eo_contents ORDER BY start_date";
+            //string[,] resultData = MainForm.mariaDB.SelectQuery2(query);
+            string query = pae.PCBTypeMasterEO(MainForm.DATABASE_NAME, strColumnName, MainForm.cbbLineName01.Text, txtPCB.Text.Substring(0, 11), strRadioButtonName);
 
-            DGVDataAdd(resultData);
+                /*
+                "SELECT * FROM ( " +
+                "	SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`model_data` " +
+                "   WHERE (eo_contents, start_date, " + strColumnName + ") IN ( " +
+                "		SELECT eo_contents, MIN(start_date), " + strColumnName + " FROM `" + MainForm.DATABASE_NAME + "`.`model_data` " +
+                "       WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%' AND eo_type = '" + strRadioButtonName + "' AND NOT eo_contents LIKE '%첫 투입 품번 등록%' " +
+                "       GROUP BY eo_contents " +
+                "	) " +
+                ") t ORDER BY t.start_date";
+                */
+
+            string[,] resultData = MainForm.mariaDB.SelectQuery4(query, 18);
+
+            DGVDataAdd(dgvMainSub, resultData);
+
+            /*
+            // 2. 제외
+            query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%' AND eo_type = '" + rdoExclude.Text + "' AND NOT eo_contents LIKE '%첫 투입 품번 등록%' GROUP BY eo_contents ORDER BY start_date";
+            resultData = MainForm.mariaDB.SelectQuery2(query);
+
+            DGVDataAdd(dgvExclude, resultData);
+            */
+
+            MainForm.mariaDB.InsertLogDB(MainForm.DATABASE_NAME, "EO 적용 여부 점검 (" + selectData[0] + "/" + selectData[1] + "), " + sw.ElapsedMilliseconds + "ms", "user_data", false);
 
             lblPrint.Text = "총 " + resultData.GetLength(0) + "건 [" + sw.ElapsedMilliseconds + "ms]";
             sw.Stop();
@@ -209,6 +243,19 @@ namespace EOM_v3_M
             ((Guna2TextBox)sender).FillColor = Color.White;
         }
 
+        private void txtPCB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode.ToString() == "Return")
+            {
+                btnSearch.PerformClick();
+            }
+        }
+
+        private void txtPCB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            MainForm.dc.NumAlphaBetString((Guna2TextBox)sender, e);
+        }
+
         // 2023.03.28
         // 텍스트박스 이벤트 통합
         private void txtAddHyphenCheckFirstChar_KeyUp(object sender, KeyEventArgs e)
@@ -216,12 +263,10 @@ namespace EOM_v3_M
             MainForm.dc.AddHyphenCheckFirstChar((Guna2TextBox)sender, e);
         }
 
-        private void txtPCB_KeyDown(object sender, KeyEventArgs e)
+        private void rdoMain_CheckedChanged(object sender, EventArgs e)
         {
-            if (e.KeyCode.ToString() == "Return")
-            {
-                btnSearch.PerformClick();
-            }
+            txtPCB.Text = string.Empty;
+            txtPCB.Select();
         }
     }
 }

@@ -30,10 +30,6 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvOrderMasterHistory = new System.Windows.Forms.DataGridView();
             this.Column0 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -78,6 +74,8 @@
             this.dgvOrderMasterHistory.Location = new System.Drawing.Point(9, 97);
             this.dgvOrderMasterHistory.Name = "dgvOrderMasterHistory";
             this.dgvOrderMasterHistory.RowHeadersVisible = false;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dgvOrderMasterHistory.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvOrderMasterHistory.RowTemplate.Height = 23;
             this.dgvOrderMasterHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvOrderMasterHistory.Size = new System.Drawing.Size(956, 494);
@@ -92,10 +90,6 @@
             // 
             // Column3
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Blue;
-            this.Column3.DefaultCellStyle = dataGridViewCellStyle2;
             this.Column3.HeaderText = "변경 출하지";
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
@@ -104,8 +98,6 @@
             // 
             // Column7
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column7.DefaultCellStyle = dataGridViewCellStyle3;
             this.Column7.HeaderText = "변경 내역";
             this.Column7.Name = "Column7";
             this.Column7.ReadOnly = true;
@@ -115,8 +107,6 @@
             // 
             // Column4
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column4.DefaultCellStyle = dataGridViewCellStyle4;
             this.Column4.HeaderText = "변경 시작일";
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
@@ -126,8 +116,6 @@
             // 
             // Column5
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column5.DefaultCellStyle = dataGridViewCellStyle5;
             this.Column5.HeaderText = "변경 종료일";
             this.Column5.Name = "Column5";
             this.Column5.ReadOnly = true;
@@ -137,8 +125,6 @@
             // 
             // Column6
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Column6.DefaultCellStyle = dataGridViewCellStyle6;
             this.Column6.HeaderText = "변경 사용자";
             this.Column6.Name = "Column6";
             this.Column6.ReadOnly = true;
@@ -260,6 +246,7 @@
             this.Name = "OrderMasterForm_H";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OrderMasterForm_H";
             this.Load += new System.EventHandler(this.OrderMasterForm_H_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrderMasterHistory)).EndInit();

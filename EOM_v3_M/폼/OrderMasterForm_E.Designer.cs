@@ -425,6 +425,7 @@
             this.Name = "OrderMasterForm_E";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OrderMasterForm_E";
             this.Load += new System.EventHandler(this.OrderMasterForm_E_Load);
             this.pnTitle.ResumeLayout(false);

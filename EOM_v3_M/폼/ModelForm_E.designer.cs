@@ -213,7 +213,7 @@
             this.txtCarName.TextChanged += new System.EventHandler(this.txtCarName_TextChanged);
             this.txtCarName.Enter += new System.EventHandler(this.txtFillColor_Enter);
             this.txtCarName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCarName_KeyDown);
-            this.txtCarName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCarName_KeyPress);
+            this.txtCarName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumAlphaSpaceString_KeyPress);
             this.txtCarName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCarName_KeyUp);
             this.txtCarName.Leave += new System.EventHandler(this.txtFillColor_Leave);
             // 
@@ -241,7 +241,7 @@
             this.txtMainPCB.TabIndex = 2;
             this.txtMainPCB.TextChanged += new System.EventHandler(this.txtMainPCB_TextChanged);
             this.txtMainPCB.Enter += new System.EventHandler(this.txtMainPCB_Enter);
-            this.txtMainPCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMainPCB_KeyPress);
+            this.txtMainPCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumAlphaBetString_KeyPress);
             this.txtMainPCB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMainPCB_KeyUp);
             this.txtMainPCB.Leave += new System.EventHandler(this.txtMainPCB_Leave);
             // 
@@ -269,7 +269,7 @@
             this.txtSubPCB.TabIndex = 3;
             this.txtSubPCB.TextChanged += new System.EventHandler(this.txtSubPCB_TextChanged);
             this.txtSubPCB.Enter += new System.EventHandler(this.txtSubPCB_Enter);
-            this.txtSubPCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSubPCB_KeyPress);
+            this.txtSubPCB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumAlphaBetString_KeyPress);
             this.txtSubPCB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSubPCB_KeyUp);
             this.txtSubPCB.Leave += new System.EventHandler(this.txtSubPCB_Leave);
             // 

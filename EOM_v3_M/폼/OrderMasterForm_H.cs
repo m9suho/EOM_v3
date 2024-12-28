@@ -37,7 +37,7 @@ namespace EOM_v3_M
 
             txtModelName.Text = modelData[1];
 
-            string query = "SELECT * FROM  `" + MainForm.strDbName + "`.`shipment_history_data` WHERE model_name = '" + modelData[1] + "'";
+            string query = "SELECT * FROM  `" + MainForm.DATABASE_NAME + "`.`shipment_history_data` WHERE model_name = '" + modelData[1] + "'";
             query += "ORDER BY start_date";
             shipmentHistoryData = MainForm.mariaDB.SelectQuery4(query, 6);
 

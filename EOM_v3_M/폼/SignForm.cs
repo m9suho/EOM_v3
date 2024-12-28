@@ -30,9 +30,9 @@ namespace EOM_v3_M
                 DefaultClass dc = new DefaultClass();
 
 #if DEBUG
-                MainForm.mariaDB.InsertJoinDB(MainForm.strDbName, "join_data", txtUserName.Text);
+                MainForm.mariaDB.InsertJoinDB(MainForm.DATABASE_NAME, "join_data", txtUserName.Text);
 #else
-                MainForm.mariaDB.InsertJoinDB(MainForm.strDbName, "join_data", txtUserName.Text);
+                MainForm.mariaDB.InsertJoinDB(MainForm.DATABASE_NAME, "join_data", txtUserName.Text);
 #endif
 
                 MainForm.Guna2Msg(this, "알림", "사용자 등록 요청이 완료되었습니다\n3일 내에 등록이 되지 않을 경우 010-3363-0127 연락바랍니다.");

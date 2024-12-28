@@ -129,7 +129,7 @@ namespace EOM_v3_M
                 // SELECT QUERY [조회]
                 // shipment_history_data TABLE
                 selectData = new string[] { "model_name", txtModelName.Text };
-                query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "shipment_history_data", selectData, "SELECT", "start_date", "ASC");
+                query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "shipment_history_data", selectData, "SELECT", "start_date", "ASC");
                 resultData = MainForm.mariaDB.SelectQuery2(query);
 
                 // 2022.01.17
@@ -159,8 +159,8 @@ namespace EOM_v3_M
 
                 // INSERT QUERY [추가]
                 // shipment_history_data TABLE
-                string[] insertData = new string[] { txtModelName.Text, ComboBoxTextSplit[0].Trim(), txtContents.Text, startDatetimeData, endDatetimeData, MainForm.userNameData };
-                query = MainForm.dc.InsertQueryArrayConvert(MainForm.strDbName, "shipment_history_data", insertData);
+                string[] insertData = new string[] { txtModelName.Text, ComboBoxTextSplit[0].Trim(), txtContents.Text, startDatetimeData, endDatetimeData, MainForm.strUserAddressData[0] };
+                query = MainForm.dc.InsertQueryArrayConvert(MainForm.DATABASE_NAME, "shipment_history_data", insertData);
                 MainForm.historyInsertComplete = true;
 
                 MainForm.mariaDB.EtcQuery(query);
@@ -169,7 +169,7 @@ namespace EOM_v3_M
                 /*
                 // 품번의 마지막 출하지 조회
                 // 초도품 등록 내용 조회 [현재 출하지 제외]
-                query = "SELECT * FROM ( SELECT * FROM `" + MainForm.strDbName + "`.`model_data` WHERE model_name = '" + txtModelName.Text + "' AND NOT shipment = '" + ComboBoxTextSplit[0].Trim() + "' ORDER BY start_date ) AS sort_data GROUP BY sort_data.eo_contents";
+                query = "SELECT * FROM ( SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`model_data` WHERE model_name = '" + txtModelName.Text + "' AND NOT shipment = '" + ComboBoxTextSplit[0].Trim() + "' ORDER BY start_date ) AS sort_data GROUP BY sort_data.eo_contents";
                 resultData = MainForm.mariaDB.SelectQuery4(query, 17);
 
                 OrderMasterForm_A orderMasterForm_A = new OrderMasterForm_A(txtModelName.Text, ComboBoxTextSplit[0].Trim());
@@ -178,8 +178,8 @@ namespace EOM_v3_M
 
                 // INSERT QUERY [추가]
                 // shipment_history_data TABLE
-                string[] insertData = new string[] { txtModelName.Text, ComboBoxTextSplit[0].Trim(), txtContents.Text, startDatetimeData, endDatetimeData, MainForm.userNameData };
-                query = MainForm.dc.InsertQueryArrayConvert(MainForm.strDbName, "shipment_history_data", insertData);
+                string[] insertData = new string[] { txtModelName.Text, ComboBoxTextSplit[0].Trim(), txtContents.Text, startDatetimeData, endDatetimeData, MainForm.strUserAddressData[0] };
+                query = MainForm.dc.InsertQueryArrayConvert(MainForm.DATABASE_NAME, "shipment_history_data", insertData);
                 MainForm.historyInsertComplete = true;
 
                 MainForm.mariaDB.EtcQuery(query);

@@ -18,7 +18,7 @@ namespace EOM_v3_M
         private string SearchRegistrantPrintAddress(string _data)
         {
             string[] selectData = new string[] { };
-            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "registrant_data", selectData, "SELECT");
+            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "registrant_data", selectData, "SELECT");
             string[,] tmpData = MainForm.mariaDB.SelectQuery2(query);
 
             for (int i = 0; i < tmpData.GetLength(0); i++)
@@ -229,7 +229,7 @@ namespace EOM_v3_M
                     Array.Resize(ref MainForm.printData, 12);
 
                     // 인쇄 쿼리 추가
-                    string query = MainForm.dc.InsertQueryArrayConvert(MainForm.strDbName, "print_data", MainForm.printData);
+                    string query = MainForm.dc.InsertQueryArrayConvert(MainForm.DATABASE_NAME, "print_data", MainForm.printData);
                     
                     MainForm.mariaDB.EtcQuery(query);
 

@@ -27,7 +27,7 @@ namespace EOM_v3_M
 
             string query =
                 "SELECT a.model_name, a.car_name" +
-                "   FROM `" + MainForm.strDbName + "`.`model_data` a" +
+                "   FROM `" + MainForm.DATABASE_NAME + "`.`model_data` a" +
                 "   LEFT OUTER JOIN `fpi`.`model_data` b" +
                 "      ON a.model_name = b.model_name " +
                 "WHERE a.line = 'D-오디오 조립' AND b.model_name IS NULL GROUP BY a.model_name;";

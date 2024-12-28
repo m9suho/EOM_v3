@@ -210,39 +210,39 @@ namespace EOM_v3_M
                 if (_type == 1)
                 {
                     string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "car_name", _data };
-                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
                 }
                 // 고객사 EO 조회
                 else if (_type == 2)
                 {
                     string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "customer_eo_number", _data };
-                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
                 }
                 // 모비스 EO 조회
                 else if (_type == 3)
                 {
                     string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "mobis_eo_number", _data };
-                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
                 }
                 // EO 내용 조회
                 else if (_type == 4)
                 {
                     string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "eo_contents", _data };
-                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
                 }
                 // 2020.12.18
                 // MAIN PCB 조회
                 else if (_type == 5)
                 {
                     string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "main_pcb_name", _data };
-                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
                 }
                 // 2020.12.18
                 // SUB PCB 조회
                 else if (_type == 6)
                 {
                     string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "sub_pcb_name", _data };
-                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+                    query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
                 }
                 else
                 {
@@ -338,7 +338,7 @@ namespace EOM_v3_M
             {
                 string[] y = { string.Empty };
 
-                query = "SELECT * FROM `" + MainForm.strDbName + "`.`" + "eo_data" + "` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND car_name LIKE '" + _data + "%'";
+                query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`" + "eo_data" + "` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND car_name LIKE '" + _data + "%'";
 
                 // 2021.04.12
                 // 조회 기간 추가
@@ -364,7 +364,7 @@ namespace EOM_v3_M
             {
                 selectData = new string[] { "line", MainForm.cbbLineName01.Text };
 
-                query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+                query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
             }
 
             query += " ORDER BY date";
@@ -448,7 +448,7 @@ namespace EOM_v3_M
         private bool EODuplicationCheck(string _data, string _column)
         {
             string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "car_name", txtCarName.Text };
-            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
             string[] columnData = MainForm.mariaDB.SelectQueryCount(query, _column);
 
             for (int i = 0; i < columnData.Length; i++)
@@ -488,7 +488,7 @@ namespace EOM_v3_M
                 selectData = new string[] { "line", MainForm.cbbLineName01.Text, "car_name", txtCarName.Text, "mobis_eo_number", _data, "shipment", shipmentData };
             }
 
-            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
             string[,] columnData = MainForm.mariaDB.SelectQuery2(query);
 
             if (columnData.GetLength(0) > 0)
@@ -632,7 +632,7 @@ namespace EOM_v3_M
 
             // 2023.04.04
             // EO 내용 자동완성 
-            string[] eoContentsoData = MainForm.mariaDB.SelectQueryCount("SELECT * FROM `" + MainForm.strDbName + "`.`eo_data` GROUP BY eo_contents", "eo_contents");
+            string[] eoContentsoData = MainForm.mariaDB.SelectQueryCount("SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`eo_data` GROUP BY eo_contents", "eo_contents");
 
             MainForm.dc.TextBoxAutoComplete(txtEOContents, eoContentsoData);
         }
@@ -663,7 +663,7 @@ namespace EOM_v3_M
                 // 2020.05.06
                 // mht 데이터 저장
                 string[] selectData = DatabaseColumnData(1, string.Empty);
-                string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+                string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
                 string[] columnData = MainForm.mariaDB.SelectQueryCount(query, "mht_data");
 
                 // 2021.02.10
@@ -1036,7 +1036,7 @@ namespace EOM_v3_M
             */
 
             string[] insertData = DatabaseColumnData(2, mobisNumber);
-            query = MainForm.dc.InsertQueryArrayConvert(MainForm.strDbName, "eo_data", insertData);
+            query = MainForm.dc.InsertQueryArrayConvert(MainForm.DATABASE_NAME, "eo_data", insertData);
             MainForm.mariaDB.EtcQuery(query);
 
             // 로그
@@ -1073,7 +1073,7 @@ namespace EOM_v3_M
                 if (dataGridView1.Rows[i].Cells[0].Value.ToString().Equals("True"))
                 {
                     string[] deleteData = DatabaseColumnData(3, i.ToString());
-                    string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", deleteData, "DELETE");
+                    string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", deleteData, "DELETE");
                     MainForm.mariaDB.EtcQuery(query);
 
                     // 로그
@@ -1278,7 +1278,7 @@ namespace EOM_v3_M
                 if (e.ColumnIndex == 10)
                 {
                     string[] selectData = DatabaseColumnData(4, stickerColor);
-                    string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "eo_data", selectData, "SELECT");
+                    string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "eo_data", selectData, "SELECT");
                     string[] columnData = MainForm.mariaDB.SelectQueryCount(query, "mht_data");
 
                     // 공백이 아니라면 파일 생성

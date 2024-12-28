@@ -78,12 +78,12 @@ namespace EOM_v3_M
                     // 1. 조건 검사 [고객사 EO, 모비스 EO]
                     if (txtCustomerEO.Text.Length == 6 && txtMobisEO.Text.Length == 6)
                     {
-                        query = "SELECT * FROM `" + MainForm.strDbName + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND model_name = '" + _data[i] + "' AND customer_eo_number = '" + txtCustomerEO.Text + "' AND mobis_eo_number = '" + txtMobisEO.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%'";
+                        query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND model_name = '" + _data[i] + "' AND customer_eo_number = '" + txtCustomerEO.Text + "' AND mobis_eo_number = '" + txtMobisEO.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%'";
                     }
                     // 2. 그 외     [EO 내용]
                     else
                     {
-                        query = "SELECT * FROM `" + MainForm.strDbName + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND model_name = '" + _data[i] + "' AND eo_contents = '" + txtEOContents.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%'";
+                        query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND model_name = '" + _data[i] + "' AND eo_contents = '" + txtEOContents.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%'";
                     }
                     string[,] resultData = MainForm.mariaDB.SelectQuery2(query);
 
@@ -118,7 +118,7 @@ namespace EOM_v3_M
                 // 검색된 데이터가 있을 경우에만 리스트 출력
                 if (count > 0) DGVDataAdd(modelData);
 
-                MainForm.mariaDB.InsertLogDB("EO 적용 여부 점검 시작 (" + txtPCB.Text + "/" + txtCustomerEO.Text + "/" + txtMobisEO.Text + "/" + txtEOContents.Text +"), " + sw.ElapsedMilliseconds + "ms", false);
+                MainForm.mariaDB.InsertLogDB(MainForm.DATABASE_NAME, "EO 적용 여부 점검 (" + txtPCB.Text + "/" + txtCustomerEO.Text + "/" + txtMobisEO.Text + "/" + txtEOContents.Text +"), " + sw.ElapsedMilliseconds + "ms", "user_data", false);
 
             }
             catch (Exception ex)
@@ -140,7 +140,7 @@ namespace EOM_v3_M
 
         private void EOCheckContentsForm_M_Load(object sender, EventArgs e)
         {
-            Text = MainForm.programName + " - " + MainForm.dc.Version();
+            Text = lblFormTitle.Text;
 
             if (selectData != null)
             {
@@ -217,7 +217,7 @@ namespace EOM_v3_M
             }
 
             // 1. M/PCB 또는 S/PCB 품번 리스트 조회
-            string query = "SELECT * FROM `" + MainForm.strDbName + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%' GROUP BY model_name ORDER BY model_name";
+            string query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + strColumnName + " LIKE '" + txtPCB.Text.Substring(0, 11) + "%' GROUP BY model_name ORDER BY model_name";
             string[,] resultData = MainForm.mariaDB.SelectQuery2(query);
 
 #if DEBUG

@@ -270,7 +270,7 @@ namespace EOM_v3_M
                         return;
                     }
 
-                    query = "SELECT * FROM `" + MainForm.strDbName + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + SearchTableName + " LIKE '%" + txtSearch.Text + "%'";
+                    query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`model_data` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + SearchTableName + " LIKE '%" + txtSearch.Text + "%'";
                     searchData = MainForm.mariaDB.SelectQueryCount(query, SearchTableName);
                 }
                 // EO 폼
@@ -320,7 +320,7 @@ namespace EOM_v3_M
                         return;
                     }
 
-                    query = "SELECT * FROM `" + MainForm.strDbName + "`.`" + "eo_data" + "` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + SearchTableName + " LIKE '%" + txtSearch.Text + "%'";
+                    query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`" + "eo_data" + "` WHERE line = '" + MainForm.cbbLineName01.Text + "' AND " + SearchTableName + " LIKE '%" + txtSearch.Text + "%'";
                     searchData = MainForm.mariaDB.SelectQueryCount(query, SearchTableName);
                 }
                 else
@@ -328,7 +328,7 @@ namespace EOM_v3_M
                     // 모델
                     SearchTableName = "model_name";
 
-                    query = "SELECT * FROM `" + MainForm.strDbName + "`.`model_data` WHERE " + SearchTableName + " LIKE '%" + txtSearch.Text + "%' AND NOT shipment = '-' GROUP BY " + SearchTableName;
+                    query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`model_data` WHERE " + SearchTableName + " LIKE '%" + txtSearch.Text + "%' AND NOT shipment = '-' GROUP BY " + SearchTableName;
                     searchData = MainForm.mariaDB.SelectQueryCount(query, SearchTableName);
                 }
 

@@ -22,7 +22,7 @@ namespace EOM_v3_M
 
         private void MessageForm_List_Load(object sender, EventArgs e)
         {
-            userData = MainForm.mariaDB.SelectQuery2("SELECT * FROM `" + MainForm.strDbName + "`.`registrant_data` ORDER BY name");
+            userData = MainForm.mariaDB.SelectQuery2("SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`registrant_data` ORDER BY name");
 
             if (userData.GetLength(0) <= 0)
             {
@@ -44,7 +44,7 @@ namespace EOM_v3_M
 
         private void treeViewList_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (userData[e.Node.Index, 1] == MainForm.userNameData)
+            if (userData[e.Node.Index, 1] == MainForm.strUserAddressData[0])
             {
                 MainForm.Guna2Msg(this, "오류", "자신한테는 보낼 수 없습니다");
                 return;

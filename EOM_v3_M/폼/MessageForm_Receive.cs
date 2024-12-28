@@ -35,7 +35,7 @@ namespace EOM_v3_M
 
             //if (!chkBoxMessageRetry.Checked)
             {
-                MainForm.mariaDB.EtcQuery("UPDATE `" + MainForm.strDbName + "`.`message_data` SET receive_check = '' WHERE write_time = '" + Convert.ToDateTime(strData[0]).ToString("yyyy-MM-dd HH:mm:ss") + "' AND send_name = '" + strData[2] + "' AND receive_name = '" + strData[3] + "'");
+                MainForm.mariaDB.EtcQuery("UPDATE `" + MainForm.DATABASE_NAME + "`.`message_data` SET receive_check = '' WHERE write_time = '" + Convert.ToDateTime(strData[0]).ToString("yyyy-MM-dd HH:mm:ss") + "' AND send_name = '" + strData[2] + "' AND receive_name = '" + strData[3] + "'");
             }
 
             /*
@@ -46,7 +46,7 @@ namespace EOM_v3_M
             }
 
             // write_time, message, send_name, receive_name
-            MainForm.mariaDB.EtcQuery("INSERT INTO `" + strDbName + "`.`message_data` VALUES (NOW(),'" + txtMessage.Text + "','" + MainForm.userNameData + "','" + strName + "','C')");
+            MainForm.mariaDB.EtcQuery("INSERT INTO `" + DATABASE_NAME + "`.`message_data` VALUES (NOW(),'" + txtMessage.Text + "','" + MainForm.strUserAddressData[0] + "','" + strName + "','C')");
 
             Close();
             */

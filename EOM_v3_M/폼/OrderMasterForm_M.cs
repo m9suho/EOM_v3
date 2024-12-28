@@ -55,7 +55,7 @@ namespace EOM_v3_M
             {
                 // 1. 시작일 기준 가장 낮은 값
                 // 2. 중복 제거
-                query = MainForm.pe.OriginalShipment(MainForm.strDbName, MainForm.cbbLineName01.Text);
+                query = MainForm.pe.OriginalShipment(MainForm.DATABASE_NAME, MainForm.cbbLineName01.Text);
 
                 orderData = MainForm.mariaDB.SelectQuery4(query, 3);
             }
@@ -69,7 +69,7 @@ namespace EOM_v3_M
             {
                 // 1. 시작일 기준 가장 높은 값
                 // 2. 중복 제거
-                query = "SELECT * FROM ( SELECT * FROM ( SELECT * FROM `" + MainForm.strDbName + "`.`shipment_history_data` ";
+                query = "SELECT * FROM ( SELECT * FROM ( SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`shipment_history_data` ";
 
                 if (rdoProcessIng.Checked)
                 {

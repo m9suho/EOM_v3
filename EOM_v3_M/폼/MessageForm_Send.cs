@@ -37,7 +37,7 @@ namespace EOM_v3_M
             }
 
             // write_time, message, send_name, receive_name
-            MainForm.mariaDB.EtcQuery("INSERT INTO `" + MainForm.strDbName + "`.`message_data` VALUES (NOW(),'" + txtMessage.Text + "','" + MainForm.userNameData + "','" + strName + "','C')");
+            MainForm.mariaDB.EtcQuery("INSERT INTO `" + MainForm.DATABASE_NAME + "`.`message_data` VALUES (NOW(),'" + txtMessage.Text + "','" + MainForm.strUserAddressData[0] + "','" + strName + "','C')");
 
             /*
             MessageFormClass messageFormClass = new MessageFormClass();

@@ -207,7 +207,7 @@ namespace EOM_v3_M
         private bool ModelEODuplicationCheck(string _column, string _data01, string _data02, string _data03)
         {
             string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, _column, _data01, "model_name", _data02, "shipment", _data03 };
-            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "model_data", selectData, "SELECT");
+            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "model_data", selectData, "SELECT");
             string[,] columnData = MainForm.mariaDB.SelectQuery2(query);
 
             if (columnData.GetLength(0) > 0) return true;
@@ -495,28 +495,16 @@ namespace EOM_v3_M
             }
         }
 
-        private void txtCarName_KeyPress(object sender, KeyPressEventArgs e)
+        private void NumAlphaBetString_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // 2022.02.10
+            // 2024.10.29
+            MainForm.dc.NumAlphaBetString((Guna2TextBox)sender, e);
+        }
+
+        private void NumAlphaSpaceString_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // 2024.10.29
             MainForm.dc.NumAlphaSpaceString((Guna2TextBox)sender, e);
-        }
-
-        private void txtMainPCB_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (MainForm.cbbLineName01.Text != "HUD")
-            {
-                // 2022.02.10
-                MainForm.dc.NumAlphaString((Guna2TextBox)sender, e);
-            }
-        }
-
-        private void txtSubPCB_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (MainForm.cbbLineName01.Text != "HUD")
-            {
-                // 2022.02.10
-                MainForm.dc.NumAlphaString((Guna2TextBox)sender, e);
-            }
         }
 
         // 2023.03.28
@@ -818,8 +806,8 @@ namespace EOM_v3_M
                     updateData = DatabaseColumnData(2);
                 }
 
-                //query = MainForm.dc.InsertQueryArrayConvert(MainForm.strDbName, "model_data", insertData);
-                query = @"UPDATE `" + MainForm.strDbName + "`.`model_data` SET " + ConvertUpdateColumnData(updateData) + " WHERE " +
+                //query = MainForm.dc.InsertQueryArrayConvert(MainForm.DATABASE_NAME, "model_data", insertData);
+                query = @"UPDATE `" + MainForm.DATABASE_NAME + "`.`model_data` SET " + ConvertUpdateColumnData(updateData) + " WHERE " +
                     "line = '" + originalData[0, 0] + "' AND " +
                     "model_name = '" + originalData[0, 1] + "' AND " +
                     "car_name = '" + originalData[0, 2] + "' AND " +

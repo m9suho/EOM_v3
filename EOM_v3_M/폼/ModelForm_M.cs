@@ -178,7 +178,7 @@ namespace EOM_v3_M
         private bool ModelEODuplicationCheck(string _column, string _data01, string _data02, string _data03)
         {
             string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, _column, _data01, "model_name", _data02, "shipment", _data03 };
-            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "model_data", selectData, "SELECT");
+            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "model_data", selectData, "SELECT");
             string[,] columnData = MainForm.mariaDB.SelectQuery2(query);
 
             if (columnData.GetLength(0) > 0)
@@ -195,7 +195,7 @@ namespace EOM_v3_M
             string shipmentConditionData = string.Empty;
             string[,] shipmentData;
 
-            query = "SELECT * FROM `" + MainForm.strDbName + "`.`shipment_history_data` WHERE model_name = '" + txtProductName.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' ORDER BY start_date";
+            query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`shipment_history_data` WHERE model_name = '" + txtProductName.Text + "' AND end_date > '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' ORDER BY start_date";
             shipmentData = MainForm.mariaDB.SelectQuery2(query);
 
             // 1. 출하지 마스터 검사 [등록 데이터]
@@ -384,7 +384,7 @@ namespace EOM_v3_M
                 //dateTimePicker2.Value = dt.AddDays(7);
                 controlBox = new bool[] { true, true, true, true, true,
                                           false, false, false, false, true,
-                                          true, true, true, true, true };
+                                          true, true, true, false, false };
                 InitialSetControl(controlBox);
             }
 
@@ -444,28 +444,16 @@ namespace EOM_v3_M
             }
         }
 
-        private void txtCarName_KeyPress(object sender, KeyPressEventArgs e)
+        private void NumAlphaBetString_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // 2022.02.10
+            // 2024.10.29
+            MainForm.dc.NumAlphaBetString((Guna2TextBox)sender, e);
+        }
+
+        private void NumAlphaSpaceString_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // 2024.10.29
             MainForm.dc.NumAlphaSpaceString((Guna2TextBox)sender, e);
-        }
-
-        private void txtMainPCB_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (MainForm.cbbLineName01.Text != "HUD")
-            {
-                // 2022.02.10
-                MainForm.dc.NumAlphaString((Guna2TextBox)sender, e);
-            }
-        }
-
-        private void txtSubPCB_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (MainForm.cbbLineName01.Text != "HUD")
-            {
-                // 2022.02.10
-                MainForm.dc.NumAlphaString((Guna2TextBox)sender, e);
-            }
         }
 
         // 2023.03.28
@@ -478,42 +466,6 @@ namespace EOM_v3_M
         private void txtCarName_KeyUp(object sender, KeyEventArgs e)
         {
             MainForm.dc.CarNameUpperConvert(txtCarName);
-        }
-
-        private void txtProductName_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                // 
-                if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[0] || MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[2])
-                {
-                    if (((Guna2TextBox)sender).TextLength == 0)
-                    {
-                        ((Guna2TextBox)sender).Text = "M";
-                        ((Guna2TextBox)sender).Select(((Guna2TextBox)sender).MaxLength + 1, 0);
-                    }
-                }
-
-                // 2021.09.04
-                MainForm.dc.NumAlphaSpaceString((Guna2TextBox)sender);
-            }
-            catch (Exception ex)
-            {
-                MainForm.Guna2Msg(this, "오류", ex.Message);
-            }
-        }
-
-        private void txtMainPCB_TextChanged(object sender, EventArgs e)
-        {
-            if (((Guna2TextBox)sender).Enabled)
-            {
-                if (MainForm.cbbLineName01.Text != "HUD" && (((Guna2TextBox)sender).TextLength < 3 || ((Guna2TextBox)sender).Text.Substring(0, 1) != "M"))
-                {
-                    MainPCBInitialValue((Guna2TextBox)sender);
-
-                    ((Guna2TextBox)sender).Select(((Guna2TextBox)sender).MaxLength + 1, 0);
-                }
-            }
         }
 
         private void txtSubPCB_TextChanged(object sender, EventArgs e)
@@ -747,7 +699,7 @@ namespace EOM_v3_M
                     insertData = DatabaseColumnData(2);
                 }
 
-                query = MainForm.dc.InsertQueryArrayConvert(MainForm.strDbName, "model_data", insertData);
+                query = MainForm.dc.InsertQueryArrayConvert(MainForm.DATABASE_NAME, "model_data", insertData);
                 MainForm.mariaDB.EtcQuery(query);
 
                 Opacity = 0;
@@ -823,19 +775,6 @@ namespace EOM_v3_M
 
         private void txtSubPCB_Enter(object sender, EventArgs e)
         {
-            /*
-            // 2020.12.14
-            // D-오디오 조립만 M17
-            // 그 외 M15
-            if (MainForm.cbbLineName01.Text == MainForm.LINE_NAME_LIST[1])
-            {
-                txtSubPCB.Text = "M17";
-            }
-            else
-            {
-                txtSubPCB.Text = "M15";
-            }
-            */
             txtSubPCB.Select(txtSubPCB.MaxLength + 1, 0);
             txtSubPCB.FillColor = Color.LemonChiffon;
         }
@@ -844,9 +783,12 @@ namespace EOM_v3_M
         {
             if (txtProductName.TextLength > 10)
             {
-                messageFormClass.FormMsg = "[" + txtProductName.Text + "] 품번 등록정보 조회 시도..";
-                messageFormClass.ShowDelay = 2000;
-                messageFormClass.StartForm();
+                // ********* 아래 오류 수정해야함
+                // 삭제된 개체에 액세스할 수 없습니다.
+                // 개체 이름: 'Form'
+                //messageFormClass.FormMsg = "[" + txtProductName.Text + "] 품번 등록정보 조회 시도..";
+                //messageFormClass.ShowDelay = 2000;
+                //messageFormClass.StartForm();
 
                 // 값이 있을 경우에만 체킹
                 if (!txtProductName.Text.Equals(string.Empty))
@@ -859,7 +801,7 @@ namespace EOM_v3_M
                     // 라인의 전 모델을 가져와 프로그램 내에서 처리하므로 데이터베이스 조건부 처리 요청 
                     string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "model_name", txtProductName.Text, "print_type", "초도품" };
                     //string[] selectData = new string[] { "line", MainForm.cbbLineName01.Text, "model_name", txtProductName.Text };
-                    string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.strDbName, "model_data", selectData, "SELECT");
+                    string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "model_data", selectData, "SELECT");
                     //query += " OR (model_name = '" + txtProductName.Text + "' AND eo_contents = '---------- 첫 투입 품번 등록 ----------')";
                     string[,] modelData = MainForm.mariaDB.SelectQuery2(query);
 
@@ -1022,7 +964,7 @@ namespace EOM_v3_M
                     txtEOContents.Text += " (내부관리)";
                     
                     dtpEndDate.Value = dtpStartDate.Value;
-                    dtpEndDate.Enabled = false;
+                    //dtpEndDate.Enabled = false;
                 }
             }
             else
@@ -1032,7 +974,7 @@ namespace EOM_v3_M
                     txtEOContents.Text = MainForm.dc.PrivateTextDeleteConvert(txtEOContents.Text);
 
                     MainForm.dc.ShipmentDays(dtpStartDate, dtpEndDate, cbbShipment.Text);
-                    dtpEndDate.Enabled = true;
+                    //dtpEndDate.Enabled = true;
                 }
             }
         }

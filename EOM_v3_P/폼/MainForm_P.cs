@@ -26,7 +26,7 @@ namespace EOM_v3_P
         const string DB_NAME_RELEASE = "eom_1floor";
         const string DB_NAME_DEBUG = "eom_1floor_trunk";
 
-        public static string strDbName = string.Empty;
+        public static string DATABASE_NAME = string.Empty;
 
         DefaultClass dc = new DefaultClass();
         MariaDBClass mariaDB = new MariaDBClass();
@@ -56,7 +56,7 @@ namespace EOM_v3_P
                 //registrantData
                 "registrant_data"
             };
-            string query = dc.InsertQueryArrayConvert(strDbName, "print_data", insertData);
+            string query = dc.InsertQueryArrayConvert(DATABASE_NAME, "print_data", insertData);
             mariaDB.EtcQuery(query);
         }
 
@@ -160,7 +160,7 @@ namespace EOM_v3_P
                 ws.Cells[i + 7, 3] = "";
             }
 
-            string query = "DELETE FROM `" + strDbName + "`.`model_data` WHERE model_name = '" + _data[1] + "' AND car_name = '" + _data[2] + "' AND customer_eo_number = '" + _data[3] + "' AND mobis_eo_number = '" + _data[4] + "' AND print_count = '" + _data[10] + "'";
+            string query = "DELETE FROM `" + DATABASE_NAME + "`.`model_data` WHERE model_name = '" + _data[1] + "' AND car_name = '" + _data[2] + "' AND customer_eo_number = '" + _data[3] + "' AND mobis_eo_number = '" + _data[4] + "' AND print_count = '" + _data[10] + "'";
             mariaDB.EtcQuery(query);
 
             // EXCEL 종료
@@ -187,7 +187,7 @@ namespace EOM_v3_P
             try
             {
                 string[] selectData = new string[] { "print_address", "registrant_data" };
-                string query = dc.SelectDeleteQueryANDConvert(strDbName, "model_data", selectData, "SELECT");
+                string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
 
                 strSetQuery = query;
 
@@ -246,9 +246,9 @@ namespace EOM_v3_P
 
 #if DEBUG
             Text += " [디버깅 모드]";
-            strDbName = DB_NAME_DEBUG;
+            DATABASE_NAME = DB_NAME_DEBUG;
 #else
-            strDbName = DB_NAME_RELEASE;
+            DATABASE_NAME = DB_NAME_RELEASE;
 #endif
 
             // 셋팅 값 로드
@@ -257,13 +257,13 @@ namespace EOM_v3_P
             // 현재 셋팅 데이터 체크
             if (!dc.DatFileCheck(settingData, 7))
             {
-                settingData = new string[7] { strDbName, "print_data", "registrant_data", "log_data", "1F", "10.239.19.91", "3308" };
+                settingData = new string[7] { DATABASE_NAME, "print_data", "registrant_data", "log_data", "1F", "10.239.19.91", "3308" };
 
                 dc.DatFileSave(@"C:\" + Process.GetCurrentProcess().ProcessName, "settingData.dat", settingData);
             }
 
             // mariaDB 셋팅
-            strConn = "Server=" + settingData[settingData.Length - 2] + ";Port=" + settingData[settingData.Length - 1] + ";Database=" + strDbName + ";Uid=root;Pwd=9001271;";
+            strConn = "Server=" + settingData[settingData.Length - 2] + ";Port=" + settingData[settingData.Length - 1] + ";Database=" + DATABASE_NAME + ";Uid=root;Pwd=9001271;";
 
             mariaDB.DbConnInfo = strConn;
 
@@ -280,9 +280,9 @@ namespace EOM_v3_P
             dc.AutoUpdate(업데이트UToolStripMenuItem, new TimeSpan[] { new TimeSpan(0, 0, 15), new TimeSpan(7, 0, 0) });
 
 #if DEBUG
-            mariaDB.InsertLogDB(strDbName, "프로그램 시작 [" + dc.Version() + "]", false);
+            mariaDB.InsertLogDB(DATABASE_NAME, "프로그램 시작 [" + dc.Version() + "]", false);
 #else
-            mariaDB.InsertLogDB(strDbName, "프로그램 시작 [" + dc.Version() + "]", false);
+            mariaDB.InsertLogDB(DATABASE_NAME, "프로그램 시작 [" + dc.Version() + "]", false);
 #endif
             addressData = dc.LineMatchingData();
 
@@ -314,9 +314,9 @@ namespace EOM_v3_P
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
 #if DEBUG
-            mariaDB.InsertLogDB(strDbName, "프로그램 종료", false);
+            mariaDB.InsertLogDB(DATABASE_NAME, "프로그램 종료", false);
 #else
-            mariaDB.InsertLogDB(strDbName, "프로그램 종료", false);
+            mariaDB.InsertLogDB(DATABASE_NAME, "프로그램 종료", false);
 #endif
         }
 
