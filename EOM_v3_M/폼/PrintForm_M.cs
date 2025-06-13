@@ -18,13 +18,13 @@ namespace EOM_v3_M
         private string SearchRegistrantPrintAddress(string _data)
         {
             string[] selectData = new string[] { };
-            string query = MainForm.dc.SelectDeleteQueryANDConvert(MainForm.DATABASE_NAME, "registrant_data", selectData, "SELECT");
+            string query = MainForm.dc.SelectDeleteQueryANDConvert("registrant", "user_data", selectData, "SELECT");
             string[,] tmpData = MainForm.mariaDB.SelectQuery2(query);
 
             for (int i = 0; i < tmpData.GetLength(0); i++)
             {
                 // 있을 경우
-                if (tmpData[i, 0].Equals(_data))
+                if (tmpData[i, 1].Equals(_data))
                 {
                     return tmpData[i, 2];
                 }
@@ -194,6 +194,7 @@ namespace EOM_v3_M
                     MainForm.printData[10] = numericUpDown1.Value.ToString();
 
                     // print_address
+                    //string printAddressData = SearchRegistrantPrintAddress(NetworkInterface.GetAllNetworkInterfaces()[0].GetPhysicalAddress().ToString());
                     string printAddressData = SearchRegistrantPrintAddress(NetworkInterface.GetAllNetworkInterfaces()[0].GetPhysicalAddress().ToString());
 
                     // 사용자 모드에는 PC 체크
@@ -206,6 +207,7 @@ namespace EOM_v3_M
                         else
                         {
                             MainForm.Guna2Msg(this, "오류", "PC 등록이 되지 않았습니다 [윤민규 사원 문의]");
+                            btnPrintOK.Enabled = true;
                             return;
                         }
                     }
@@ -221,6 +223,7 @@ namespace EOM_v3_M
                         else
                         {
                             MainForm.Guna2Msg(this, "오류", "프린터 주소 설정이 없어 인쇄가 불가능합니다");
+                            btnPrintOK.Enabled = true;
                             return;
                         }
                     }

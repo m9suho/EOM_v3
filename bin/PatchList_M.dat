@@ -1,0 +1,9 @@
+//EOM_v3_M
+default,EOM_v3_M.exe
+//del,MetroFramework.dll
+del,MetroFramework.Design.dll
+del,MetroFramework.Fonts.dll
+add,MySql.Data.dll
+add,Guna.UI2.dll
+add,OK.png
+add,WARNING.png

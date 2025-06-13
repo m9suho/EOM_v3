@@ -3,7 +3,6 @@ D:\GitHub\EOM_v3\bin\WARNING.png
 D:\GitHub\EOM_v3\bin\EOM_v3_M.exe.config
 D:\GitHub\EOM_v3\bin\EOM_v3_M.exe
 D:\GitHub\EOM_v3\bin\EOM_v3_M.pdb
-D:\GitHub\EOM_v3\EOM_v3_M\obj\Release\EOM_v3_M.csprojAssemblyReference.cache
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Release\EOM_v3_M.exe.config
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Release\Interop.SHDocVw.dll
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Release\AxInterop.SHDocVw.dll
@@ -32,3 +31,4 @@ D:\GitHub\EOM_v3\EOM_v3_M\obj\Release\EOM_v3_M.csproj.CoreCompileInputs.cache
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Release\EOM_v3_M.csproj.CopyComplete
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Release\EOM_v3_M.exe
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Release\EOM_v3_M.pdb
+D:\GitHub\EOM_v3\EOM_v3_M\obj\Release\EOM_v3_M.csprojAssemblyReference.cache

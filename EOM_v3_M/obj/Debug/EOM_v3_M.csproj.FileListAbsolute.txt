@@ -6,6 +6,7 @@ D:\GitHub\EOM_v3\bin\debug\WARNING.png
 D:\GitHub\EOM_v3\bin\debug\EOM_v3_M.exe.config
 D:\GitHub\EOM_v3\bin\debug\EOM_v3_M.exe
 D:\GitHub\EOM_v3\bin\debug\EOM_v3_M.pdb
+D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csprojAssemblyReference.cache
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.exe.config
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\Interop.SHDocVw.dll
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\AxInterop.SHDocVw.dll

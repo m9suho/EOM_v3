@@ -114,6 +114,7 @@
             this.rdoAutoCompleteOff = new Guna.UI2.WinForms.Guna2RadioButton();
             this.rdoAutoCompleteOn = new Guna.UI2.WinForms.Guna2RadioButton();
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.pnTitle.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
@@ -408,9 +409,9 @@
             // 
             this.lblWriteTips.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblWriteTips.ForeColor = System.Drawing.Color.Blue;
-            this.lblWriteTips.Location = new System.Drawing.Point(537, 64);
+            this.lblWriteTips.Location = new System.Drawing.Point(537, 63);
             this.lblWriteTips.Name = "lblWriteTips";
-            this.lblWriteTips.Size = new System.Drawing.Size(598, 231);
+            this.lblWriteTips.Size = new System.Drawing.Size(598, 233);
             this.lblWriteTips.TabIndex = 49;
             this.lblWriteTips.Text = "◆ 작성 팁\r\n - \'모비스 EO\'는 최대 2개까지 작성 가능합니다\r\n - mht 파일 첨부 후 자동 입력되는 항목은 수정 가능합니다\r\n - 아래" +
     " 리스트 중 해당 EO를 더블 클릭하시면 선택이 됩니다\r\n - \'EO 구분\'에서 제외로 할 경우 포장 공정에서 알림이 제외됩니다 [2021.12" +
@@ -494,7 +495,7 @@
             this.txtCarName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtCarName.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtCarName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtCarName.Location = new System.Drawing.Point(115, 100);
+            this.txtCarName.Location = new System.Drawing.Point(115, 99);
             this.txtCarName.Name = "txtCarName";
             this.txtCarName.PasswordChar = '\0';
             this.txtCarName.PlaceholderText = "";
@@ -568,7 +569,7 @@
             this.txtMhtFile.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtMhtFile.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtMhtFile.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtMhtFile.Location = new System.Drawing.Point(115, 64);
+            this.txtMhtFile.Location = new System.Drawing.Point(115, 63);
             this.txtMhtFile.Name = "txtMhtFile";
             this.txtMhtFile.PasswordChar = '\0';
             this.txtMhtFile.PlaceholderText = "";
@@ -585,7 +586,7 @@
             this.chkTryInput.CheckedState.BorderThickness = 0;
             this.chkTryInput.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.chkTryInput.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chkTryInput.Location = new System.Drawing.Point(333, 65);
+            this.chkTryInput.Location = new System.Drawing.Point(333, 64);
             this.chkTryInput.Name = "chkTryInput";
             this.chkTryInput.Size = new System.Drawing.Size(81, 29);
             this.chkTryInput.TabIndex = 132;
@@ -606,7 +607,7 @@
             this.guna2Panel1.CustomizableEdges.BottomLeft = false;
             this.guna2Panel1.CustomizableEdges.TopLeft = false;
             this.guna2Panel1.FillColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.guna2Panel1.Location = new System.Drawing.Point(11, 64);
+            this.guna2Panel1.Location = new System.Drawing.Point(11, 63);
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(97, 29);
             this.guna2Panel1.TabIndex = 134;
@@ -634,7 +635,7 @@
             this.guna2Panel2.CustomizableEdges.BottomLeft = false;
             this.guna2Panel2.CustomizableEdges.TopLeft = false;
             this.guna2Panel2.FillColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.guna2Panel2.Location = new System.Drawing.Point(11, 100);
+            this.guna2Panel2.Location = new System.Drawing.Point(11, 99);
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(97, 29);
             this.guna2Panel2.TabIndex = 137;
@@ -661,7 +662,7 @@
             this.guna2Panel3.CustomizableEdges.BottomLeft = false;
             this.guna2Panel3.CustomizableEdges.TopLeft = false;
             this.guna2Panel3.FillColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.guna2Panel3.Location = new System.Drawing.Point(11, 136);
+            this.guna2Panel3.Location = new System.Drawing.Point(11, 135);
             this.guna2Panel3.Name = "guna2Panel3";
             this.guna2Panel3.Size = new System.Drawing.Size(97, 29);
             this.guna2Panel3.TabIndex = 138;
@@ -715,7 +716,7 @@
             this.guna2Panel5.CustomizableEdges.BottomLeft = false;
             this.guna2Panel5.CustomizableEdges.TopLeft = false;
             this.guna2Panel5.FillColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.guna2Panel5.Location = new System.Drawing.Point(11, 206);
+            this.guna2Panel5.Location = new System.Drawing.Point(11, 207);
             this.guna2Panel5.Name = "guna2Panel5";
             this.guna2Panel5.Size = new System.Drawing.Size(97, 29);
             this.guna2Panel5.TabIndex = 140;
@@ -769,7 +770,7 @@
             this.guna2Panel7.CustomizableEdges.BottomLeft = false;
             this.guna2Panel7.CustomizableEdges.TopLeft = false;
             this.guna2Panel7.FillColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.guna2Panel7.Location = new System.Drawing.Point(11, 303);
+            this.guna2Panel7.Location = new System.Drawing.Point(11, 302);
             this.guna2Panel7.Name = "guna2Panel7";
             this.guna2Panel7.Size = new System.Drawing.Size(97, 76);
             this.guna2Panel7.TabIndex = 142;
@@ -801,7 +802,7 @@
             this.btnMhtFile.FocusedColor = System.Drawing.SystemColors.ControlDark;
             this.btnMhtFile.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnMhtFile.ForeColor = System.Drawing.Color.Black;
-            this.btnMhtFile.Location = new System.Drawing.Point(412, 64);
+            this.btnMhtFile.Location = new System.Drawing.Point(412, 63);
             this.btnMhtFile.Name = "btnMhtFile";
             this.btnMhtFile.Size = new System.Drawing.Size(117, 29);
             this.btnMhtFile.TabIndex = 143;
@@ -822,9 +823,9 @@
             this.btnReset.FocusedColor = System.Drawing.SystemColors.ControlDark;
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnReset.ForeColor = System.Drawing.Color.Black;
-            this.btnReset.Location = new System.Drawing.Point(412, 101);
+            this.btnReset.Location = new System.Drawing.Point(412, 99);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(116, 134);
+            this.btnReset.Size = new System.Drawing.Size(116, 137);
             this.btnReset.TabIndex = 144;
             this.btnReset.Text = "초기화 및 전체 데이터 보기";
             // 
@@ -843,7 +844,7 @@
             this.txtCustomerEO.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtCustomerEO.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtCustomerEO.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtCustomerEO.Location = new System.Drawing.Point(115, 136);
+            this.txtCustomerEO.Location = new System.Drawing.Point(115, 135);
             this.txtCustomerEO.MaxLength = 8;
             this.txtCustomerEO.Name = "txtCustomerEO";
             this.txtCustomerEO.PasswordChar = '\0';
@@ -1131,7 +1132,7 @@
             this.txtEOContents.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtEOContents.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtEOContents.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtEOContents.Location = new System.Drawing.Point(115, 303);
+            this.txtEOContents.Location = new System.Drawing.Point(115, 302);
             this.txtEOContents.MaxLength = 100;
             this.txtEOContents.Multiline = true;
             this.txtEOContents.Name = "txtEOContents";
@@ -1249,7 +1250,7 @@
             this.grpEOType.CustomBorderThickness = new System.Windows.Forms.Padding(0);
             this.grpEOType.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.grpEOType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.grpEOType.Location = new System.Drawing.Point(115, 206);
+            this.grpEOType.Location = new System.Drawing.Point(115, 207);
             this.grpEOType.Name = "grpEOType";
             this.grpEOType.Size = new System.Drawing.Size(291, 29);
             this.grpEOType.TabIndex = 157;
@@ -1264,9 +1265,9 @@
             this.grpEOTagType.CustomBorderThickness = new System.Windows.Forms.Padding(0);
             this.grpEOTagType.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.grpEOTagType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.grpEOTagType.Location = new System.Drawing.Point(244, 101);
+            this.grpEOTagType.Location = new System.Drawing.Point(244, 99);
             this.grpEOTagType.Name = "grpEOTagType";
-            this.grpEOTagType.Size = new System.Drawing.Size(162, 28);
+            this.grpEOTagType.Size = new System.Drawing.Size(162, 29);
             this.grpEOTagType.TabIndex = 158;
             this.grpEOTagType.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -1280,7 +1281,7 @@
             this.grpShipment.CustomBorderThickness = new System.Windows.Forms.Padding(0);
             this.grpShipment.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.grpShipment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.grpShipment.Location = new System.Drawing.Point(244, 136);
+            this.grpShipment.Location = new System.Drawing.Point(244, 135);
             this.grpShipment.Name = "grpShipment";
             this.grpShipment.Size = new System.Drawing.Size(162, 29);
             this.grpShipment.TabIndex = 159;
@@ -1477,7 +1478,7 @@
             this.guna2GroupBox2.Enabled = false;
             this.guna2GroupBox2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2GroupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.guna2GroupBox2.Location = new System.Drawing.Point(412, 303);
+            this.guna2GroupBox2.Location = new System.Drawing.Point(412, 302);
             this.guna2GroupBox2.Name = "guna2GroupBox2";
             this.guna2GroupBox2.Size = new System.Drawing.Size(117, 76);
             this.guna2GroupBox2.TabIndex = 164;
@@ -1535,11 +1536,23 @@
             this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
             this.guna2BorderlessForm1.TransparentWhileDrag = true;
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("굴림", 7F);
+            this.button1.Location = new System.Drawing.Point(572, 392);
+            this.button1.Margin = new System.Windows.Forms.Padding(0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(59, 28);
+            this.button1.TabIndex = 165;
+            this.button1.Text = "중복 관리";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // EOForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1146, 750);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.guna2GroupBox2);
             this.Controls.Add(this.guna2GroupBox1);
             this.Controls.Add(this.btnProductDelete);
@@ -1685,5 +1698,6 @@
         private Guna.UI2.WinForms.Guna2RadioButton rdoAutoCompleteOn;
         private Guna.UI2.WinForms.Guna2ComboBox cbbRegular;
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private System.Windows.Forms.Button button1;
     }
 }

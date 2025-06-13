@@ -54,7 +54,7 @@ namespace EOM_v3_P
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 _data,
                 //registrantData
-                "registrant_data"
+                settingData[4]
             };
             string query = dc.InsertQueryArrayConvert(DATABASE_NAME, "print_data", insertData);
             mariaDB.EtcQuery(query);
@@ -160,7 +160,7 @@ namespace EOM_v3_P
                 ws.Cells[i + 7, 3] = "";
             }
 
-            string query = "DELETE FROM `" + DATABASE_NAME + "`.`model_data` WHERE model_name = '" + _data[1] + "' AND car_name = '" + _data[2] + "' AND customer_eo_number = '" + _data[3] + "' AND mobis_eo_number = '" + _data[4] + "' AND print_count = '" + _data[10] + "'";
+            string query = "DELETE FROM `" + DATABASE_NAME + "`.`print_data` WHERE model_name = '" + _data[1] + "' AND car_name = '" + _data[2] + "' AND customer_eo_number = '" + _data[3] + "' AND mobis_eo_number = '" + _data[4] + "' AND print_count = '" + _data[10] + "'";
             mariaDB.EtcQuery(query);
 
             // EXCEL 종료
@@ -186,12 +186,12 @@ namespace EOM_v3_P
         {
             try
             {
-                string[] selectData = new string[] { "print_address", "registrant_data" };
-                string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "model_data", selectData, "SELECT");
+                string[] selectData = new string[] { "print_address", settingData[4] };
+                string query = dc.SelectDeleteQueryANDConvert(DATABASE_NAME, "print_data", selectData, "SELECT");
 
                 strSetQuery = query;
 
-                if ("registrant_data" == "2F")
+                if (settingData[4] == "2F")
                 {
                     query += " OR print_address = '2F_A53'";
                 }
@@ -257,7 +257,7 @@ namespace EOM_v3_P
             // 현재 셋팅 데이터 체크
             if (!dc.DatFileCheck(settingData, 7))
             {
-                settingData = new string[7] { DATABASE_NAME, "print_data", "registrant_data", "log_data", "1F", "10.239.19.91", "3308" };
+                settingData = new string[7] { DATABASE_NAME, "print_data", settingData[4], "log_data", "1F", "10.239.19.91", "3308" };
 
                 dc.DatFileSave(@"C:\" + Process.GetCurrentProcess().ProcessName, "settingData.dat", settingData);
             }
@@ -335,7 +335,7 @@ namespace EOM_v3_P
 
         private void 업데이트UToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdateFormClass updateForm = new UpdateFormClass();
+            Guna2UpdateFormClass updateForm = new Guna2UpdateFormClass();
 
             timer1.Stop();
 

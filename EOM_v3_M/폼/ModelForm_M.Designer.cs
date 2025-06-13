@@ -79,6 +79,7 @@
             this.guna2Panel13 = new Guna.UI2.WinForms.Guna2Panel();
             this.lblEndDate = new System.Windows.Forms.Label();
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.btnReservation = new Guna.UI2.WinForms.Guna2Button();
             this.pnTitle.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
             this.guna2Panel8.SuspendLayout();
@@ -956,11 +957,33 @@
             this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
             this.guna2BorderlessForm1.TransparentWhileDrag = true;
             // 
+            // btnReservation
+            // 
+            this.btnReservation.BackColor = System.Drawing.Color.Transparent;
+            this.btnReservation.BorderColor = System.Drawing.Color.Silver;
+            this.btnReservation.BorderRadius = 8;
+            this.btnReservation.BorderThickness = 1;
+            this.btnReservation.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnReservation.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnReservation.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnReservation.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnReservation.FillColor = System.Drawing.SystemColors.ControlLight;
+            this.btnReservation.FocusedColor = System.Drawing.SystemColors.ControlDark;
+            this.btnReservation.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnReservation.ForeColor = System.Drawing.Color.Black;
+            this.btnReservation.Location = new System.Drawing.Point(279, 602);
+            this.btnReservation.Name = "btnReservation";
+            this.btnReservation.Size = new System.Drawing.Size(125, 41);
+            this.btnReservation.TabIndex = 143;
+            this.btnReservation.Text = "예약";
+            this.btnReservation.Click += new System.EventHandler(this.btnReservation_Click);
+            // 
             // ModelForm_M
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(542, 655);
+            this.Controls.Add(this.btnReservation);
             this.Controls.Add(this.guna2Panel13);
             this.Controls.Add(this.guna2Panel12);
             this.Controls.Add(this.guna2Panel11);
@@ -1073,5 +1096,6 @@
         private Guna.UI2.WinForms.Guna2Panel guna2Panel13;
         private System.Windows.Forms.Label lblEndDate;
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private Guna.UI2.WinForms.Guna2Button btnReservation;
     }
 }

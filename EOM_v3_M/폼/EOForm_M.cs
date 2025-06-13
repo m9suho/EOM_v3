@@ -279,7 +279,7 @@ namespace EOM_v3_M
                 }
 
                 // 등록자 불러오기
-                registrantData = MainForm.SearchRegistrant(_data[i, 8]);
+                //registrantData = MainForm.SearchRegistrant(_data[i, 8]);
 
                 datagridview01.Rows.Add(
                     false,                                                                 // 체크
@@ -289,7 +289,8 @@ namespace EOM_v3_M
                     _data[i, 4],                                                           // EO 내용
                     _data[i, 6],                                                           // 스티커 내용
                     Convert.ToDateTime(_data[i, 7]).ToString("yyyy-MM-dd HH:mm:ss"),       // 등록일
-                    registrantData,                                                        // 등록자
+                    //registrantData,                                                        // 등록자
+                    _data[i, 8],                                                           // 등록자
                     _data[i, 9],                                                           // 타입
                     _data[i, 10],                                                          // 출하지
                     eoMhtData,                                                             // *.mht

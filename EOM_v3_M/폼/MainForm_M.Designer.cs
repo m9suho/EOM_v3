@@ -107,7 +107,6 @@
             this.lblUserName = new System.Windows.Forms.Label();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.cbbLineName = new Guna.UI2.WinForms.Guna2ComboBox();
             this.cbbProductName = new Guna.UI2.WinForms.Guna2ComboBox();
@@ -131,8 +130,6 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.업데이트ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.pDFtoJPGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.종료ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.도움말HToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.업데이트내역ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -155,7 +152,7 @@
             this.grpShipment = new Guna.UI2.WinForms.Guna2GroupBox();
             this.grpProduct = new Guna.UI2.WinForms.Guna2GroupBox();
             this.grpEOCheck = new Guna.UI2.WinForms.Guna2GroupBox();
-            this.btnEOReservation = new Guna.UI2.WinForms.Guna2Button();
+            this.btnNewEO = new Guna.UI2.WinForms.Guna2Button();
             this.btnEOPCB = new Guna.UI2.WinForms.Guna2Button();
             this.btnEOContents = new Guna.UI2.WinForms.Guna2Button();
             this.grpDgvFilter = new Guna.UI2.WinForms.Guna2GroupBox();
@@ -165,7 +162,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSelect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.pnTitle.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
@@ -704,22 +700,9 @@
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(362, 156);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(29, 29);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 56;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Visible = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
-            // 
             // timer3
             // 
-            this.timer3.Interval = 3000;
+            this.timer3.Interval = 600000;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
             // cbbLineName
@@ -965,6 +948,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(1280, 24);
             this.menuStrip1.TabIndex = 83;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // 파일ToolStripMenuItem
             // 
@@ -975,8 +959,6 @@
             this.toolStripMenuItem1,
             this.업데이트ToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.pDFtoJPGToolStripMenuItem,
-            this.toolStripMenuItem3,
             this.종료ToolStripMenuItem});
             this.파일ToolStripMenuItem.Name = "파일ToolStripMenuItem";
             this.파일ToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
@@ -986,7 +968,7 @@
             // 
             this.로그인ToolStripMenuItem.Enabled = false;
             this.로그인ToolStripMenuItem.Name = "로그인ToolStripMenuItem";
-            this.로그인ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.로그인ToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.로그인ToolStripMenuItem.Text = "로그인";
             this.로그인ToolStripMenuItem.Click += new System.EventHandler(this.로그인ToolStripMenuItem_Click);
             // 
@@ -994,45 +976,38 @@
             // 
             this.로그아웃ToolStripMenuItem.Enabled = false;
             this.로그아웃ToolStripMenuItem.Name = "로그아웃ToolStripMenuItem";
-            this.로그아웃ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.로그아웃ToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.로그아웃ToolStripMenuItem.Text = "로그아웃";
             this.로그아웃ToolStripMenuItem.Click += new System.EventHandler(this.로그아웃ToolStripMenuItem_Click);
             // 
             // 사용자등록ToolStripMenuItem
             // 
             this.사용자등록ToolStripMenuItem.Name = "사용자등록ToolStripMenuItem";
-            this.사용자등록ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.사용자등록ToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.사용자등록ToolStripMenuItem.Text = "사용자 등록";
             this.사용자등록ToolStripMenuItem.Click += new System.EventHandler(this.사용자등록ToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(134, 6);
             // 
             // 업데이트ToolStripMenuItem
             // 
             this.업데이트ToolStripMenuItem.Name = "업데이트ToolStripMenuItem";
-            this.업데이트ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.업데이트ToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.업데이트ToolStripMenuItem.Text = "업데이트";
             this.업데이트ToolStripMenuItem.Click += new System.EventHandler(this.업데이트ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
-            // 
-            // pDFtoJPGToolStripMenuItem
-            // 
-            this.pDFtoJPGToolStripMenuItem.Name = "pDFtoJPGToolStripMenuItem";
-            this.pDFtoJPGToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.pDFtoJPGToolStripMenuItem.Text = "PDFtoJPG";
-            this.pDFtoJPGToolStripMenuItem.Click += new System.EventHandler(this.pDFtoJPGToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(134, 6);
             // 
             // 종료ToolStripMenuItem
             // 
             this.종료ToolStripMenuItem.Name = "종료ToolStripMenuItem";
-            this.종료ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.종료ToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.종료ToolStripMenuItem.Text = "종료";
             this.종료ToolStripMenuItem.Click += new System.EventHandler(this.종료ToolStripMenuItem_Click);
             // 
@@ -1306,7 +1281,7 @@
             // grpEOCheck
             // 
             this.grpEOCheck.BorderRadius = 8;
-            this.grpEOCheck.Controls.Add(this.btnEOReservation);
+            this.grpEOCheck.Controls.Add(this.btnNewEO);
             this.grpEOCheck.Controls.Add(this.btnEOPCB);
             this.grpEOCheck.Controls.Add(this.btnEOContents);
             this.grpEOCheck.CustomBorderColor = System.Drawing.SystemColors.ActiveCaption;
@@ -1319,27 +1294,27 @@
             this.grpEOCheck.TabIndex = 94;
             this.grpEOCheck.Text = "EO 적용";
             // 
-            // btnEOReservation
+            // btnNewEO
             // 
-            this.btnEOReservation.BackColor = System.Drawing.Color.Transparent;
-            this.btnEOReservation.BorderColor = System.Drawing.Color.Silver;
-            this.btnEOReservation.BorderRadius = 8;
-            this.btnEOReservation.BorderThickness = 1;
-            this.btnEOReservation.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnEOReservation.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnEOReservation.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnEOReservation.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnEOReservation.Enabled = false;
-            this.btnEOReservation.FillColor = System.Drawing.SystemColors.ControlLight;
-            this.btnEOReservation.FocusedColor = System.Drawing.SystemColors.ControlDark;
-            this.btnEOReservation.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEOReservation.ForeColor = System.Drawing.Color.Blue;
-            this.btnEOReservation.Location = new System.Drawing.Point(141, 33);
-            this.btnEOReservation.Name = "btnEOReservation";
-            this.btnEOReservation.Size = new System.Drawing.Size(60, 29);
-            this.btnEOReservation.TabIndex = 149;
-            this.btnEOReservation.Text = "예약";
-            this.btnEOReservation.Click += new System.EventHandler(this.btnEOReservation_Click);
+            this.btnNewEO.BackColor = System.Drawing.Color.Transparent;
+            this.btnNewEO.BorderColor = System.Drawing.Color.Silver;
+            this.btnNewEO.BorderRadius = 8;
+            this.btnNewEO.BorderThickness = 1;
+            this.btnNewEO.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnNewEO.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnNewEO.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnNewEO.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnNewEO.Enabled = false;
+            this.btnNewEO.FillColor = System.Drawing.SystemColors.ControlLight;
+            this.btnNewEO.FocusedColor = System.Drawing.SystemColors.ControlDark;
+            this.btnNewEO.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewEO.ForeColor = System.Drawing.Color.Blue;
+            this.btnNewEO.Location = new System.Drawing.Point(9, 33);
+            this.btnNewEO.Name = "btnNewEO";
+            this.btnNewEO.Size = new System.Drawing.Size(60, 29);
+            this.btnNewEO.TabIndex = 149;
+            this.btnNewEO.Text = "신규";
+            this.btnNewEO.Click += new System.EventHandler(this.btnNewEO_Click);
             // 
             // btnEOPCB
             // 
@@ -1355,7 +1330,7 @@
             this.btnEOPCB.FocusedColor = System.Drawing.SystemColors.ControlDark;
             this.btnEOPCB.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnEOPCB.ForeColor = System.Drawing.Color.Black;
-            this.btnEOPCB.Location = new System.Drawing.Point(9, 33);
+            this.btnEOPCB.Location = new System.Drawing.Point(75, 33);
             this.btnEOPCB.Name = "btnEOPCB";
             this.btnEOPCB.Size = new System.Drawing.Size(60, 29);
             this.btnEOPCB.TabIndex = 148;
@@ -1376,7 +1351,7 @@
             this.btnEOContents.FocusedColor = System.Drawing.SystemColors.ControlDark;
             this.btnEOContents.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnEOContents.ForeColor = System.Drawing.Color.Black;
-            this.btnEOContents.Location = new System.Drawing.Point(75, 33);
+            this.btnEOContents.Location = new System.Drawing.Point(141, 33);
             this.btnEOContents.Name = "btnEOContents";
             this.btnEOContents.Size = new System.Drawing.Size(60, 29);
             this.btnEOContents.TabIndex = 147;
@@ -1410,9 +1385,9 @@
             this.guna2CheckBox1.Enabled = false;
             this.guna2CheckBox1.Location = new System.Drawing.Point(10, 43);
             this.guna2CheckBox1.Name = "guna2CheckBox1";
-            this.guna2CheckBox1.Size = new System.Drawing.Size(101, 19);
+            this.guna2CheckBox1.Size = new System.Drawing.Size(77, 19);
             this.guna2CheckBox1.TabIndex = 0;
-            this.guna2CheckBox1.Text = "내부관리 보기";
+            this.guna2CheckBox1.Text = "예약 보기";
             this.guna2CheckBox1.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
             this.guna2CheckBox1.UncheckedState.BorderRadius = 0;
             this.guna2CheckBox1.UncheckedState.BorderThickness = 0;
@@ -1442,7 +1417,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1280, 1050);
+            this.ClientSize = new System.Drawing.Size(1280, 1044);
             this.Controls.Add(this.pnSelect);
             this.Controls.Add(this.pnMain);
             this.Controls.Add(this.grpDgvFilter);
@@ -1460,7 +1435,6 @@
             this.Controls.Add(this.BtnProductUpdate);
             this.Controls.Add(this.cbbProductName);
             this.Controls.Add(this.cbbLineName);
-            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1470,11 +1444,13 @@
             this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseMove);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dgvSelect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.pnTitle.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -1504,7 +1480,6 @@
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Timer timer3;
         private Guna.UI2.WinForms.Guna2ComboBox cbbLineName;
         private Guna.UI2.WinForms.Guna2ComboBox cbbProductName;
@@ -1554,7 +1529,7 @@
         private Guna.UI2.WinForms.Guna2Button btnEOPCB;
         private Guna.UI2.WinForms.Guna2GroupBox grpDgvFilter;
         private Guna.UI2.WinForms.Guna2CheckBox guna2CheckBox1;
-        private Guna.UI2.WinForms.Guna2Button btnEOReservation;
+        private Guna.UI2.WinForms.Guna2Button btnNewEO;
         private Guna.UI2.WinForms.Guna2Panel pnMain;
         private Guna.UI2.WinForms.Guna2Panel pnSelect;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
@@ -1591,8 +1566,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column24;
-        private System.Windows.Forms.ToolStripMenuItem pDFtoJPGToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
     }
 }
 

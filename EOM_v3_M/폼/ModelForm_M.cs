@@ -47,9 +47,17 @@ namespace EOM_v3_M
             btnProductAdd.Enabled = _data[12];
             dtpStartDate.Enabled = _data[13];
             dtpEndDate.Enabled = _data[14];
+            btnReservation.Enabled = _data[15];
         }
 
-        private string[] DatabaseColumnData(int _data1)
+        /// <summary>
+        /// 1 : 미입력 (출하지, M/PCB, S/PCB, EO 구분, 적용 오더)
+        /// 2 : 미입력 (적용 오더)
+        /// 3 : 미입력 (시작일, 종료일, 적용 오더) - 예약 기능
+        /// </summary>
+        /// <param name="_data1"></param>
+        /// <returns></returns>
+        private string[] DatabaseColumnData(int _data)
         {
             string startDatetimeData, endDatetimeData = string.Empty;
             string[] returnData;
@@ -76,13 +84,13 @@ namespace EOM_v3_M
 
             endDatetimeData = dtpEndDate.Value.ToString("yyyy-MM-dd " + END_TIME);
 
-            switch (_data1)
+            switch (_data)
             {
                 case 1:
                     returnData = new string[]
                     {
-                        MainForm.cbbLineName01.Text,                                                                                       // [0] line
-                        txtProductName.Text,                                                                                                  // [1] model_name
+                        MainForm.cbbLineName01.Text,                                                                                        // [0] line
+                        txtProductName.Text,                                                                                                // [1] model_name
                         txtCarName.Text,                                                                                                    // [2] car_name
                         txtCustomerEO.Text,                                                                                                 // [3] customer_eo_number
                         txtMobisEO.Text,                                                                                                    // [4] mobis_eo_number
@@ -93,19 +101,19 @@ namespace EOM_v3_M
                         endDatetimeData,                                                                                                    // [9] end_date
                         MainForm.SearchRegistrant(NetworkInterface.GetAllNetworkInterfaces()[0].GetPhysicalAddress().ToString()),           // [10] registrant
                         txtTagType.Text,                                                                                                    // [11] print_type
-                        "-",                                                                                                                // [12] shipment
+                        "-",                                                                                                                // [12] shipment        (X)
                         MainForm.eoSelectData[7],                                                                                           // [13] mht_data
-                        "-",                                                                                                                // [14] main_pcb_name
-                        "-",                                                                                                                // [15] sub_pcb_name
-                        "-",                                                                                                                // [16] eo_type
-                        "",                                                                                                                 // [17] start_order
+                        "-",                                                                                                                // [14] main_pcb_name   (X)
+                        "-",                                                                                                                // [15] sub_pcb_name    (X)
+                        "-",                                                                                                                // [16] eo_type         (X)
+                        "",                                                                                                                 // [17] start_order     (X)
                     };
                     break;
                 case 2:
                     returnData = new string[]
                     {
-                        MainForm.cbbLineName01.Text,                                                                                       // [0] line
-                        txtProductName.Text,                                                                                                  // [1] model_name
+                        MainForm.cbbLineName01.Text,                                                                                        // [0] line
+                        txtProductName.Text,                                                                                                // [1] model_name
                         txtCarName.Text,                                                                                                    // [2] car_name
                         txtCustomerEO.Text,                                                                                                 // [3] customer_eo_number
                         txtMobisEO.Text,                                                                                                    // [4] mobis_eo_number
@@ -121,7 +129,30 @@ namespace EOM_v3_M
                         txtMainPCB.Text,                                                                                                    // [14] main_pcb_name
                         txtSubPCB.Text,                                                                                                     // [15] sub_pcb_name
                         txtEOType.Text,                                                                                                     // [16] eo_type
-                        "",                                                                                                                 // [17] start_order
+                        "",                                                                                                                 // [17] start_order     (X)
+                    };
+                    break;
+                case 3:
+                    returnData = new string[]
+                    {
+                        MainForm.cbbLineName01.Text,                                                                                        // [0] line
+                        txtProductName.Text,                                                                                                // [1] model_name
+                        txtCarName.Text,                                                                                                    // [2] car_name
+                        txtCustomerEO.Text,                                                                                                 // [3] customer_eo_number
+                        txtMobisEO.Text,                                                                                                    // [4] mobis_eo_number
+                        txtEOContents.Text,                                                                                                 // [5] eo_contents
+                        MainForm.eoSelectData[4],                                                                                           // [6] sticker_color
+                        MainForm.eoSelectData[5],                                                                                           // [7] sticker_text
+                        startDatetimeData,                                                                                                  // [8] start_date
+                        MainForm.RESERVATION_DEFAULT_DATE,                                                                                  // [9] end_date
+                        MainForm.SearchRegistrant(NetworkInterface.GetAllNetworkInterfaces()[0].GetPhysicalAddress().ToString()),           // [10] registrant
+                        txtTagType.Text,                                                                                                    // [11] print_type
+                        cbbShipment.Text,                                                                                                   // [12] shipment
+                        MainForm.eoSelectData[7],                                                                                           // [13] mht_data
+                        txtMainPCB.Text,                                                                                                    // [14] main_pcb_name
+                        txtSubPCB.Text,                                                                                                     // [15] sub_pcb_name
+                        txtEOType.Text,                                                                                                     // [16] eo_type
+                        "",                                                                                                                 // [17] start_order     (X)
                     };
                     break;
                 default:
@@ -217,6 +248,27 @@ namespace EOM_v3_M
             return true;
         }
 
+        private bool EOContentsExceptionHandling(string _data)
+        {
+            string query = "SELECT * FROM `" + MainForm.DATABASE_NAME + "`.`eo_contents_duplication`";
+            string[,] selectData = MainForm.mariaDB.SelectQuery2(query);
+
+            for (int i = 0; i < selectData.GetLength(0); i++)
+            {
+                // eo_duplication_contents
+                if (_data.Contains(selectData[i, 1]))
+                {
+                    MainForm.dc.LogFileSave(_data + ".Contains(" + selectData[i, 1] + ") => true");
+
+                    return true;
+                }
+
+                MainForm.dc.LogFileSave(selectData[i, 1]);
+            }
+
+            return false;
+        }
+
         private bool ModelAddCheckSum()
         {
             if (txtProductName.Text.Equals(string.Empty))
@@ -298,16 +350,21 @@ namespace EOM_v3_M
                 // 찾을 컬럼, 컬럼 값, 모델 값, 출하지
                 if (ModelEODuplicationCheck("eo_contents", txtEOContents.Text, txtProductName.Text, cbbShipment.Text))
                 {
-                    if (!cbbShipment.Text.Equals("-"))
-                    {
-                        MainForm.Guna2Msg(this, "오류", "EO 내용, 출하지 '" + cbbShipment.Text + "' 등록되어 있습니다");
+                    // 2025.06.05
+                    // EO 내용 (예외처리)
+                    if (!EOContentsExceptionHandling(txtEOContents.Text))
+                    { 
+                        if (!cbbShipment.Text.Equals("-"))
+                        {
+                            MainForm.Guna2Msg(this, "오류", "EO 내용, 출하지 '" + cbbShipment.Text + "' 등록되어 있습니다");
+                        }
+                        else
+                        {
+                            MainForm.Guna2Msg(this, "오류", "EO 내용이 등록되어 있습니다");
+                        }
+                        DGVSearchSelect(txtProductName.Text, txtEOContents.Text, 5, cbbShipment.Text, 10);
+                        return false;
                     }
-                    else
-                    {
-                        MainForm.Guna2Msg(this, "오류", "EO 내용이 등록되어 있습니다");
-                    }
-                    DGVSearchSelect(txtProductName.Text, txtEOContents.Text, 5, cbbShipment.Text, 10);
-                    return false;
                 }
             }
             else
@@ -374,17 +431,17 @@ namespace EOM_v3_M
                 //dateTimePicker2.Value = dt;
                 controlBox = new bool[] { true, true, false, false, false,
                                           false, false, false, false, true,
-                                          false, true, true, true, false };
+                                          false, true, true, true, false, false };
                 InitialSetControl(controlBox);
             }
-            // 오디오 조립, D-오디오 조립, 클러스터, HUD
+            // D-오디오 조립, 클러스터
             else
             {
                 txtProductName.Text = string.Empty;
                 //dateTimePicker2.Value = dt.AddDays(7);
                 controlBox = new bool[] { true, true, true, true, true,
                                           false, false, false, false, true,
-                                          true, true, true, false, false };
+                                          true, true, true, false, false, true };
                 InitialSetControl(controlBox);
             }
 
@@ -397,6 +454,14 @@ namespace EOM_v3_M
             {
                 txtProductName.Text = MainForm.cbbProductName01.Text;
             }
+
+#if DEBUG
+            txtProductName.Text = "96560-S1000";
+            txtCarName.Text = "TMa";
+            txtMainPCB.Text = "M1568-100100";
+            chkNonInput.Checked = true;
+            btnEOSelect.Select();
+#endif
 
             // 2022.01.11
             // 중앙 정렬
@@ -680,6 +745,61 @@ namespace EOM_v3_M
             Opacity = 1;
         }
 
+        private void ProductAddCheck()
+        {
+
+        }
+
+        private void btnReservation_Click(object sender, EventArgs e)
+        {
+            // 2025.04.06
+            // 샘플은 제외
+            if (txtTagType.Text == "샘플")
+            {
+                MainForm.Guna2Msg(this, "오류", "샘플은 예약할 수 없습니다.");
+                return;
+            }
+
+            if (ModelAddCheckSum())
+            {
+                DialogResult dialogResult = MessageBox.Show("EO 예약 기능은 특정 품번이 포장 공정에 투입될 때 적용되므로 주의하셔야 합니다. 이해되셨으면 '예'를 눌러주세요.", "알림", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (dialogResult == DialogResult.No)
+                {
+                    return;
+                }
+
+                string query, printData = string.Empty;
+                string[] insertData;
+
+                // D-오디오 수삽 OR D-오디오 SUB
+                //if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[1]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[3]))
+                // D-오디오 조립 OR 클러스터
+                insertData = DatabaseColumnData(3);
+
+                query = MainForm.dc.InsertQueryArrayConvert(MainForm.DATABASE_NAME, "model_data", insertData);
+
+                MainForm.mariaDB.EtcQuery(query);
+
+                Opacity = 0;
+                MainForm.modelSelectData = txtProductName.Text;
+
+                // 2020.05.06
+                // mht 파일 여부
+                if (!MainForm.eoSelectData[7].Equals(string.Empty))
+                {
+                    insertData[13] = "O";
+                }
+                else
+                {
+                    insertData[13] = "X";
+                }
+
+                MainForm.mariaDB.InsertLogDB(MainForm.SplitConvert(insertData) + " 모델 예약", false);
+                Close();
+            }
+        }
+
         private void btnProductAdd_Click(object sender, EventArgs e)
         {
             if (ModelAddCheckSum())
@@ -688,6 +808,7 @@ namespace EOM_v3_M
                 string[] insertData;
 
                 // D-오디오 수삽
+                // OR
                 // D-오디오 SUB
                 if (MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[0]) || MainForm.cbbLineName01.Text.Equals(MainForm.LINE_NAME_LIST[2]))
                 {
@@ -706,6 +827,7 @@ namespace EOM_v3_M
                 MainForm.modelSelectData = txtProductName.Text;
 
                 // 2020.05.06
+                // mht 파일 여부
                 if (!MainForm.eoSelectData[7].Equals(string.Empty))
                 {
                     insertData[13] = "O";
@@ -722,13 +844,6 @@ namespace EOM_v3_M
             {
                 return;
             }
-
-            /*
-            if (cbbShipment.Enabled && MessageBox.Show("출하지가 첫 등록하게 됩니다. 기준 출하지를 '" + cbbShipment.Text + "'로 등록하시겠습니까?", "알림", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-
-            }
-            */
         }
 
         private void btnMthView_Click(object sender, EventArgs e)
@@ -781,7 +896,7 @@ namespace EOM_v3_M
 
         private void txtProductName_Leave(object sender, EventArgs e)
         {
-            if (txtProductName.TextLength > 10)
+            if (txtProductName.TextLength >= 10)
             {
                 // ********* 아래 오류 수정해야함
                 // 삭제된 개체에 액세스할 수 없습니다.
