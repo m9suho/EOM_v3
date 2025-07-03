@@ -35,3 +35,10 @@ D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csproj.CoreCompileInputs.cache
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csproj.CopyComplete
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.exe
 D:\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.pdb
+\\192.168.0.102\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csprojAssemblyReference.cache
+\\192.168.0.102\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.exe.config
+\\192.168.0.102\GitHub\EOM_v3\EOM_v3_M\obj\Debug\Interop.SHDocVw.dll
+\\192.168.0.102\GitHub\EOM_v3\EOM_v3_M\obj\Debug\AxInterop.SHDocVw.dll
+\\192.168.0.102\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.csproj.ResolveComReference.cache
+\\192.168.0.102\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.exe
+\\192.168.0.102\GitHub\EOM_v3\EOM_v3_M\obj\Debug\EOM_v3_M.pdb

@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="..\..\Public\DefaultClass.cs">
       <Link>클래스\DefaultClass.cs</Link>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="..\..\Public\Guna2UpdateFormClass.cs">
       <Link>클래스\Guna2UpdateFormClass.cs</Link>
@@ -122,10 +123,6 @@
     </Compile>
     <Compile Include="..\..\Public\PasswordFormClass.cs">
       <Link>클래스\PasswordFormClass.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Public\WebClientPlus.cs">
-      <Link>클래스\WebClientPlus.cs</Link>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="폼\MainForm_P.cs">
       <SubType>Form</SubType>

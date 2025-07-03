@@ -1,0 +1,2 @@
+\\192.168.0.102\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.csprojAssemblyReference.cache
+\\192.168.0.102\GitHub\EOM_v3\EOM_v3_P\obj\Debug\EOM_v3_P.csproj.ResolveComReference.cache

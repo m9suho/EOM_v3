@@ -1546,6 +1546,7 @@
             this.button1.TabIndex = 165;
             this.button1.Text = "중복 관리";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             // 
             // EOForm
             // 

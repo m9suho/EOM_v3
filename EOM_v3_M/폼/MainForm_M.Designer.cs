@@ -156,7 +156,7 @@
             this.btnEOPCB = new Guna.UI2.WinForms.Guna2Button();
             this.btnEOContents = new Guna.UI2.WinForms.Guna2Button();
             this.grpDgvFilter = new Guna.UI2.WinForms.Guna2GroupBox();
-            this.guna2CheckBox1 = new Guna.UI2.WinForms.Guna2CheckBox();
+            this.chkReservationView = new Guna.UI2.WinForms.Guna2CheckBox();
             this.pnMain = new Guna.UI2.WinForms.Guna2Panel();
             this.pnSelect = new Guna.UI2.WinForms.Guna2Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSelect)).BeginInit();
@@ -948,7 +948,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(1280, 24);
             this.menuStrip1.TabIndex = 83;
             this.menuStrip1.Text = "menuStrip1";
-            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // 파일ToolStripMenuItem
             // 
@@ -1361,7 +1360,7 @@
             // grpDgvFilter
             // 
             this.grpDgvFilter.BorderRadius = 8;
-            this.grpDgvFilter.Controls.Add(this.guna2CheckBox1);
+            this.grpDgvFilter.Controls.Add(this.chkReservationView);
             this.grpDgvFilter.CustomBorderColor = System.Drawing.SystemColors.ActiveCaption;
             this.grpDgvFilter.CustomBorderThickness = new System.Windows.Forms.Padding(0);
             this.grpDgvFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -1371,27 +1370,24 @@
             this.grpDgvFilter.Size = new System.Drawing.Size(150, 70);
             this.grpDgvFilter.TabIndex = 93;
             this.grpDgvFilter.Text = "필터";
-            this.grpDgvFilter.Visible = false;
             // 
-            // guna2CheckBox1
+            // chkReservationView
             // 
-            this.guna2CheckBox1.AutoSize = true;
-            this.guna2CheckBox1.Checked = true;
-            this.guna2CheckBox1.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2CheckBox1.CheckedState.BorderRadius = 0;
-            this.guna2CheckBox1.CheckedState.BorderThickness = 0;
-            this.guna2CheckBox1.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2CheckBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.guna2CheckBox1.Enabled = false;
-            this.guna2CheckBox1.Location = new System.Drawing.Point(10, 43);
-            this.guna2CheckBox1.Name = "guna2CheckBox1";
-            this.guna2CheckBox1.Size = new System.Drawing.Size(77, 19);
-            this.guna2CheckBox1.TabIndex = 0;
-            this.guna2CheckBox1.Text = "예약 보기";
-            this.guna2CheckBox1.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.guna2CheckBox1.UncheckedState.BorderRadius = 0;
-            this.guna2CheckBox1.UncheckedState.BorderThickness = 0;
-            this.guna2CheckBox1.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
+            this.chkReservationView.AutoSize = true;
+            this.chkReservationView.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.chkReservationView.CheckedState.BorderRadius = 0;
+            this.chkReservationView.CheckedState.BorderThickness = 0;
+            this.chkReservationView.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.chkReservationView.Location = new System.Drawing.Point(10, 43);
+            this.chkReservationView.Name = "chkReservationView";
+            this.chkReservationView.Size = new System.Drawing.Size(119, 19);
+            this.chkReservationView.TabIndex = 0;
+            this.chkReservationView.Text = "EO 예약 같이보기";
+            this.chkReservationView.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
+            this.chkReservationView.UncheckedState.BorderRadius = 0;
+            this.chkReservationView.UncheckedState.BorderThickness = 0;
+            this.chkReservationView.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
+            this.chkReservationView.CheckedChanged += new System.EventHandler(this.chkReservationView_CheckedChanged);
             // 
             // pnMain
             // 
@@ -1528,7 +1524,7 @@
         private Guna.UI2.WinForms.Guna2Button btnEOContents;
         private Guna.UI2.WinForms.Guna2Button btnEOPCB;
         private Guna.UI2.WinForms.Guna2GroupBox grpDgvFilter;
-        private Guna.UI2.WinForms.Guna2CheckBox guna2CheckBox1;
+        private Guna.UI2.WinForms.Guna2CheckBox chkReservationView;
         private Guna.UI2.WinForms.Guna2Button btnNewEO;
         private Guna.UI2.WinForms.Guna2Panel pnMain;
         private Guna.UI2.WinForms.Guna2Panel pnSelect;

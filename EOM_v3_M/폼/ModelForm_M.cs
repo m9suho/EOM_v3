@@ -823,6 +823,8 @@ namespace EOM_v3_M
                 query = MainForm.dc.InsertQueryArrayConvert(MainForm.DATABASE_NAME, "model_data", insertData);
                 MainForm.mariaDB.EtcQuery(query);
 
+                Clipboard.SetText(query);
+
                 Opacity = 0;
                 MainForm.modelSelectData = txtProductName.Text;
 
@@ -838,6 +840,7 @@ namespace EOM_v3_M
                 }
 
                 MainForm.mariaDB.InsertLogDB(MainForm.SplitConvert(insertData) + " 모델 추가", false);
+
                 Close();
             }
             else
